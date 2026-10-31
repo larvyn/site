@@ -1,0 +1,495 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Screen from '../components/Screen.astro';
+
+import overviewRunning from '../assets/screens/overview-running.png';
+import agents from '../assets/screens/agents.png';
+import terminals from '../assets/screens/terminals.png';
+import tests from '../assets/screens/tests.png';
+import logs from '../assets/screens/logs.png';
+import database from '../assets/screens/database.png';
+import models from '../assets/screens/models.png';
+import routes from '../assets/screens/routes.png';
+import tinker from '../assets/screens/tinker.png';
+import queues from '../assets/screens/queues.png';
+import git from '../assets/screens/git.png';
+import deps from '../assets/screens/deps.png';
+import artisan from '../assets/screens/artisan.png';
+import env from '../assets/screens/env.png';
+import overview from '../assets/screens/overview.png';
+import paletteAgent from '../assets/screens/palette-agent.png';
+
+// TODO: point to the releases page once the first build is published.
+const DOWNLOAD = '#';
+
+const tour = [
+  { id: 'overview', label: 'Overview', icon: 'LayoutDashboard', img: overview, text: '<b>Your project at a glance.</b> Versions, packages, .env facts, recent commits, a Doctor that checks your setup, and the whole dev stack one switch away.' },
+  { id: 'agents', label: 'Agents', icon: 'Bot', img: agents, text: '<b>Describe it, launch it.</b> Pick one or more coding agents, each gets its own git worktree with your .env and SQLite copied. Laravel playbooks get you started.' },
+  { id: 'terminals', label: 'Terminals', icon: 'SquareTerminal', img: terminals, text: '<b>Real terminals that never die.</b> Full PTY with colors, links and search. Switch views or projects and they keep running with their scrollback.' },
+  { id: 'tests', label: 'Tests', icon: 'TestTube2', img: tests, text: '<b>Every test, every failure, the exact line.</b> Run Pest or PHPUnit, re-run only what failed, open the file or hand the failure to an agent.' },
+  { id: 'logs', label: 'Logs', icon: 'ScrollText', img: logs, text: '<b>laravel.log, readable.</b> Live tail with levels, parsed exceptions and stack frames that open in your editor. One click asks an agent to fix it.' },
+  { id: 'database', label: 'Database', icon: 'Database', img: database, text: '<b>Browse and edit rows.</b> Tables, structure, foreign keys and a SQL console, all through your app’s own connection. MySQL, Postgres, SQLite, SQL Server.' },
+  { id: 'models', label: 'Models', icon: 'Box', img: models, text: '<b>Eloquent, mapped.</b> Attributes, casts, fillable and guarded fields, relationships in both directions and record counts for every model.' },
+  { id: 'routes', label: 'Routes', icon: 'Waypoints', img: routes, text: '<b>Every route, filterable.</b> Methods, names, actions and middleware. Jump from a route straight to its controller method.' },
+  { id: 'tinker', label: 'Tinker', icon: 'FlaskConical', img: tinker, text: '<b>Tinker with an editor.</b> Run PHP inside your booted app, see dumps or JSON, timing, memory and query count. Snippets and history included.' },
+  { id: 'queues', label: 'Queues', icon: 'Timer', img: queues, text: '<b>Queues and schedule.</b> Failed jobs with their exceptions, retry or flush them, and every scheduled task with its next run.' },
+  { id: 'git', label: 'Git', icon: 'GitBranch', img: git, text: '<b>Source control built in.</b> Status, diffs, commit, branches and worktrees, without leaving the app.' },
+  { id: 'deps', label: 'Dependencies', icon: 'Package', img: deps, text: '<b>Stay current and safe.</b> Outdated Composer packages split into safe and major updates, plus composer audit for known CVEs.' },
+] as const;
+
+const features = [
+  { icon: 'SquareTerminal', title: 'Persistent terminals', text: 'PTY sessions that survive view and project switches, with bell alerts when a process needs you.' },
+  { icon: 'Bot', title: 'Parallel agents', text: 'Claude Code, Codex, Gemini CLI, Cursor Agent, OpenCode, Aider and Pi, side by side.' },
+  { icon: 'GitFork', title: 'Isolated worktrees', text: 'Each agent works on its own larvyn/<task> branch. Review the diff, merge the winner.' },
+  { icon: 'Server', title: 'One-click dev stack', text: 'serve, Vite, queue or Horizon, scheduler, Pail, Reverb and Octane, together or one by one.' },
+  { icon: 'Zap', title: 'Artisan studio', text: 'Every command with its arguments as a form, favourites, and a generator for anything make: creates.' },
+  { icon: 'Waypoints', title: 'Route explorer', text: 'Filter by method, URI, name or middleware and open the controller at the right line.' },
+  { icon: 'Box', title: 'Model inspector', text: 'Attributes, casts and relationships for every Eloquent model, plus record counts.' },
+  { icon: 'Database', title: 'Database browser', text: 'Rows, structure, indexes, migrations and a SQL console through your app’s connection.' },
+  { icon: 'FlaskConical', title: 'Tinker editor', text: 'Write PHP, run it in your app, read dumps or JSON with timing and query counts.' },
+  { icon: 'TestTube2', title: 'Test runner', text: 'Pest and PHPUnit with per-test results, filters, parallel runs and failure details.' },
+  { icon: 'ScrollText', title: 'Log viewer', text: 'Live laravel.log with parsed exceptions and frames that open in your editor.' },
+  { icon: 'Timer', title: 'Queues & schedule', text: 'Failed jobs, retries and every scheduled task with its next run time.' },
+  { icon: 'Braces', title: '.env editor', text: 'Edit the environment safely: a backup is kept before every save.' },
+  { icon: 'ShieldCheck', title: 'Security audit', text: 'composer audit and outdated packages with one-click safe updates.' },
+  { icon: 'Stethoscope', title: 'Project doctor', text: 'Checks vendor, APP_KEY, storage link, migrations and frontend dependencies.' },
+  { icon: 'Command', title: 'Command palette', text: 'Ctrl K understands artisan, shell, PHP and plain English.' },
+] as const;
+
+const stack = [
+  ['Laravel 10–13', '#ff2d20'], ['Herd', '#ff6a3d'], ['Pest', '#a77bff'], ['PHPUnit', '#4c8dff'], ['Livewire', '#fb70a9'],
+  ['Inertia', '#9553e9'], ['Filament', '#f5c542'], ['Horizon', '#8b5cf6'], ['Reverb', '#ff2d20'], ['Octane', '#2dd4bf'],
+  ['Vite', '#a77bff'], ['Tailwind', '#38bdf8'], ['Claude Code', '#d97757'], ['Codex', '#3ddc84'], ['Gemini CLI', '#4c8dff'],
+  ['Cursor Agent', '#a3a3ad'], ['OpenCode', '#f5c542'], ['Aider', '#2dd4bf'], ['MySQL', '#4c8dff'], ['PostgreSQL', '#38bdf8'], ['SQLite', '#a3a3ad'],
+];
+---
+
+<Base
+  title="Larvyn: the Laravel workbench"
+  description="Persistent terminals, parallel coding agents in git worktrees and every Laravel tool in one native desktop app."
+>
+  <header class="nav" id="nav">
+    <div class="wrap">
+      <a class="brand" href="#top"><img src="/favicon.svg" alt="" width="28" height="28" />Larvyn</a>
+      <nav class="nav-links">
+        <a href="#tour">Tour</a>
+        <a href="#agents">Agents</a>
+        <a href="#features">Features</a>
+        <a href="#palette">Palette</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <span class="spacer"></span>
+      <a class="btn sm primary" href={DOWNLOAD}><Icon name="Download" size={16} /> Download</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="grid-bg"></div>
+      <div class="wrap">
+        <a class="pill" href="#agents"><b>NEW</b> Run several coding agents on one task, in parallel worktrees <Icon name="ArrowRight" size={14} /></a>
+        <h1>Your whole Laravel workflow.<br /><span class="grad">One native app.</span></h1>
+        <p class="lead">
+          Larvyn puts persistent terminals, parallel AI coding agents and every Laravel tool you reach for (Artisan, routes, models, database, Tinker, tests, queues and logs) into one fast desktop app.
+        </p>
+        <div class="cta">
+          <a class="btn primary" href={DOWNLOAD}><Icon name="Download" size={18} /> Download for Windows</a>
+          <a class="btn" href="#tour"><Icon name="Play" size={16} /> Take the tour</a>
+        </div>
+        <div class="meta">
+          <span><Icon name="Check" size={15} /> Works with Herd</span>
+          <span><Icon name="Check" size={15} /> Laravel 10 to 13</span>
+          <span><Icon name="Check" size={15} /> Your code stays on your machine</span>
+        </div>
+
+        <div class="hero-shot" id="hero-shot">
+          <div class="float f1"><span class="dot"></span><div>3 services running<small>serve · vite · queue</small></div></div>
+          <div class="float f2"><Icon name="TestTube2" size={18} class="c-red" /><div>16 tests · 2 failing<small>Ask an agent to fix them</small></div></div>
+          <div class="float f3"><Icon name="GitBranch" size={18} /><div>larvyn/stock-validation<small>agent finished · +42 −3</small></div></div>
+          <Screen src={overviewRunning} alt="Larvyn overview of a Laravel project with the dev stack running" eager />
+        </div>
+      </div>
+    </section>
+
+    <!-- Works with -->
+    <section class="logos">
+      <p>Built for the Laravel ecosystem and the agents you already use</p>
+      <div class="marquee">
+        <div class="marquee-track">
+          {[...stack, ...stack].map(([name, color]) => (
+            <span class="tag"><i style={`background:${color}`}></i>{name}</span>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Pillars -->
+    <section class="block">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="eyebrow"><Icon name="Sparkles" size={14} /> Three tools in one</span>
+          <h2>Terminals, agents and Laravel. Finally in the same window.</h2>
+          <p>Stop juggling a terminal app, an agent manager, a database client, a log viewer and five browser tabs. Larvyn knows it is a Laravel project and builds everything around that.</p>
+        </div>
+        <div class="pillars">
+          <div class="pillar reveal" style="--c: var(--cyan)">
+            <div class="ico"><Icon name="SquareTerminal" size={22} /></div>
+            <h3>Terminals that stay alive</h3>
+            <p>Real PTY sessions per project. They keep running when you switch views, keep 1&nbsp;MB of scrollback and tell you when something needs attention.</p>
+            <ul>
+              <li><Icon name="Check" size={15} /> Colors, links, search and resize</li>
+              <li><Icon name="Check" size={15} /> Bell alerts and activity markers</li>
+              <li><Icon name="Check" size={15} /> A console drawer for every command you run</li>
+            </ul>
+          </div>
+          <div class="pillar reveal" style="--c: var(--accent-2)">
+            <div class="ico"><Icon name="Bot" size={22} /></div>
+            <h3>Agents in parallel</h3>
+            <p>Send one task to several agents at once. Each works in its own git worktree, so nothing collides. Compare the diffs and merge the best one.</p>
+            <ul>
+              <li><Icon name="Check" size={15} /> Seven agent CLIs supported</li>
+              <li><Icon name="Check" size={15} /> .env and SQLite copied into each worktree</li>
+              <li><Icon name="Check" size={15} /> Live status: working, waiting, done</li>
+            </ul>
+          </div>
+          <div class="pillar reveal" style="--c: var(--green)">
+            <div class="ico"><Icon name="Layers" size={22} /></div>
+            <h3>Laravel, natively</h3>
+            <p>Larvyn boots your app to read real data: routes, models, config, schedule, failed jobs and your database, through your own connection.</p>
+            <ul>
+              <li><Icon name="Check" size={15} /> 12 dedicated Laravel views</li>
+              <li><Icon name="Check" size={15} /> Tests and logs that link to the line</li>
+              <li><Icon name="Check" size={15} /> One switch starts the whole dev stack</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tour -->
+    <section class="block" id="tour" style="padding-top: 40px">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="eyebrow"><Icon name="MousePointerClick" size={14} /> Product tour</span>
+          <h2>Everything a Laravel app needs, one click away.</h2>
+          <p>Real screenshots of Larvyn working on a sample store app.</p>
+        </div>
+        <div class="tour-tabs" role="tablist">
+          {tour.map((t, i) => (
+            <button class="tour-tab" role="tab" aria-selected={i === 0 ? 'true' : 'false'} data-tab={t.id}>
+              <Icon name={t.icon} size={15} /> {t.label}
+            </button>
+          ))}
+        </div>
+        <div class="tour-stage reveal">
+          {tour.map((t, i) => (
+            <div class:list={['tour-panel', i === 0 && 'active']} data-panel={t.id} role="tabpanel">
+              <Screen src={t.img} alt={`Larvyn ${t.label} view`} />
+              <p class="tour-caption" set:html={t.text} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Agents -->
+    <section class="block" id="agents">
+      <div class="wrap split">
+        <div class="copy reveal">
+          <span class="eyebrow"><Icon name="Bot" size={14} /> Parallel agents</span>
+          <h2>One prompt. Several agents. Pick the best result.</h2>
+          <p>Write what you want in plain words. Larvyn creates a worktree per agent, copies your environment, starts each agent and shows its terminal live. When they finish, review every diff and merge with one click.</p>
+          <div class="lanes">
+            <div class="lane"><span class="av" style="background:#d97757">C</span><div>Claude Code<code>larvyn/stock-validation-1</code></div><span class="st done">Done · +42 −3</span></div>
+            <div class="lane"><span class="av" style="background:#10a37f">X</span><div>Codex<code>larvyn/stock-validation-2</code></div><span class="st work">Working</span></div>
+            <div class="lane"><span class="av" style="background:#4c8dff">G</span><div>Gemini CLI<code>larvyn/stock-validation-3</code></div><span class="st wait">Needs you</span></div>
+          </div>
+        </div>
+        <div class="reveal"><Screen src={agents} alt="Larvyn agents view with a prompt and Laravel playbooks" /></div>
+      </div>
+    </section>
+
+    <!-- Tests -->
+    <section class="block">
+      <div class="wrap split rev">
+        <div class="copy reveal">
+          <span class="eyebrow"><Icon name="TestTube2" size={14} /> Tests</span>
+          <h2>From red to green without hunting.</h2>
+          <p>Larvyn runs <code>php artisan test</code> and shows every test grouped by class. Failures come with the message, the trace and the exact line in your code, not in vendor/.</p>
+          <ul class="points">
+            <li><span class="ico"><Icon name="RotateCcw" size={16} /></span><div><b>Re-run only what failed</b><span>Or a single test, with one click.</span></div></li>
+            <li><span class="ico"><Icon name="Code2" size={16} /></span><div><b>Open the failing line</b><span>In VS Code, Cursor, PhpStorm, Zed, Windsurf, Sublime or Neovim.</span></div></li>
+            <li><span class="ico"><Icon name="Bot" size={16} /></span><div><b>Ask an agent to fix it</b><span>The failure and trace go with the prompt.</span></div></li>
+          </ul>
+        </div>
+        <div class="reveal"><Screen src={tests} alt="Larvyn test runner with a failing test expanded" /></div>
+      </div>
+    </section>
+
+    <!-- Logs -->
+    <section class="block">
+      <div class="wrap split">
+        <div class="copy reveal">
+          <span class="eyebrow"><Icon name="ScrollText" size={14} /> Logs</span>
+          <h2>Exceptions you can act on.</h2>
+          <p>A live view of laravel.log that parses every entry: level, time, exception class and the first frame in your app. Expand an error to see the full trace, open the file, or send it to an agent.</p>
+          <ul class="points">
+            <li><span class="ico"><Icon name="Radio" size={16} /></span><div><b>Live tail</b><span>New entries appear as they are written.</span></div></li>
+            <li><span class="ico"><Icon name="Filter" size={16} /></span><div><b>Filter by level and text</b><span>Errors, warnings, info, or any word.</span></div></li>
+          </ul>
+        </div>
+        <div class="reveal"><Screen src={logs} alt="Larvyn log viewer with an expanded exception" /></div>
+      </div>
+    </section>
+
+    <!-- Database -->
+    <section class="block">
+      <div class="wrap split rev">
+        <div class="copy reveal">
+          <span class="eyebrow"><Icon name="Database" size={14} /> Database</span>
+          <h2>A database client that already knows your app.</h2>
+          <p>No connection strings to copy. Larvyn reads your tables through Laravel’s own connection, so it works with whatever your .env points at.</p>
+          <ul class="points">
+            <li><span class="ico"><Icon name="Table" size={16} /></span><div><b>Browse, search and edit rows</b><span>Paginated, with inline updates and deletes.</span></div></li>
+            <li><span class="ico"><Icon name="TerminalSquare" size={16} /></span><div><b>SQL console</b><span>Run queries and read results in a grid.</span></div></li>
+            <li><span class="ico"><Icon name="ListChecks" size={16} /></span><div><b>Migrations</b><span>See what ran and what is pending.</span></div></li>
+          </ul>
+        </div>
+        <div class="reveal"><Screen src={database} alt="Larvyn database browser showing the orders table" /></div>
+      </div>
+    </section>
+
+    <!-- Palette -->
+    <section class="block" id="palette">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="eyebrow"><Icon name="Command" size={14} /> Command palette</span>
+          <h2>Type anything. Larvyn knows what you mean.</h2>
+          <p>Ctrl K opens a palette that reads your intent: an artisan command, a shell line, a bit of PHP for Tinker, or a task for an agent. Try it.</p>
+        </div>
+        <div class="palette reveal" id="pal">
+          <div class="palette-input">
+            <Icon name="Search" size={20} />
+            <input id="pal-input" value="add stock validation to checkout" aria-label="Try the command palette" autocomplete="off" spellcheck="false" />
+          </div>
+          <div class="palette-group">Run</div>
+          <div class="palette-row" id="pal-row">
+            <span id="pal-ico"></span>
+            <span id="pal-text"></span>
+            <span class="kind" id="pal-kind"></span>
+          </div>
+          <div class="palette-foot">
+            <span><kbd>↑</kbd> <kbd>↓</kbd> navigate</span>
+            <span><kbd>↵</kbd> run</span>
+            <span><kbd>&gt;</kbd> artisan</span>
+            <span><kbd>$</kbd> shell</span>
+          </div>
+          <template id="ico-agent"><Icon name="Bot" size={18} /></template>
+          <template id="ico-artisan"><Icon name="Zap" size={18} /></template>
+          <template id="ico-shell"><Icon name="SquareTerminal" size={18} /></template>
+          <template id="ico-tinker"><Icon name="FlaskConical" size={18} /></template>
+        </div>
+        <div class="examples">
+          <button data-ex="&gt;migrate:fresh --seed">&gt;migrate:fresh --seed</button>
+          <button data-ex="$ npm run build">$ npm run build</button>
+          <button data-ex="Order::where('status', 'paid')->sum('total')">Order::where(…)->sum('total')</button>
+          <button data-ex="write Pest tests for the checkout flow">write Pest tests for checkout</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features grid -->
+    <section class="block" id="features">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="eyebrow"><Icon name="LayoutGrid" size={14} /> Features</span>
+          <h2>Everything you need. Nothing you have to configure.</h2>
+          <p>Add a folder and Larvyn detects the Laravel version, packages, frontend, database, queue and Herd URL on its own.</p>
+        </div>
+        <div class="fgrid reveal">
+          {features.map((f) => (
+            <div class="fcell">
+              <Icon name={f.icon} size={22} />
+              <h4>{f.title}</h4>
+              <p>{f.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Workflow -->
+    <section class="block">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="eyebrow"><Icon name="Workflow" size={14} /> Workflow</span>
+          <h2>From idea to merged in four steps.</h2>
+        </div>
+        <div class="steps">
+          <div class="step reveal"><h4>Describe the task</h4><p>In the palette or the Agents view, in plain words. Or start from a Laravel playbook.</p></div>
+          <div class="step reveal"><h4>Agents get to work</h4><p>Each in its own worktree and branch, with your .env and database copied over.</p></div>
+          <div class="step reveal"><h4>Review and test</h4><p>Read every diff, run the tests in each worktree, ask for follow-ups.</p></div>
+          <div class="step reveal"><h4>Merge the winner</h4><p>One click commits the agent’s work and merges its branch. Remove the worktrees you no longer need.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery -->
+    <section class="block">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="eyebrow"><Icon name="Images" size={14} /> More screens</span>
+          <h2>Small details, everywhere.</h2>
+        </div>
+        <div class="gallery">
+          <figure class="reveal"><Screen src={artisan} alt="Artisan generator studio" /><figcaption><b>Artisan studio</b>Every make: generator as a form.</figcaption></figure>
+          <figure class="reveal"><Screen src={models} alt="Model inspector" /><figcaption><b>Model inspector</b>Casts, flags and relationships both ways.</figcaption></figure>
+          <figure class="reveal"><Screen src={queues} alt="Queues and schedule" /><figcaption><b>Queues & schedule</b>Failed jobs and every scheduled task.</figcaption></figure>
+          <figure class="reveal"><Screen src={env} alt=".env editor" /><figcaption><b>.env editor</b>Safe edits with an automatic backup.</figcaption></figure>
+          <figure class="reveal"><Screen src={git} alt="Source control" /><figcaption><b>Source control</b>Diffs, commits, branches and worktrees.</figcaption></figure>
+          <figure class="reveal"><Screen src={paletteAgent} alt="Command palette sending a task to an agent" /><figcaption><b>Command palette</b>Plain English becomes an agent task.</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Specs -->
+    <section class="block" style="padding-top: 40px">
+      <div class="wrap">
+        <div class="specs">
+          <div class="spec reveal"><strong>12<em>MB</em></strong><span>A native Go app with the system WebView. No Electron, no bundled browser.</span></div>
+          <div class="spec reveal"><strong>7</strong><span>Coding agent CLIs supported, each in its own git worktree.</span></div>
+          <div class="spec reveal"><strong>16</strong><span>Views for terminals, agents and every part of a Laravel app.</span></div>
+          <div class="spec reveal"><strong>0</strong><span>Accounts, telemetry or cloud. Everything runs on your machine.</span></div>
+        </div>
+        <div class="keys reveal">
+          <div>Command palette <span><kbd class="k">Ctrl</kbd><kbd class="k">K</kbd></span></div>
+          <div>Toggle console <span><kbd class="k">Ctrl</kbd><kbd class="k">J</kbd></span></div>
+          <div>Jump to view <span><kbd class="k">Alt</kbd><kbd class="k">1–8</kbd></span></div>
+          <div>New terminal <span><kbd class="k">Ctrl</kbd><kbd class="k">⇧</kbd><kbd class="k">T</kbd></span></div>
+          <div>Next project <span><kbd class="k">Ctrl</kbd><kbd class="k">⇧</kbd><kbd class="k">]</kbd></span></div>
+          <div>Toggle sidebar <span><kbd class="k">Ctrl</kbd><kbd class="k">B</kbd></span></div>
+          <div>Launch agent · run Tinker <span><kbd class="k">Ctrl</kbd><kbd class="k">↵</kbd></span></div>
+          <div>Save .env <span><kbd class="k">Ctrl</kbd><kbd class="k">S</kbd></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="block" id="faq">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="eyebrow"><Icon name="MessageCircleQuestion" size={14} /> FAQ</span>
+          <h2>Questions, answered.</h2>
+        </div>
+        <div class="faq reveal">
+          <details open>
+            <summary>Do I need Laravel Herd? <Icon name="Plus" size={20} /></summary>
+            <p>No. Larvyn uses whatever PHP, Composer and Node are on your PATH, and picks up Herd automatically when it is installed, including its site URLs. If Composer is missing, Larvyn can install it for you and verifies the installer’s signature.</p>
+          </details>
+          <details>
+            <summary>Which coding agents work with it? <Icon name="Plus" size={20} /></summary>
+            <p>Claude Code, Codex, Gemini CLI, Cursor Agent, OpenCode, Aider and Pi. Larvyn detects which ones are installed and runs them in real terminals, so they behave exactly as they do in your shell.</p>
+          </details>
+          <details>
+            <summary>Will agents touch my working copy? <Icon name="Plus" size={20} /></summary>
+            <p>Only if you want them to. With worktrees on, each agent gets its own <code>larvyn/&lt;task&gt;</code> branch in a separate folder, with your <code>.env</code> and SQLite database copied. Those copies are never committed. You review the diff and decide what to merge.</p>
+          </details>
+          <details>
+            <summary>Does Larvyn change my project? <Icon name="Plus" size={20} /></summary>
+            <p>No. It reads your project to show routes, models, logs and data, and only writes when you ask: saving the <code>.env</code> (a backup is kept first), editing a row, running a command or merging a branch.</p>
+          </details>
+          <details>
+            <summary>Where is my data stored? <Icon name="Plus" size={20} /></summary>
+            <p>On your machine, in a single state file in your app data folder. There are no accounts and nothing is sent anywhere.</p>
+          </details>
+          <details>
+            <summary>Which systems does it run on? <Icon name="Plus" size={20} /></summary>
+            <p>Windows today. Larvyn is built with Go and Wails, so macOS and Linux builds are on the way.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="block" style="padding-top: 20px">
+      <div class="wrap">
+        <div class="final reveal">
+          <img class="logo-big" src="/favicon.svg" alt="" width="72" height="72" />
+          <h2>Build Laravel apps<br />at the speed of thought.</h2>
+          <p>Terminals, agents and every Laravel tool in one native window.</p>
+          <div class="cta">
+            <a class="btn primary" href={DOWNLOAD}><Icon name="Download" size={18} /> Download for Windows</a>
+            <a class="btn" href="#tour"><Icon name="Play" size={16} /> See the tour</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <a class="brand" href="#top"><img src="/favicon.svg" alt="" width="24" height="24" />Larvyn</a>
+      <nav>
+        <a href="#tour">Tour</a>
+        <a href="#features">Features</a>
+        <a href="#faq">FAQ</a>
+        <a href={DOWNLOAD}>Download</a>
+      </nav>
+      <span>© {new Date().getFullYear()} Netzisoft. Laravel is a trademark of Taylor Otwell.</span>
+    </div>
+  </footer>
+
+  <script>
+    // Sticky nav border
+    const nav = document.getElementById('nav')!;
+    const onScroll = () => nav.classList.toggle('scrolled', scrollY > 8);
+    addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Reveal on scroll
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && (e.target.classList.add('in'), io.unobserve(e.target))),
+      { rootMargin: '0px 0px -10% 0px' },
+    );
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+    requestAnimationFrame(() => document.getElementById('hero-shot')?.classList.add('in'));
+
+    // Product tour tabs
+    const tabs = document.querySelectorAll<HTMLButtonElement>('.tour-tab');
+    tabs.forEach((tab) =>
+      tab.addEventListener('click', () => {
+        tabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
+        document.querySelectorAll<HTMLElement>('.tour-panel').forEach((p) => p.classList.toggle('active', p.dataset.panel === tab.dataset.tab));
+      }),
+    );
+
+    // Command palette demo: the same intent rules as the app.
+    const input = document.getElementById('pal-input') as HTMLInputElement;
+    const ico = document.getElementById('pal-ico')!;
+    const text = document.getElementById('pal-text')!;
+    const kind = document.getElementById('pal-kind')!;
+    const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+    const looksLikePHP = (s: string) => /::|->|\(|\$\w|;/.test(s);
+    const render = () => {
+      const v = input.value.trim();
+      let k = 'agent', label = `Ask an agent: <b>${esc(v || 'describe a task')}</b>`;
+      if (v.startsWith('>')) (k = 'artisan'), (label = `php artisan <b>${esc(v.slice(1).trim() || '…')}</b>`);
+      else if (v.startsWith('$')) (k = 'shell'), (label = `Run in terminal: <b>${esc(v.slice(1).trim() || '…')}</b>`);
+      else if (looksLikePHP(v)) (k = 'tinker'), (label = `Run in Tinker: <b>${esc(v)}</b>`);
+      ico.innerHTML = (document.getElementById(`ico-${k}`) as HTMLTemplateElement).innerHTML;
+      text.innerHTML = label;
+      kind.textContent = k;
+    };
+    input.addEventListener('input', render);
+    document.querySelectorAll<HTMLButtonElement>('[data-ex]').forEach((b) =>
+      b.addEventListener('click', () => {
+        input.value = b.dataset.ex!;
+        render();
+        input.focus();
+      }),
+    );
+    render();
+  </script>
+</Base>
