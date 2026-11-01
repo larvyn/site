@@ -371,7 +371,7 @@ section.block { padding: 110px 0; position: relative; }
 
 footer { padding: 56px 0 48px; color: var(--text-3); font-size: 14px; }
 footer .wrap { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; align-items: center; }
-footer nav { display: flex; gap: 22px; }
+footer nav { display: flex; gap: 10px 22px; flex-wrap: wrap; }
 footer a:hover { color: var(--text); }
 
 /* reveal on scroll */
@@ -443,3 +443,5 @@ html { overflow-x: clip; }
   .install-cmd .shell { display: none; }
   .install-cmd code { font-size: 12.5px; }
 }
+.faq details p a { color: var(--text); text-decoration: underline; text-decoration-color: var(--line-3); text-underline-offset: 3px; }
+.faq details p a:hover { text-decoration-color: var(--accent-2); }

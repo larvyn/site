@@ -24,6 +24,8 @@ const RELEASES_REPO = 'larvyn/releases';
 const RELEASES = `https://github.com/${RELEASES_REPO}/releases`;
 const DOWNLOAD = '#install';
 const SCRIPTS = `https://raw.githubusercontent.com/${RELEASES_REPO}/main`;
+const ISSUES = `https://github.com/${RELEASES_REPO}/issues/new/choose`;
+const DISCUSSIONS = `https://github.com/${RELEASES_REPO}/discussions`;
 
 const installs = [
   { id: 'windows', label: 'Windows', icon: 'Monitor', shell: 'PowerShell', cmd: `irm ${SCRIPTS}/install.ps1 | iex`, note: 'Installs to your user folder, no administrator rights needed, and adds Larvyn to the Start menu.' },
@@ -473,6 +475,10 @@ const stack = [
             <summary>How do I uninstall it? <Icon name="Plus" size={20} /></summary>
             <p>On macOS and Linux run <code>curl -fsSL {SCRIPTS}/install.sh | sh -s -- --uninstall</code>. On Windows run <code>$env:LARVYN_UNINSTALL = "1"; irm {SCRIPTS}/install.ps1 | iex</code>. Your settings stay in your config folder until you delete it.</p>
           </details>
+          <details>
+            <summary>I found a bug. Where do I report it? <Icon name="Plus" size={20} /></summary>
+            <p>In the app, open <b>Settings → Report a bug</b>: it opens a GitHub issue with your Larvyn version and system already filled in. You can also <a href={ISSUES}>open an issue</a> directly, or ask questions and share ideas in <a href={DISCUSSIONS}>Discussions</a>. Security problems go through a <a href={`https://github.com/${RELEASES_REPO}/security/advisories/new`}>private report</a>, never a public issue.</p>
+          </details>
         </div>
       </div>
     </section>
@@ -502,6 +508,7 @@ const stack = [
         <a href="#faq">FAQ</a>
         <a href={DOWNLOAD}>Install</a>
         <a href={RELEASES}>Releases</a>
+        <a href={ISSUES}>Report a bug</a>
       </nav>
       <span>© {new Date().getFullYear()} Netzisoft. Laravel is a trademark of Taylor Otwell.</span>
     </div>
