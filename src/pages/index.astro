@@ -61,7 +61,7 @@ const tour = [
 
 const features = [
   { icon: 'SquareTerminal', title: 'Persistent terminals', text: 'PTY sessions that survive view and project switches, with bell alerts when a process needs you.' },
-  { icon: 'Bot', title: 'Parallel agents', text: 'Claude Code, Codex, Gemini CLI, Cursor Agent, OpenCode, Aider and Pi, side by side.' },
+  { icon: 'Bot', title: 'Parallel agents', text: 'Claude Code, Codex, Antigravity CLI, Cursor Agent, OpenCode, Aider and Pi, side by side.' },
   { icon: 'GitFork', title: 'Isolated worktrees', text: 'Each agent works on its own larvyn/<task> branch. Review the diff, merge the winner.' },
   { icon: 'Server', title: 'One-click dev stack', text: 'serve, Vite, queue or Horizon, scheduler, Pail, Reverb and Octane, together or one by one.' },
   { icon: 'Zap', title: 'Artisan studio', text: 'Every command with its arguments as a form, favourites, and a generator for anything make: creates.' },
@@ -81,7 +81,7 @@ const features = [
 const stack = [
   ['Laravel 10–13', '#ff2d20'], ['Herd', '#ff6a3d'], ['Pest', '#a77bff'], ['PHPUnit', '#4c8dff'], ['Livewire', '#fb70a9'],
   ['Inertia', '#9553e9'], ['Filament', '#f5c542'], ['Horizon', '#8b5cf6'], ['Reverb', '#ff2d20'], ['Octane', '#2dd4bf'],
-  ['Vite', '#a77bff'], ['Tailwind', '#38bdf8'], ['Claude Code', '#d97757'], ['Codex', '#3ddc84'], ['Gemini CLI', '#4c8dff'],
+  ['Vite', '#a77bff'], ['Tailwind', '#38bdf8'], ['Claude Code', '#d97757'], ['Codex', '#3ddc84'], ['Antigravity CLI', '#4c8dff'],
   ['Cursor Agent', '#a3a3ad'], ['OpenCode', '#f5c542'], ['Aider', '#2dd4bf'], ['MySQL', '#4c8dff'], ['PostgreSQL', '#38bdf8'], ['SQLite', '#a3a3ad'],
 ];
 ---
@@ -226,7 +226,7 @@ const stack = [
           <div class="lanes">
             <div class="lane"><span class="av" style="background:#d97757">C</span><div>Claude Code<code>larvyn/stock-validation-1</code></div><span class="st done">Done · +42 −3</span></div>
             <div class="lane"><span class="av" style="background:#10a37f">X</span><div>Codex<code>larvyn/stock-validation-2</code></div><span class="st work">Working</span></div>
-            <div class="lane"><span class="av" style="background:#4c8dff">G</span><div>Gemini CLI<code>larvyn/stock-validation-3</code></div><span class="st wait">Needs you</span></div>
+            <div class="lane"><span class="av" style="background:#4c8dff">A</span><div>Antigravity CLI<code>larvyn/stock-validation-3</code></div><span class="st wait">Needs you</span></div>
           </div>
         </div>
         <div class="reveal"><Screen src={agents} alt="Larvyn agents view with a prompt and Laravel playbooks" /></div>
@@ -416,9 +416,9 @@ const stack = [
           </div>
           {installs.map((o, i) => (
             <div class={`install-panel${i === 0 ? ' active' : ''}`} data-os={o.id} role="tabpanel">
+              <p class="install-lead">Open {o.shell} and run:</p>
               <div class="install-cmd">
-                <span class="shell">{o.shell}</span>
-                <code>{o.cmd}</code>
+                <code>{o.cmd.replace(' | ', ' | ')}</code>
                 <button class="copy" data-copy={o.cmd} aria-label={`Copy the ${o.label} install command`}>
                   <span class="c-idle"><Icon name="Copy" size={16} /></span>
                   <span class="c-done"><Icon name="Check" size={16} /></span>
@@ -449,7 +449,7 @@ const stack = [
           </details>
           <details>
             <summary>Which coding agents work with it? <Icon name="Plus" size={20} /></summary>
-            <p>Claude Code, Codex, Gemini CLI, Cursor Agent, OpenCode, Aider and Pi. Larvyn detects which ones are installed and runs them in real terminals, so they behave exactly as they do in your shell.</p>
+            <p>Claude Code, Codex, Antigravity CLI, Cursor Agent, OpenCode, Aider and Pi. Larvyn detects which ones are installed and runs them in real terminals, so they behave exactly as they do in your shell.</p>
           </details>
           <details>
             <summary>Will agents touch my working copy? <Icon name="Plus" size={20} /></summary>

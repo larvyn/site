@@ -414,10 +414,7 @@ html { overflow-x: clip; }
   background: var(--bg-1); border: 1px solid var(--line-3);
   box-shadow: 0 40px 100px -40px rgba(255, 45, 32, 0.35);
 }
-.install-cmd .shell {
-  flex: none; font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600;
-  color: var(--text-3); padding: 3px 8px; border-radius: 6px; border: 1px solid var(--line-2);
-}
+.install-lead { margin: 0 0 10px 4px; font-size: 13.5px; color: var(--text-3); }
 .install-cmd code { flex: 1; min-width: 0; overflow-wrap: anywhere; font-size: 14px; line-height: 1.55; color: var(--text); }
 .install-cmd .copy {
   flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 9px;
@@ -440,7 +437,6 @@ html { overflow-x: clip; }
 .faq details p a code { text-decoration: underline; text-decoration-color: var(--line-3); text-underline-offset: 3px; }
 @media (max-width: 640px) {
   .install-cmd { padding: 12px; gap: 10px; }
-  .install-cmd .shell { display: none; }
   .install-cmd code { font-size: 12.5px; }
 }
 .faq details p a { color: var(--text); text-decoration: underline; text-decoration-color: var(--line-3); text-underline-offset: 3px; }
