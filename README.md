@@ -1,6 +1,6 @@
 # Larvyn site
 
-Landing page for [Larvyn](https://github.com/ivanmercedes/larvyn), built with Astro.
+Landing page for [Larvyn](https://github.com/larvyn/larvyn), built with Astro.
 
 ```sh
 npm install
@@ -18,4 +18,4 @@ npm run preview  # serve dist/
 - `src/assets/screens/`: real Larvyn screenshots of a sample store app (Acme Store).
 - `public/og.png`: social preview image.
 
-The download buttons point to `DOWNLOAD` at the top of `index.astro` (`#` until the first release is published).
+The download buttons go to the `#install` section, which shows the `curl` / `irm` install command for each OS and opens the visitor's OS tab. The version in the beta pill is read from the newest release of `larvyn/releases` at build time, so rebuild the site after each release.

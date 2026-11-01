@@ -396,3 +396,50 @@ html { overflow-x: clip; }
   .final { padding: 64px 20px; }
   .final .cta .btn { flex: 1 1 100%; justify-content: center; }
 }
+
+/* install */
+.install { max-width: 820px; margin: 0 auto; }
+.install-tabs { display: flex; gap: 6px; justify-content: center; margin-bottom: 18px; flex-wrap: wrap; }
+.install-tab {
+  display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 10px;
+  border: 1px solid transparent; background: none; color: var(--text-2); font-size: 14.5px; font-weight: 550;
+}
+.install-tab:hover { color: var(--text); background: var(--bg-2); }
+.install-tab[aria-selected='true'] { color: #fff; background: var(--accent-soft); border-color: var(--accent-line); }
+.install-tab[aria-selected='true'] .icon { color: var(--accent-2); }
+.install-panel { display: none; }
+.install-panel.active { display: block; animation: fade 0.45s var(--ease); }
+.install-cmd {
+  display: flex; align-items: center; gap: 14px; padding: 14px 14px 14px 18px; border-radius: 14px;
+  background: var(--bg-1); border: 1px solid var(--line-3);
+  box-shadow: 0 40px 100px -40px rgba(255, 45, 32, 0.35);
+}
+.install-cmd .shell {
+  flex: none; font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600;
+  color: var(--text-3); padding: 3px 8px; border-radius: 6px; border: 1px solid var(--line-2);
+}
+.install-cmd code { flex: 1; min-width: 0; overflow-wrap: anywhere; font-size: 14px; line-height: 1.55; color: var(--text); }
+.install-cmd .copy {
+  flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 9px;
+  border: 1px solid var(--line-2); background: var(--bg-3); color: var(--text-2);
+  transition: color 0.2s, border-color 0.2s;
+}
+.install-cmd .copy:hover { color: var(--text); border-color: var(--line-3); }
+.install-cmd .copy .c-done { display: none; color: var(--green); }
+.install-cmd .copy.done .c-idle { display: none; }
+.install-cmd .copy.done .c-done { display: block; }
+.install-note { text-align: center; color: var(--text-2); font-size: 14.5px; margin: 16px auto 0; max-width: 640px; }
+.install-facts {
+  list-style: none; padding: 0; margin: 28px 0 0; display: flex; gap: 10px 24px; justify-content: center; flex-wrap: wrap;
+  font-size: 13.5px; color: var(--text-3);
+}
+.install-facts li, .install-facts a { display: inline-flex; align-items: center; gap: 6px; }
+.install-facts .icon { color: var(--green); }
+.install-facts a:hover { color: var(--text); }
+.install-facts a .icon { color: var(--text-3); }
+.faq details p a code { text-decoration: underline; text-decoration-color: var(--line-3); text-underline-offset: 3px; }
+@media (max-width: 640px) {
+  .install-cmd { padding: 12px; gap: 10px; }
+  .install-cmd .shell { display: none; }
+  .install-cmd code { font-size: 12.5px; }
+}

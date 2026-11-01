@@ -20,8 +20,27 @@ import env from '../assets/screens/env.png';
 import overview from '../assets/screens/overview.png';
 import paletteAgent from '../assets/screens/palette-agent.png';
 
-// TODO: point to the releases page once the first build is published.
-const DOWNLOAD = '#';
+const RELEASES_REPO = 'larvyn/releases';
+const RELEASES = `https://github.com/${RELEASES_REPO}/releases`;
+const DOWNLOAD = '#install';
+const SCRIPTS = `https://raw.githubusercontent.com/${RELEASES_REPO}/main`;
+
+const installs = [
+  { id: 'windows', label: 'Windows', icon: 'Monitor', shell: 'PowerShell', cmd: `irm ${SCRIPTS}/install.ps1 | iex`, note: 'Installs to your user folder, no administrator rights needed, and adds Larvyn to the Start menu.' },
+  { id: 'macos', label: 'macOS', icon: 'Laptop', shell: 'Terminal', cmd: `curl -fsSL ${SCRIPTS}/install.sh | sh`, note: 'Installs Larvyn.app to ~/Applications. Universal build for Apple Silicon and Intel.' },
+  { id: 'linux', label: 'Linux', icon: 'Terminal', shell: 'Terminal', cmd: `curl -fsSL ${SCRIPTS}/install.sh | sh`, note: 'Installs to ~/.local/bin and adds Larvyn to your apps menu. Needs GTK 4 and WebKitGTK 6.0 (Ubuntu 24.04+, Fedora 39+, Arch); the installer tells you if they are missing.' },
+] as const;
+
+// Newest release (prereleases included) at build time; the page still builds offline.
+let version = 'beta';
+try {
+  const res = await fetch(`https://api.github.com/repos/${RELEASES_REPO}/releases?per_page=1`, {
+    headers: { 'User-Agent': 'larvyn-site' },
+    signal: AbortSignal.timeout(5000),
+  });
+  const [latest] = res.ok ? await res.json() : [];
+  if (latest?.tag_name) version = latest.tag_name;
+} catch {}
 
 const tour = [
   { id: 'overview', label: 'Overview', icon: 'LayoutDashboard', img: overview, text: '<b>Your project at a glance.</b> Versions, packages, .env facts, recent commits, a Doctor that checks your setup, and the whole dev stack one switch away.' },
@@ -77,10 +96,11 @@ const stack = [
         <a href="#agents">Agents</a>
         <a href="#features">Features</a>
         <a href="#palette">Palette</a>
+        <a href="#install">Install</a>
         <a href="#faq">FAQ</a>
       </nav>
       <span class="spacer"></span>
-      <a class="btn sm primary" href={DOWNLOAD}><Icon name="Download" size={16} /> Download</a>
+      <a class="btn sm primary" href={DOWNLOAD}><Icon name="Download" size={16} /> Get the beta</a>
     </div>
   </header>
 
@@ -89,13 +109,13 @@ const stack = [
     <section class="hero">
       <div class="grid-bg"></div>
       <div class="wrap">
-        <a class="pill" href="#agents"><b>NEW</b> Run several coding agents on one task, in parallel worktrees <Icon name="ArrowRight" size={14} /></a>
+        <a class="pill" href="#install"><b>BETA</b> {version} is out for Windows, macOS and Linux <Icon name="ArrowRight" size={14} /></a>
         <h1>Your whole Laravel workflow.<br /><span class="grad">One native app.</span></h1>
         <p class="lead">
           Larvyn puts persistent terminals, parallel AI coding agents and every Laravel tool you reach for (Artisan, routes, models, database, Tinker, tests, queues and logs) into one fast desktop app.
         </p>
         <div class="cta">
-          <a class="btn primary" href={DOWNLOAD}><Icon name="Download" size={18} /> Download for Windows</a>
+          <a class="btn primary" href={DOWNLOAD}><Icon name="Download" size={18} /> <span data-os-label>Install the beta</span></a>
           <a class="btn" href="#tour"><Icon name="Play" size={16} /> Take the tour</a>
         </div>
         <div class="meta">
@@ -377,6 +397,43 @@ const stack = [
     </section>
 
     <!-- FAQ -->
+    <section class="block" id="install">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="eyebrow"><Icon name="FlaskConical" size={14} /> Public beta · {version}</span>
+          <h2>Install with one command.</h2>
+          <p>Paste it in a terminal. Run the same command again any time to update.</p>
+        </div>
+        <div class="install reveal">
+          <div class="install-tabs" role="tablist">
+            {installs.map((o, i) => (
+              <button class="install-tab" role="tab" aria-selected={i === 0 ? 'true' : 'false'} data-os={o.id}>
+                <Icon name={o.icon} size={16} /> {o.label}
+              </button>
+            ))}
+          </div>
+          {installs.map((o, i) => (
+            <div class={`install-panel${i === 0 ? ' active' : ''}`} data-os={o.id} role="tabpanel">
+              <div class="install-cmd">
+                <span class="shell">{o.shell}</span>
+                <code>{o.cmd}</code>
+                <button class="copy" data-copy={o.cmd} aria-label={`Copy the ${o.label} install command`}>
+                  <span class="c-idle"><Icon name="Copy" size={16} /></span>
+                  <span class="c-done"><Icon name="Check" size={16} /></span>
+                </button>
+              </div>
+              <p class="install-note">{o.note}</p>
+            </div>
+          ))}
+          <ul class="install-facts">
+            <li><Icon name="ShieldCheck" size={15} /> Every download is checked against the release checksums</li>
+            <li><Icon name="RefreshCw" size={15} /> Re-run to update, your settings are kept</li>
+            <li><a href={RELEASES}><Icon name="ExternalLink" size={15} /> Release notes and manual downloads</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <section class="block" id="faq">
       <div class="wrap">
         <div class="head reveal">
@@ -406,7 +463,15 @@ const stack = [
           </details>
           <details>
             <summary>Which systems does it run on? <Icon name="Plus" size={20} /></summary>
-            <p>Windows today. Larvyn is built with Go and Wails, so macOS and Linux builds are on the way.</p>
+            <p>Windows 10 and 11, macOS 12 or newer (Apple Silicon and Intel) and Linux x86-64. Larvyn is in public beta on all three, so expect rough edges and tell us what breaks.</p>
+          </details>
+          <details>
+            <summary>Why install from the terminal? <Icon name="Plus" size={20} /></summary>
+            <p>The beta builds are not code-signed yet, so a file downloaded in the browser shows a security warning. The install command downloads the same release from GitHub, verifies its checksum and puts it in your user folder without that warning. You can read the scripts first: <a href={`${SCRIPTS}/install.sh`}><code>install.sh</code></a> and <a href={`${SCRIPTS}/install.ps1`}><code>install.ps1</code></a>.</p>
+          </details>
+          <details>
+            <summary>How do I uninstall it? <Icon name="Plus" size={20} /></summary>
+            <p>On macOS and Linux run <code>curl -fsSL {SCRIPTS}/install.sh | sh -s -- --uninstall</code>. On Windows run <code>$env:LARVYN_UNINSTALL = "1"; irm {SCRIPTS}/install.ps1 | iex</code>. Your settings stay in your config folder until you delete it.</p>
           </details>
         </div>
       </div>
@@ -420,7 +485,7 @@ const stack = [
           <h2>Build Laravel apps<br />at the speed of thought.</h2>
           <p>Terminals, agents and every Laravel tool in one native window.</p>
           <div class="cta">
-            <a class="btn primary" href={DOWNLOAD}><Icon name="Download" size={18} /> Download for Windows</a>
+            <a class="btn primary" href={DOWNLOAD}><Icon name="Download" size={18} /> <span data-os-label>Install the beta</span></a>
             <a class="btn" href="#tour"><Icon name="Play" size={16} /> See the tour</a>
           </div>
         </div>
@@ -435,7 +500,8 @@ const stack = [
         <a href="#tour">Tour</a>
         <a href="#features">Features</a>
         <a href="#faq">FAQ</a>
-        <a href={DOWNLOAD}>Download</a>
+        <a href={DOWNLOAD}>Install</a>
+        <a href={RELEASES}>Releases</a>
       </nav>
       <span>© {new Date().getFullYear()} Netzisoft. Laravel is a trademark of Taylor Otwell.</span>
     </div>
@@ -491,5 +557,29 @@ const stack = [
       }),
     );
     render();
+
+    // Install: open the visitor's OS tab, name it on the buttons, copy commands.
+    const osTabs = document.querySelectorAll<HTMLButtonElement>('.install-tab');
+    const showOS = (os: string) => {
+      osTabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.os === os)));
+      document.querySelectorAll<HTMLElement>('.install-panel').forEach((p) => p.classList.toggle('active', p.dataset.os === os));
+    };
+    osTabs.forEach((t) => t.addEventListener('click', () => showOS(t.dataset.os!)));
+    const ua = navigator.userAgent;
+    const os = /Windows/i.test(ua) ? 'windows' : /Mac/i.test(ua) && !/iPhone|iPad/i.test(ua) ? 'macos' : /Linux/i.test(ua) && !/Android/i.test(ua) ? 'linux' : '';
+    if (os) {
+      showOS(os);
+      const name = { windows: 'Windows', macos: 'macOS', linux: 'Linux' }[os];
+      document.querySelectorAll('[data-os-label]').forEach((el) => (el.textContent = `Install for ${name}`));
+    }
+    document.querySelectorAll<HTMLButtonElement>('.copy').forEach((b) =>
+      b.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(b.dataset.copy!);
+          b.classList.add('done');
+          setTimeout(() => b.classList.remove('done'), 1600);
+        } catch {}
+      }),
+    );
   </script>
 </Base>

@@ -1,13 +1,13 @@
 # Site screenshots
 
-Every image in `src/assets/screens` is a real Larvyn window showing the demo projects from [larvyn-demo](https://github.com/ivanmercedes/larvyn-demo), never a real project.
+Every image in `src/assets/screens` is a real Larvyn window showing the demo projects from [larvyn/demo](https://github.com/larvyn/demo), never a real project.
 
 ## The demo
 
 Clone it into `C:\Sites` so the paths shown in the screenshots stay short and neutral, then prepare it:
 
 ```sh
-git clone https://github.com/ivanmercedes/larvyn-demo.git /c/Sites
+git clone https://github.com/larvyn/demo.git /c/Sites
 /c/Sites/scripts/setup.sh
 ```
 
