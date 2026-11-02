@@ -16,5 +16,8 @@
     "@fontsource-variable/jetbrains-mono": "^5.3.0",
     "astro": "^7.4.4",
     "lucide-static": "^1.66.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.156.1"
   }
 }
