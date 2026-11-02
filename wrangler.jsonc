@@ -2,11 +2,16 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   // Must match the Worker name the scoped API token was created for.
   "name": "larvyn-site",
+  "main": "worker/index.js",
   "compatibility_date": "2026-10-01",
   "routes": [
-    { "pattern": "larvyn.dev", "custom_domain": true }
+    { "pattern": "larvyn.dev", "custom_domain": true },
+    { "pattern": "www.larvyn.dev", "custom_domain": true }
   ],
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // The Worker has to see www requests before a matching file is served.
+    "run_worker_first": true
   }
 }
