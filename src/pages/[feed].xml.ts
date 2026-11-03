@@ -4,6 +4,11 @@ import { getPosts, postUrl } from '../lib/blog';
 
 const esc = (s: string) => s.replace(/[<>&'"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' })[c]!);
 
+// /rss.xml exists once a post is published, like /blog/.
+export async function getStaticPaths() {
+  return (await getPosts()).some((p) => !p.data.draft) ? [{ params: { feed: 'rss' } }] : [];
+}
+
 // RSS 2.0 feed of the published posts (drafts are left out of builds by getPosts).
 export const GET: APIRoute = async ({ site }) => {
   const base = site ?? new URL('https://larvyn.dev');

@@ -7,6 +7,12 @@ import Icon from '../../components/Icon.astro';
 import { formatDate, getPosts, postUrl, readingTime } from '../../lib/blog';
 import '../../styles/blog.css';
 
+// /blog/ only exists once a post is published (or in dev / a SHOW_DRAFTS preview):
+// before the first post there is nothing to find at that URL.
+export async function getStaticPaths() {
+  return (await getPosts()).length > 0 ? [{ params: { blog: 'blog' } }] : [];
+}
+
 const posts = await getPosts();
 const site = Astro.site!;
 const title = 'Blog · Larvyn';

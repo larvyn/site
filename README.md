@@ -13,7 +13,7 @@ npm run preview  # serve dist/
 
 - `src/pages/index.astro`: the home page (hero, tour, feature sections, palette demo, FAQ).
 - `src/components/SiteHeader.astro`, `SiteFooter.astro`: the nav and footer every page shares.
-- `src/pages/blog/`: the blog listing and post pages; `src/pages/rss.xml.ts` and `sitemap.xml.ts` build the feed and the sitemap.
+- `src/pages/[blog]/index.astro` and `src/pages/blog/[...slug].astro`: the blog listing and post pages; `src/pages/[feed].xml.ts` (`/rss.xml`) and `sitemap.xml.ts` build the feed and the sitemap.
 - `src/styles/global.css`: design tokens shared with the app (dark theme, Laravel red).
 - `src/components/Screen.astro`: a screenshot frame; images are optimized to WebP at build time.
 - `src/components/Icon.astro`: Lucide icons, inlined as SVG.
@@ -38,5 +38,5 @@ draft: true
 
 - Images go in `src/assets/blog/<post>/` and are referenced relatively (`![alt](../../assets/blog/<post>/shot.png)`); they are turned into WebP at build time. An image alone in its paragraph is shown as a framed figure; an italic line right after it is its caption.
 - `draft: true` posts only show in `npm run dev`, or in a preview build (`SHOW_DRAFTS=true npm run build`). A normal build leaves them out of the pages, the feed and the sitemap. Set `draft: false` to publish.
-- The Blog link in the nav and footer appears once a post is published.
+- Until a post is published, a build has no blog at all: `/blog/` and `/rss.xml` are not generated (404), and no page links to them. They all appear with the first published post.
 - Every page gets a canonical URL, Open Graph and Twitter tags; posts also get `BlogPosting` and breadcrumb structured data.
