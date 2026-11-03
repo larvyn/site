@@ -6,12 +6,12 @@ author: Ivan Mercedes
 tags: ['Integrations', 'Flock', 'AI agents', 'Local development']
 cover: ../../assets/blog/flock/cover.png
 coverAlt: 'The Larvyn and Flock logos next to Larvyn’s Local site card, which serves acme-store.test over HTTPS with two agent worktrees.'
-draft: true
+draft: false
 ---
 
 [Flock](https://flockphp.com) is a free, open source local PHP environment for Windows, macOS and Linux. It runs PHP, Node, databases and `*.test` sites with trusted HTTPS on your machine, without Docker. Larvyn now works with it: install Flock and your Laravel apps get a real domain, a PHP version of their own and HTTPS that just works, all from inside Larvyn.
 
-Flock is **optional**. If you don't install it, Larvyn looks and works exactly as before. If you do, it shows up where it helps and stays out of the way everywhere else.
+Flock support ships in **Larvyn v0.1.0-beta.9**, and it’s **optional**. If you don’t install it, Larvyn looks and works exactly as before. If you do, it shows up where it helps and stays out of the way everywhere else.
 
 ![Larvyn’s Overview for Acme Store: the dev stack’s HTTP server is served by Flock, and the Local site card shows https://acme-store.test with HTTPS on, PHP 8.5 and two agent worktrees.](../../assets/blog/flock/overview.png)
 

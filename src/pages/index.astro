@@ -79,7 +79,7 @@ const features = [
 ] as const;
 
 const stack = [
-  ['Laravel 10–13', '#ff2d20'], ['Herd', '#ff6a3d'], ['Pest', '#a77bff'], ['PHPUnit', '#4c8dff'], ['Livewire', '#fb70a9'],
+  ['Laravel 10–13', '#ff2d20'], ['Herd', '#ff6a3d'], ['Flock', '#22b8cf'], ['Pest', '#a77bff'], ['PHPUnit', '#4c8dff'], ['Livewire', '#fb70a9'],
   ['Inertia', '#9553e9'], ['Filament', '#f5c542'], ['Horizon', '#8b5cf6'], ['Reverb', '#ff2d20'], ['Octane', '#2dd4bf'],
   ['Vite', '#a77bff'], ['Tailwind', '#38bdf8'], ['Claude Code', '#d97757'], ['Codex', '#3ddc84'], ['Antigravity CLI', '#4c8dff'],
   ['Cursor Agent', '#a3a3ad'], ['OpenCode', '#f5c542'], ['Aider', '#2dd4bf'], ['MySQL', '#4c8dff'], ['PostgreSQL', '#38bdf8'], ['SQLite', '#a3a3ad'],
@@ -107,7 +107,7 @@ const stack = [
           <a class="btn" href="#tour"><Icon name="Play" size={16} /> Take the tour</a>
         </div>
         <div class="meta">
-          <span><Icon name="Check" size={15} /> Works with Herd</span>
+          <span><Icon name="Check" size={15} /> Works with Herd and Flock</span>
           <span><Icon name="Check" size={15} /> Laravel 10 to 13</span>
           <span><Icon name="Check" size={15} /> Your code stays on your machine</span>
         </div>
@@ -314,7 +314,7 @@ const stack = [
         <div class="head reveal">
           <span class="eyebrow"><Icon name="LayoutGrid" size={14} /> Features</span>
           <h2>Everything you need. Nothing you have to configure.</h2>
-          <p>Add a folder and Larvyn detects the Laravel version, packages, frontend, database, queue and Herd URL on its own.</p>
+          <p>Add a folder and Larvyn detects the Laravel version, packages, frontend, database, queue and Herd or Flock URL on its own.</p>
         </div>
         <div class="fgrid reveal">
           {features.map((f) => (
@@ -430,8 +430,8 @@ const stack = [
         </div>
         <div class="faq reveal">
           <details open>
-            <summary>Do I need Laravel Herd? <Icon name="Plus" size={20} /></summary>
-            <p>No. Larvyn uses whatever PHP, Composer and Node are on your PATH, and picks up Herd automatically when it is installed, including its site URLs. If Composer is missing, Larvyn can install it for you and verifies the installer’s signature.</p>
+            <summary>Do I need Laravel Herd or Flock? <Icon name="Plus" size={20} /></summary>
+            <p>No. Larvyn uses whatever PHP, Composer and Node are on your PATH, and picks up Herd automatically when it is installed, including its site URLs. With <a href="/blog/flock-integration/">Flock</a> installed, it can also serve each app at its own .test domain with HTTPS, and every agent’s worktree at its own URL. If Composer is missing, Larvyn can install it for you and verifies the installer’s signature.</p>
           </details>
           <details>
             <summary>Which coding agents work with it? <Icon name="Plus" size={20} /></summary>
