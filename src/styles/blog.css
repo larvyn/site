@@ -83,6 +83,8 @@
 .prose table { width: 100%; border-collapse: collapse; font-size: 15.5px; display: block; overflow-x: auto; }
 .prose th, .prose td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line-2); vertical-align: top; }
 .prose th { color: var(--text); font-weight: 600; border-bottom-color: var(--line-3); }
+/* Branches and URLs stay whole; on a narrow screen the table scrolls sideways instead. */
+.prose td code { white-space: nowrap; }
 
 /* Images: a paragraph that holds only an image becomes a figure, wider than the
    text; an italic line right after it is its caption. */
