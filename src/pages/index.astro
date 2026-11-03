@@ -2,6 +2,9 @@
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import Screen from '../components/Screen.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { RELEASES_REPO, RELEASES, ISSUES, DISCUSSIONS } from '../lib/links';
 
 import overviewRunning from '../assets/screens/overview-running.png';
 import agents from '../assets/screens/agents.png';
@@ -20,13 +23,9 @@ import env from '../assets/screens/env.png';
 import overview from '../assets/screens/overview.png';
 import paletteAgent from '../assets/screens/palette-agent.png';
 
-const RELEASES_REPO = 'larvyn/releases';
-const RELEASES = `https://github.com/${RELEASES_REPO}/releases`;
 const DOWNLOAD = '#install';
 // Short URLs served by public/_redirects, which point at the scripts in the releases repo.
 const SCRIPTS = 'https://larvyn.dev';
-const ISSUES = `https://github.com/${RELEASES_REPO}/issues/new/choose`;
-const DISCUSSIONS = `https://github.com/${RELEASES_REPO}/discussions`;
 
 const installs = [
   { id: 'windows', label: 'Windows', icon: 'Monitor', shell: 'PowerShell', cmd: `irm ${SCRIPTS}/install.ps1 | iex`, note: 'Installs to your user folder, no administrator rights needed, and adds Larvyn to the Start menu.' },
@@ -91,21 +90,7 @@ const stack = [
   title="Larvyn: the Laravel workbench"
   description="Persistent terminals, parallel coding agents in git worktrees and every Laravel tool in one native desktop app."
 >
-  <header class="nav" id="nav">
-    <div class="wrap">
-      <a class="brand" href="#top"><img src="/favicon.svg" alt="" width="28" height="28" />Larvyn</a>
-      <nav class="nav-links">
-        <a href="#tour">Tour</a>
-        <a href="#agents">Agents</a>
-        <a href="#features">Features</a>
-        <a href="#palette">Palette</a>
-        <a href="#install">Install</a>
-        <a href="#faq">FAQ</a>
-      </nav>
-      <span class="spacer"></span>
-      <a class="btn sm primary" href={DOWNLOAD}><Icon name="Download" size={16} /> Get the beta</a>
-    </div>
-  </header>
+  <SiteHeader home />
 
   <main id="top">
     <!-- Hero -->
@@ -500,28 +485,9 @@ const stack = [
     </section>
   </main>
 
-  <footer>
-    <div class="wrap">
-      <a class="brand" href="#top"><img src="/favicon.svg" alt="" width="24" height="24" />Larvyn</a>
-      <nav>
-        <a href="#tour">Tour</a>
-        <a href="#features">Features</a>
-        <a href="#faq">FAQ</a>
-        <a href={DOWNLOAD}>Install</a>
-        <a href={RELEASES}>Releases</a>
-        <a href={ISSUES}>Report a bug</a>
-      </nav>
-      <span>© {new Date().getFullYear()} Netzisoft. Laravel is a trademark of Taylor Otwell.</span>
-    </div>
-  </footer>
+  <SiteFooter home />
 
   <script>
-    // Sticky nav border
-    const nav = document.getElementById('nav')!;
-    const onScroll = () => nav.classList.toggle('scrolled', scrollY > 8);
-    addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-
     // Reveal on scroll
     const io = new IntersectionObserver(
       (entries) => entries.forEach((e) => e.isIntersecting && (e.target.classList.add('in'), io.unobserve(e.target))),

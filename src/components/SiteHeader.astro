@@ -1,0 +1,40 @@
+---
+import Icon from './Icon.astro';
+import { getPosts } from '../lib/blog';
+
+interface Props {
+  /** On the home page, section links stay on the page (#tour); elsewhere they go to it (/#tour). */
+  home?: boolean;
+}
+
+const { home = false } = Astro.props;
+const at = (hash: string) => (home ? hash : `/${hash}`);
+// The Blog link appears once a post is published (drafts count only in dev).
+const hasPosts = (await getPosts()).length > 0;
+const onBlog = Astro.url.pathname.startsWith('/blog');
+---
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href={home ? '#top' : '/'}><img src="/favicon.svg" alt="" width="28" height="28" />Larvyn</a>
+    <nav class="nav-links" aria-label="Main">
+      <a href={at('#tour')}>Tour</a>
+      <a href={at('#agents')}>Agents</a>
+      <a href={at('#features')}>Features</a>
+      <a href={at('#palette')}>Palette</a>
+      <a href={at('#install')}>Install</a>
+      <a href={at('#faq')}>FAQ</a>
+      {hasPosts && <a href="/blog/" aria-current={onBlog ? 'page' : undefined}>Blog</a>}
+    </nav>
+    <span class="spacer"></span>
+    <a class="btn sm primary" href={at('#install')}><Icon name="Download" size={16} /> Get the beta</a>
+  </div>
+</header>
+
+<script>
+  // Sticky nav border
+  const nav = document.getElementById('nav')!;
+  const onScroll = () => nav.classList.toggle('scrolled', scrollY > 8);
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
