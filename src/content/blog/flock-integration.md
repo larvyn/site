@@ -29,7 +29,7 @@ When Flock is installed, the Overview gets a **Local site** card. One click on *
 
 ![After: the HTTP server row is served by Flock at acme-store.test, and the Local site card shows the HTTPS address, its certificate and the PHP version.](../../assets/blog/flock/after.png)
 
-*After: Flock serves the app at https://acme-store.test, and the dev stack hands the HTTP server over to it.*
+*After: Flock serves the app at `https://acme-store.test`, and the dev stack hands the HTTP server over to it.*
 
 Larvyn also points `APP_URL` at the new address, because Laravel builds links, redirects and Vite’s URLs from it. It only does that when `APP_URL` was still empty or `localhost`, and it backs up your `.env` first. A URL you chose yourself is never overwritten; the Doctor tells you about the difference instead and fixes it with one click if you want.
 
@@ -93,7 +93,7 @@ Nothing about Flock appears until Flock is installed: no card, no setting, no ba
 
 Under the hood, Larvyn reads Flock’s local API for the state of your sites and makes changes through Flock’s own `flk` command, exactly as you would type them. Flock stays the source of truth, and you can keep using its app and CLI alongside Larvyn.
 
-## Try it
+## Get started
 
 1. Install Flock from [flockphp.com/download](https://flockphp.com/download) and run its setup.
 2. Open Larvyn and go to a Laravel project’s **Overview**.
