@@ -1,0 +1,93 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import Icon from '../../components/Icon.astro';
+import { formatDate, getPosts, postUrl, readingTime } from '../../lib/blog';
+import '../../styles/blog.css';
+
+const posts = await getPosts();
+const site = Astro.site!;
+const title = 'Blog · Larvyn';
+const description = 'Release notes, integrations and Laravel workflow guides from the team building Larvyn, the Laravel workbench for Windows, macOS and Linux.';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    name: 'Larvyn blog',
+    description,
+    url: new URL('/blog/', site).href,
+    publisher: { '@type': 'Organization', name: 'Larvyn', logo: { '@type': 'ImageObject', url: new URL('/favicon.svg', site).href } },
+    blogPost: posts.map((p) => ({
+      '@type': 'BlogPosting',
+      headline: p.data.title,
+      url: new URL(postUrl(p), site).href,
+      datePublished: p.data.pubDate.toISOString(),
+      author: { '@type': 'Person', name: p.data.author },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Larvyn', item: new URL('/', site).href },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: new URL('/blog/', site).href },
+    ],
+  },
+];
+---
+
+<Base title={title} description={description} jsonLd={jsonLd} noindex={posts.length === 0}>
+  <SiteHeader />
+  <main class="blog">
+    <section class="blog-hero">
+      <div class="wrap">
+        <span class="eyebrow"><Icon name="Newspaper" size={15} /> Blog</span>
+        <h1>What's new in Larvyn</h1>
+        <p>Release notes, integrations and Laravel workflow guides.</p>
+        <a class="rss" href="/rss.xml"><Icon name="Rss" size={15} /> RSS feed</a>
+      </div>
+    </section>
+
+    <section class="wrap post-list" aria-label="Posts">
+      {posts.length === 0 && <p class="empty">The first posts are on their way.</p>}
+      {
+        posts.map((post, i) => (
+          <article class:list={['post-card', i === 0 && 'featured']}>
+            <a href={postUrl(post)} class="post-card-link" aria-label={post.data.title}>
+              <Image
+                src={post.data.cover}
+                alt={post.data.coverAlt}
+                widths={i === 0 ? [600, 900, 1200] : [400, 600, 800]}
+                sizes={i === 0 ? '(max-width: 900px) 100vw, 640px' : '(max-width: 900px) 100vw, 380px'}
+                loading={i === 0 ? 'eager' : 'lazy'}
+                format="webp"
+                quality={86}
+              />
+            </a>
+            <div class="post-card-body">
+              <div class="post-meta">
+                {post.data.draft && <span class="draft">Draft</span>}
+                <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+                <span>·</span>
+                <span>{readingTime(post.body)} min read</span>
+              </div>
+              <h2>
+                <a href={postUrl(post)}>{post.data.title}</a>
+              </h2>
+              <p>{post.data.description}</p>
+              <div class="tags">
+                {post.data.tags.map((t) => (
+                  <span class="tag">{t}</span>
+                ))}
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </section>
+  </main>
+  <SiteFooter />
+</Base>

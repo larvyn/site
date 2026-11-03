@@ -1,0 +1,28 @@
+---
+import { getPosts } from '../lib/blog';
+import { ISSUES, RELEASES } from '../lib/links';
+
+interface Props {
+  home?: boolean;
+}
+
+const { home = false } = Astro.props;
+const at = (hash: string) => (home ? hash : `/${hash}`);
+const hasPosts = (await getPosts()).length > 0;
+---
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href={home ? '#top' : '/'}><img src="/favicon.svg" alt="" width="24" height="24" />Larvyn</a>
+    <nav aria-label="Footer">
+      <a href={at('#tour')}>Tour</a>
+      <a href={at('#features')}>Features</a>
+      <a href={at('#faq')}>FAQ</a>
+      {hasPosts && <a href="/blog/">Blog</a>}
+      <a href={at('#install')}>Install</a>
+      <a href={RELEASES}>Releases</a>
+      <a href={ISSUES}>Report a bug</a>
+    </nav>
+    <span>© {new Date().getFullYear()} Netzisoft. Laravel is a trademark of Taylor Otwell.</span>
+  </div>
+</footer>

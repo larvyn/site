@@ -105,7 +105,7 @@ code, kbd, .mono { font-family: var(--mono); }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; letter-spacing: -0.02em; }
 .brand img { width: 28px; height: 28px; }
 .nav-links { display: flex; gap: 24px; font-size: 14.5px; color: var(--text-2); }
-.nav-links a:hover { color: var(--text); }
+.nav-links a:hover, .nav-links a[aria-current] { color: var(--text); }
 .nav .spacer { flex: 1; }
 @media (max-width: 860px) { .nav-links { display: none; } }
 

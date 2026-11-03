@@ -1,0 +1,150 @@
+---
+import { Image, getImage } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import Icon from '../../components/Icon.astro';
+import { formatDate, getPosts, postUrl, readingTime, type Post } from '../../lib/blog';
+import '../../styles/blog.css';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post, more: posts.filter((p) => p.id !== post.id).slice(0, 2) } }));
+}
+
+interface Props {
+  post: Post;
+  more: Post[];
+}
+
+const { post, more } = Astro.props;
+const { Content } = await render(post);
+const { title, description, pubDate, updatedDate, author, tags, cover, coverAlt, draft } = post.data;
+const site = Astro.site!;
+const url = new URL(postUrl(post), site).href;
+const minutes = readingTime(post.body);
+// The brand suffix only when the whole title still fits what search results show (~60 characters).
+const pageTitle = title.length + ' · Larvyn'.length <= 62 ? `${title} · Larvyn` : title;
+const ogCover = await getImage({ src: cover, width: 1200, height: 630, format: 'jpeg', quality: 88 });
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: title,
+    description,
+    image: [new URL(ogCover.src, site).href],
+    datePublished: pubDate.toISOString(),
+    dateModified: (updatedDate ?? pubDate).toISOString(),
+    author: { '@type': 'Person', name: author, url: 'https://github.com/ivanmercedes' },
+    publisher: { '@type': 'Organization', name: 'Larvyn', url: site.href, logo: { '@type': 'ImageObject', url: new URL('/favicon.svg', site).href } },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    keywords: tags.join(', '),
+    wordCount: post.body?.split(/\s+/).filter(Boolean).length,
+    timeRequired: `PT${minutes}M`,
+    inLanguage: 'en',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Larvyn', item: new URL('/', site).href },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: new URL('/blog/', site).href },
+      { '@type': 'ListItem', position: 3, name: title, item: url },
+    ],
+  },
+];
+---
+
+<Base
+  title={pageTitle}
+  description={description}
+  image={cover}
+  imageAlt={coverAlt}
+  type="article"
+  article={{ published: pubDate, modified: updatedDate, author, tags }}
+  jsonLd={jsonLd}
+  noindex={draft}
+>
+  <SiteHeader />
+  <main class="blog">
+    <article class="post">
+      <header class="post-head wrap">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="/">Larvyn</a>
+          <Icon name="ChevronRight" size={13} />
+          <a href="/blog/">Blog</a>
+        </nav>
+        <div class="tags">
+          {draft && <span class="draft">Draft</span>}
+          {tags.map((t) => <span class="tag">{t}</span>)}
+        </div>
+        <h1>{title}</h1>
+        <p class="lede">{description}</p>
+        <div class="post-meta">
+          <span class="author"><img src="/favicon.svg" alt="" width="22" height="22" />{author}</span>
+          <span>·</span>
+          <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+          {
+            updatedDate && (
+              <>
+                <span>·</span>
+                <span>
+                  Updated <time datetime={updatedDate.toISOString()}>{formatDate(updatedDate)}</time>
+                </span>
+              </>
+            )
+          }
+          <span>·</span>
+          <span>{minutes} min read</span>
+        </div>
+      </header>
+
+      <figure class="post-cover wrap">
+        <Image
+          src={cover}
+          alt={coverAlt}
+          widths={[720, 1080, 1440, 2160]}
+          sizes="(max-width: 1100px) 100vw, 1100px"
+          loading="eager"
+          fetchpriority="high"
+          format="webp"
+          quality={88}
+        />
+      </figure>
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      <aside class="post-cta wrap-narrow">
+        <div>
+          <h2>Try it in Larvyn</h2>
+          <p>The Larvyn beta is out for Windows, macOS and Linux.</p>
+        </div>
+        <a class="btn primary" href="/#install"><Icon name="Download" size={18} /> Get the beta</a>
+      </aside>
+    </article>
+
+    {
+      more.length > 0 && (
+        <section class="wrap more" aria-label="More posts">
+          <h2>More from the blog</h2>
+          <div class="more-grid">
+            {more.map((p) => (
+              <a class="more-card" href={postUrl(p)}>
+                <time datetime={p.data.pubDate.toISOString()}>{formatDate(p.data.pubDate)}</time>
+                <b>{p.data.title}</b>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+    <p class="wrap back">
+      <a href="/blog/"><Icon name="ArrowLeft" size={15} /> All posts</a>
+    </p>
+  </main>
+  <SiteFooter />
+</Base>
