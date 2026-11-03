@@ -369,6 +369,19 @@ section.block { padding: 110px 0; position: relative; }
 .final .cta { display: flex; gap: 12px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
 .final .logo-big { width: 72px; height: 72px; margin: 0 auto 26px; filter: drop-shadow(0 12px 40px rgba(255, 45, 32, 0.6)); }
 
+/* team */
+.team { display: flex; flex-wrap: wrap; justify-content: center; gap: 22px; }
+.member {
+  display: flex; flex-direction: column; align-items: center; gap: 4px; width: min(280px, 100%); padding: 30px 24px 26px;
+  border-radius: 18px; border: 1px solid var(--line-2); background: var(--bg-1); text-align: center;
+  transition: transform 0.3s var(--ease), border-color 0.3s;
+}
+.member:hover { transform: translateY(-3px); border-color: var(--accent-line); }
+.member img { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; margin-bottom: 12px; border: 1px solid var(--line-3); }
+.member-name { font-size: 18px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+.member-login { font-size: 14px; color: var(--text-3); }
+.member:hover .member-login { color: var(--accent-2); }
+
 footer { padding: 56px 0 48px; color: var(--text-3); font-size: 14px; }
 footer .wrap { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; align-items: center; }
 footer nav { display: flex; gap: 10px 22px; flex-wrap: wrap; }
