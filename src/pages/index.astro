@@ -469,6 +469,28 @@ const stack = [
       </div>
     </section>
 
+    <!-- Team -->
+    <section class="block" id="team">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="eyebrow"><Icon name="Users" size={14} /> Team</span>
+          <h2>Made by Laravel developers, for Laravel developers.</h2>
+        </div>
+        <div class="team reveal">
+          {[
+            { name: 'Ivan Mercedes', login: 'ivanmercedes', photo: '/team/ivanmercedes.jpg' },
+            { name: 'Elminson De Oleo Baez', login: 'elminson', photo: '/team/elminson.png' },
+          ].map((m) => (
+            <a class="member" href={`https://github.com/${m.login}`}>
+              <img src={m.photo} alt={`Photo of ${m.name}`} width="96" height="96" loading="lazy" />
+              <span class="member-name">{m.name}</span>
+              <span class="member-login">@{m.login}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
     <!-- Final CTA -->
     <section class="block" style="padding-top: 20px">
       <div class="wrap">
