@@ -88,7 +88,7 @@ const stack = [
 
 <Base
   title="Larvyn: the Laravel workbench"
-  description="Persistent terminals, parallel coding agents in git worktrees and every Laravel tool in one native desktop app."
+  description="A free desktop app for Laravel: persistent terminals, parallel coding agents in git worktrees and every Laravel tool in one native window."
 >
   <SiteHeader home />
 
@@ -107,6 +107,7 @@ const stack = [
           <a class="btn" href="#tour"><Icon name="Play" size={16} /> Take the tour</a>
         </div>
         <div class="meta">
+          <span><Icon name="Check" size={15} /> Free, no account</span>
           <span><Icon name="Check" size={15} /> Works with Herd and Flock</span>
           <span><Icon name="Check" size={15} /> Laravel 10 to 13</span>
           <span><Icon name="Check" size={15} /> Your code stays on your machine</span>
@@ -430,6 +431,10 @@ const stack = [
         </div>
         <div class="faq reveal">
           <details open>
+            <summary>Is Larvyn free? <Icon name="Plus" size={20} /></summary>
+            <p>Yes, and it will stay free. There is no paid tier and no account to create: install it and open a project.</p>
+          </details>
+          <details>
             <summary>Do I need Laravel Herd or Flock? <Icon name="Plus" size={20} /></summary>
             <p>No. Larvyn uses whatever PHP, Composer and Node are on your PATH, and picks up Herd automatically when it is installed, including its site URLs. With <a href="/blog/flock-integration/">Flock</a> installed, it can also serve each app at its own .test domain with HTTPS, and every agent’s worktree at its own URL. If Composer is missing, Larvyn can install it for you and verifies the installer’s signature.</p>
           </details>
@@ -497,7 +502,7 @@ const stack = [
         <div class="final reveal">
           <img class="logo-big" src="/favicon.svg" alt="" width="72" height="72" />
           <h2>Build Laravel apps<br />at the speed of thought.</h2>
-          <p>Terminals, agents and every Laravel tool in one native window.</p>
+          <p>Terminals, agents and every Laravel tool in one native window. Free.</p>
           <div class="cta">
             <a class="btn primary" href={DOWNLOAD}><Icon name="Download" size={18} /> <span data-os-label>Install the beta</span></a>
             <a class="btn" href="#tour"><Icon name="Play" size={16} /> See the tour</a>
