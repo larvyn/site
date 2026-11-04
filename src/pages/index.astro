@@ -7,10 +7,11 @@ import SiteFooter from '../components/SiteFooter.astro';
 import { RELEASES_REPO, RELEASES, ISSUES, DISCUSSIONS } from '../lib/links';
 import { STARTER } from '../lib/plugins';
 
-// Brand logos from thesvg.org, keyed by file name. Brands without one keep a coloured dot.
+// Brand logos, keyed by file name: from thesvg.org, or from the project's own site when thesvg.org
+// has none. PHPUnit has no icon, only a wordmark, which then stands in for the name.
 const logos = Object.fromEntries(
-  Object.entries(import.meta.glob<{ default: ImageMetadata }>('../assets/brands/*.svg', { eager: true }))
-    .map(([path, mod]) => [path.split('/').pop()!.replace('.svg', ''), mod.default.src]),
+  Object.entries(import.meta.glob<{ default: ImageMetadata }>('../assets/brands/*.{svg,png}', { eager: true }))
+    .map(([path, mod]) => [path.split('/').pop()!.replace(/\.(svg|png)$/, ''), mod.default.src]),
 );
 
 import overviewRunning from '../assets/screens/overview-running.png';
@@ -86,10 +87,10 @@ const features = [
 ] as const;
 
 const stack: [name: string, color: string, logo?: string][] = [
-  ['Laravel 10–13', '#ff2d20', 'laravel'], ['Herd', '#ff6a3d'], ['Flock', '#22b8cf'], ['Pest', '#a77bff'], ['PHPUnit', '#4c8dff'], ['Livewire', '#fb70a9', 'livewire'],
-  ['Inertia', '#9553e9', 'inertia'], ['Filament', '#f5c542'], ['Horizon', '#8b5cf6', 'horizon'], ['Reverb', '#ff2d20'], ['Octane', '#2dd4bf'],
+  ['Laravel 10–13', '#ff2d20', 'laravel'], ['Herd', '#ff6a3d', 'herd'], ['Flock', '#22b8cf', 'flock'], ['Pest', '#a77bff', 'pest'], ['PHPUnit', '#4c8dff', 'phpunit-wordmark'], ['Livewire', '#fb70a9', 'livewire'],
+  ['Inertia', '#9553e9', 'inertia'], ['Filament', '#f5c542', 'filament'], ['Horizon', '#8b5cf6', 'horizon'], ['Reverb', '#ff2d20', 'reverb'], ['Octane', '#2dd4bf', 'octane'],
   ['Vite', '#a77bff', 'vite'], ['Tailwind', '#38bdf8', 'tailwind'], ['Claude Code', '#d97757', 'claude-code'], ['Codex', '#3ddc84', 'codex'], ['Antigravity CLI', '#4c8dff', 'antigravity'],
-  ['Cursor Agent', '#a3a3ad', 'cursor'], ['OpenCode', '#f5c542', 'opencode'], ['Aider', '#2dd4bf'], ['Pi', '#a3a3ad', 'pi'], ['MySQL', '#4c8dff', 'mysql'], ['PostgreSQL', '#38bdf8', 'postgresql'], ['SQLite', '#a3a3ad', 'sqlite'],
+  ['Cursor Agent', '#a3a3ad', 'cursor'], ['OpenCode', '#f5c542', 'opencode'], ['Aider', '#2dd4bf', 'aider'], ['Pi', '#a3a3ad', 'pi'], ['MySQL', '#4c8dff', 'mysql'], ['PostgreSQL', '#38bdf8', 'postgresql'], ['SQLite', '#a3a3ad', 'sqlite'],
 ];
 ---
 
@@ -135,7 +136,9 @@ const stack: [name: string, color: string, logo?: string][] = [
       <div class="marquee">
         <div class="marquee-track">
           {[...stack, ...stack].map(([name, color, logo]) => (
-            <span class="tag">{logo ? <img class="logo" src={logos[logo]} alt="" width="16" height="16" /> : <i style={`background:${color}`}></i>}{name}</span>
+            <span class="tag">{logo?.endsWith('-wordmark')
+              ? <img class="wordmark" src={logos[logo]} alt={name} height="16" />
+              : <>{logo ? <img class="logo" src={logos[logo]} alt="" width="16" height="16" /> : <i style={`background:${color}`}></i>}{name}</>}</span>
           ))}
         </div>
       </div>

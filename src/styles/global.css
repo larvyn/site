@@ -180,6 +180,7 @@ code, kbd, .mono { font-family: var(--mono); }
 .marquee .tag { font-size: 14px; padding: 8px 14px; border-radius: 10px; }
 .marquee .tag i { width: 8px; height: 8px; border-radius: 99px; display: inline-block; }
 .marquee .tag .logo { width: 16px; height: 16px; object-fit: contain; flex: none; }
+.marquee .tag .wordmark { height: 16px; width: auto; display: block; }
 @keyframes scroll { to { transform: translateX(-50%); } }
 
 /* ---------- sections ---------- */
