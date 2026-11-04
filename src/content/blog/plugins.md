@@ -6,7 +6,7 @@ author: Ivan Mercedes
 tags: ['Plugins', 'Release']
 cover: ../../assets/blog/plugins/cover.png
 coverAlt: 'The Larvyn logo and the headline “Make Larvyn yours with plugins”, next to the larvyn.json of the Horizon example plugin.'
-draft: true
+draft: false
 ---
 
 Every Laravel app has a few tools that aren’t Laravel: a mail catcher, a queue dashboard, a script your team runs ten times a day. Until now, Larvyn only knew about the ones we built in. Starting with **Larvyn v0.1.0-beta.10**, you can add the rest yourself, with **plugins**.
@@ -73,7 +73,9 @@ Plugins are code from someone else running next to your projects, so the rules a
 
 ## Three plugins to start with
 
-The Larvyn repository ships three example plugins in [`examples/plugins`](https://github.com/larvyn/larvyn/tree/master/examples/plugins), along with the manifest reference and a stylesheet that makes a plugin’s view look like the rest of Larvyn:
+Three example plugins are on GitHub in [`larvyn/plugin-examples`](https://github.com/larvyn/plugin-examples), along with the manifest reference. Larvyn also gives every view a stylesheet that makes it look like the rest of the app.
+
+The three examples:
 
 - **Mailpit** runs [Mailpit](https://mailpit.axllent.org) in the stack and shows its inbox in the sidebar. Its **Settings** point your app’s mail at Mailpit in one click, which matters because Laravel sends mail to the log by default. It’s also the example of the permission model at work: it can fetch only from `localhost:8025`, and it can touch only `MAIL_MAILER`, `MAIL_HOST` and `MAIL_PORT` in your `.env`.
 - **Horizon** is the manifest above: ⌘K commands to restart, pause, continue and check Horizon.
@@ -81,7 +83,7 @@ The Larvyn repository ships three example plugins in [`examples/plugins`](https:
 
 ## Write your own
 
-A view is a web page, so you can write it however you like. To start with Vite and TypeScript, copy [`examples/plugin-starter`](https://github.com/larvyn/larvyn/tree/master/examples/plugin-starter). It has a typed client for everything a view can ask Larvyn, and `npm run dev` previews the view in a browser with sample data, so you don’t have to reload Larvyn on every change.
+A view is a web page, so you can write it however you like. To start with Vite and TypeScript, copy [`plugin-starter`](https://github.com/larvyn/plugin-examples/tree/main/plugin-starter). It has a typed client for everything a view can ask Larvyn, and `npm run dev` previews the view in a browser with sample data, so you don’t have to reload Larvyn on every change.
 
 While you work on a plugin, you can link its folder into Larvyn’s plugins folder instead of installing a copy, and click Refresh to pick up your changes. When it’s ready, **Export** turns it into a `.zip` anyone can install.
 
@@ -94,7 +96,7 @@ Next up is a **marketplace**, for finding and installing plugins from inside Lar
 ## Get started
 
 1. Update Larvyn to **v0.1.0-beta.10** from inside the app, or install it from the [download section](/#install).
-2. Download the [example plugins](https://github.com/larvyn/larvyn/tree/master/examples/plugins).
+2. Download the [example plugins](https://github.com/larvyn/plugin-examples).
 3. Open **Settings → Plugins → Install from folder** and pick one, such as `larvyn.horizon`.
 4. Press **⌘K** and type *Horizon*.
 
