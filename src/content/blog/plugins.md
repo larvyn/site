@@ -91,13 +91,12 @@ While you work on a plugin, you can link its folder into Larvyn’s plugins fold
 
 This is the first release with plugins, so the plugin format may still change. If you write one, we’d love to see it, and to hear what a plugin couldn’t do that you wanted it to.
 
-Next up is a **marketplace**, for finding and installing plugins from inside Larvyn.
+**Update:** the marketplace is out in **v0.1.0-beta.12**. Open **Settings → Plugins → Marketplace** to install Mailpit, Horizon or Hello in one click, with automatic updates. You can also browse them at [larvyn.dev/plugins](/plugins/), and list your own in [`larvyn/plugins`](https://github.com/larvyn/plugins).
 
 ## Get started
 
-1. Update Larvyn to **v0.1.0-beta.10** from inside the app, or install it from the [download section](/#install).
-2. Download the [example plugins](https://github.com/larvyn/plugin-examples).
-3. Open **Settings → Plugins → Install from folder** and pick one, such as `larvyn.horizon`.
-4. Press **⌘K** and type *Horizon*.
+1. Update Larvyn from inside the app, or install it from the [download section](/#install).
+2. Open **Settings → Plugins → Marketplace** and install **Horizon**.
+3. Press **⌘K** and type *Horizon*.
 
 Found a bug? Use **Report a bug** at the top of the app.

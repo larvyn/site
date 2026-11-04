@@ -5,6 +5,7 @@ import Screen from '../components/Screen.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { RELEASES_REPO, RELEASES, ISSUES, DISCUSSIONS } from '../lib/links';
+import { STARTER } from '../lib/plugins';
 
 import overviewRunning from '../assets/screens/overview-running.png';
 import agents from '../assets/screens/agents.png';
@@ -329,6 +330,43 @@ const stack = [
       </div>
     </section>
 
+    <!-- Plugins -->
+    <section class="block" id="plugins">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="eyebrow"><Icon name="Puzzle" size={14} /> Plugins</span>
+          <h2>Missing a tool? Add it with a plugin.</h2>
+          <p>Mailpit, Horizon or the script your team runs ten times a day. Install plugins from the marketplace inside Larvyn, and they can only do what you allowed.</p>
+        </div>
+        <div class="pillars">
+          <div class="pillar reveal" style="--c: var(--accent-2)">
+            <div class="ico"><Icon name="Command" size={22} /></div>
+            <h3>Commands in Ctrl K</h3>
+            <p>Plugin commands show up in the palette, such as <i>Horizon: restart workers</i>, and run in a project terminal.</p>
+          </div>
+          <div class="pillar reveal" style="--c: var(--green)">
+            <div class="ico"><Icon name="Server" size={22} /></div>
+            <h3>Services in the Stack</h3>
+            <p>Run something like Mailpit next to serve and Vite, with the same toggle, output and restart as Larvyn’s own services.</p>
+          </div>
+          <div class="pillar reveal" style="--c: var(--cyan)">
+            <div class="ico"><Icon name="PanelLeft" size={22} /></div>
+            <h3>Views in the sidebar</h3>
+            <p>A screen of its own, such as a Mail inbox, in a sandboxed frame. Its buttons can run commands, Artisan and the dev stack.</p>
+          </div>
+        </div>
+        <ul class="plugin-points reveal">
+          <li><Icon name="ShieldCheck" size={16} /> Larvyn checks every permission and asks before a command runs</li>
+          <li><Icon name="RefreshCw" size={16} /> Marketplace installs are verified by checksum and update themselves</li>
+          <li><Icon name="Code" size={16} /> A plugin is a <code>larvyn.json</code> and some HTML</li>
+        </ul>
+        <div class="cta reveal">
+          <a class="btn primary" href="/plugins/"><Icon name="Puzzle" size={18} /> Browse plugins</a>
+          <a class="btn" href={STARTER}><Icon name="Code" size={16} /> Write your own</a>
+        </div>
+      </div>
+    </section>
+
     <!-- Workflow -->
     <section class="block">
       <div class="wrap">
@@ -449,6 +487,14 @@ const stack = [
           <details>
             <summary>Does Larvyn change my project? <Icon name="Plus" size={20} /></summary>
             <p>No. It reads your project to show routes, models, logs and data, and only writes when you ask: saving the <code>.env</code> (a backup is kept first), editing a row, running a command or merging a branch.</p>
+          </details>
+          <details>
+            <summary>Can I extend Larvyn? <Icon name="Plus" size={20} /></summary>
+            <p>Yes, with plugins. A plugin can add commands to Ctrl K, services to the Stack and views to the sidebar. Open <b>Settings → Plugins → Marketplace</b> to install one, or browse them at <a href="/plugins/">larvyn.dev/plugins</a>. To write your own, start from the <a href={STARTER}>plugin starter</a>.</p>
+          </details>
+          <details>
+            <summary>Are plugins safe to install? <Icon name="Plus" size={20} /></summary>
+            <p>Before installing, Larvyn shows what a plugin may do, with the sensitive permissions in red. Larvyn enforces those permissions itself, shows you each command before it first runs, and keeps an update that wants a new permission off until you approve it. Views can’t reach your files or the internet directly. If the marketplace revokes a harmful plugin, Larvyn turns it off.</p>
           </details>
           <details>
             <summary>Where is my data stored? <Icon name="Plus" size={20} /></summary>
