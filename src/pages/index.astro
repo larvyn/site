@@ -30,6 +30,14 @@ import artisan from '../assets/screens/artisan.png';
 import env from '../assets/screens/env.png';
 import overview from '../assets/screens/overview.png';
 import paletteAgent from '../assets/screens/palette-agent.png';
+import files from '../assets/screens/files.png';
+import fileFinder from '../assets/screens/file-finder.png';
+import newApp from '../assets/screens/new-app.png';
+import pluginMailpit from '../assets/screens/plugin-mailpit.png';
+import pluginsMarketplace from '../assets/screens/plugins-marketplace.png';
+import pluginPermissions from '../assets/screens/plugin-permissions.png';
+import pluginConfirm from '../assets/screens/plugin-confirm-command.png';
+import pluginCommands from '../assets/screens/plugin-commands.png';
 
 const DOWNLOAD = '#install';
 // Short URLs served by public/_redirects, which point at the scripts in the releases repo.
@@ -64,7 +72,9 @@ const tour = [
   { id: 'tinker', label: 'Tinker', icon: 'FlaskConical', img: tinker, text: '<b>Tinker with an editor.</b> Run PHP inside your booted app, see dumps or JSON, timing, memory and query count. Snippets and history included.' },
   { id: 'queues', label: 'Queues', icon: 'Timer', img: queues, text: '<b>Queues and schedule.</b> Failed jobs with their exceptions, retry or flush them, and every scheduled task with its next run.' },
   { id: 'git', label: 'Git', icon: 'GitBranch', img: git, text: '<b>Source control built in.</b> Status, diffs, commit, branches and worktrees, without leaving the app.' },
+  { id: 'files', label: 'Files', icon: 'FolderTree', img: files, text: '<b>Browse and edit your code.</b> The project tree and an editor with highlighting for PHP, Blade, JS/TS, Vue and more. Ctrl P jumps to any file by a few letters of its name.' },
   { id: 'deps', label: 'Dependencies', icon: 'Package', img: deps, text: '<b>Stay current and safe.</b> Outdated Composer packages split into safe and major updates, plus composer audit for known CVEs.' },
+  { id: 'mail', label: 'Mail', icon: 'Mail', img: pluginMailpit, text: '<b>Plugins add their own views.</b> The Mailpit plugin runs Mailpit in the stack and shows every email your app sends, right in the sidebar.' },
 ] as const;
 
 const features = [
@@ -84,6 +94,10 @@ const features = [
   { icon: 'ShieldCheck', title: 'Security audit', text: 'composer audit and outdated packages with one-click safe updates.' },
   { icon: 'Stethoscope', title: 'Project doctor', text: 'Checks vendor, APP_KEY, storage link, migrations and frontend dependencies.' },
   { icon: 'Command', title: 'Command palette', text: 'Ctrl K understands artisan, shell, PHP and plain English.' },
+  { icon: 'FolderTree', title: 'Files & finder', text: 'Browse and edit your code, and jump to any file with Ctrl P.' },
+  { icon: 'FolderPlus', title: 'New Laravel app', text: 'Starter kit, Pest or PHPUnit and database, ready to run.' },
+  { icon: 'History', title: 'Workspace restore', text: 'Terminals, agents and services come back after a restart.' },
+  { icon: 'Puzzle', title: 'Plugins', text: 'Add commands, services and views from the marketplace.' },
 ] as const;
 
 const stack: [name: string, color: string, logo?: string][] = [
@@ -364,6 +378,14 @@ const stack: [name: string, color: string, logo?: string][] = [
             <p>A screen of its own, such as a Mail inbox, in a sandboxed frame. Its buttons can run commands, Artisan and the dev stack.</p>
           </div>
         </div>
+        <div class="plugin-shot reveal">
+          <Screen src={pluginMailpit} alt="The Mailpit plugin's Mail view in Larvyn's sidebar, with order confirmation emails" />
+        </div>
+        <div class="gallery plugin-gallery">
+          <figure class="reveal"><Screen src={pluginsMarketplace} alt="The plugin marketplace in Larvyn's settings" /><figcaption><b>A marketplace inside Larvyn</b>Install in one click. Downloads are checked against the marketplace’s checksum.</figcaption></figure>
+          <figure class="reveal"><Screen src={pluginPermissions} alt="Larvyn asking before installing the Mailpit plugin, listing what it will be able to do" /><figcaption><b>You see what it may do</b>Sensitive permissions in red, before anything is installed.</figcaption></figure>
+          <figure class="reveal"><Screen src={pluginConfirm} alt="Larvyn asking to confirm the exact command a plugin wants to run" /><figcaption><b>Every command, confirmed once</b>Larvyn shows the exact command first, and asks again if it changes.</figcaption></figure>
+        </div>
         <ul class="plugin-points reveal">
           <li><Icon name="ShieldCheck" size={16} /> Larvyn checks every permission and asks before a command runs</li>
           <li><Icon name="RefreshCw" size={16} /> Marketplace installs are verified by checksum and update themselves</li>
@@ -406,6 +428,9 @@ const stack: [name: string, color: string, logo?: string][] = [
           <figure class="reveal"><Screen src={env} alt=".env editor" /><figcaption><b>.env editor</b>Safe edits with an automatic backup.</figcaption></figure>
           <figure class="reveal"><Screen src={git} alt="Source control" /><figcaption><b>Source control</b>Diffs, commits, branches and worktrees.</figcaption></figure>
           <figure class="reveal"><Screen src={paletteAgent} alt="Command palette sending a task to an agent" /><figcaption><b>Command palette</b>Plain English becomes an agent task.</figcaption></figure>
+          <figure class="reveal"><Screen src={fileFinder} alt="Fuzzy file finder" /><figcaption><b>File finder</b>Ctrl P and a few letters open any file.</figcaption></figure>
+          <figure class="reveal"><Screen src={newApp} alt="New Laravel application dialog" /><figcaption><b>New Laravel app</b>Starter kit, tests and database, in one dialog.</figcaption></figure>
+          <figure class="reveal"><Screen src={pluginCommands} alt="Plugin commands in the command palette" /><figcaption><b>Plugin commands</b>Horizon: restart workers, right from Ctrl K.</figcaption></figure>
         </div>
       </div>
     </section>
@@ -438,7 +463,7 @@ const stack: [name: string, color: string, logo?: string][] = [
         <div class="head reveal">
           <span class="eyebrow"><Icon name="FlaskConical" size={14} /> Public beta · {version}</span>
           <h2>Install with one command.</h2>
-          <p>Paste it in a terminal. Run the same command again any time to update.</p>
+          <p>Paste it in a terminal. From then on, Larvyn updates itself.</p>
         </div>
         <div class="install reveal">
           <div class="install-tabs" role="tablist">
@@ -463,7 +488,7 @@ const stack: [name: string, color: string, logo?: string][] = [
           ))}
           <ul class="install-facts">
             <li><Icon name="ShieldCheck" size={15} /> Every download is checked against the release checksums</li>
-            <li><Icon name="RefreshCw" size={15} /> Re-run to update, your settings are kept</li>
+            <li><Icon name="RefreshCw" size={15} /> Updates itself, your settings are kept</li>
             <li><a href={RELEASES}><Icon name="ExternalLink" size={15} /> Release notes and manual downloads</a></li>
           </ul>
         </div>
@@ -496,6 +521,14 @@ const stack: [name: string, color: string, logo?: string][] = [
           <details>
             <summary>Does Larvyn change my project? <Icon name="Plus" size={20} /></summary>
             <p>No. It reads your project to show routes, models, logs and data, and only writes when you ask: saving the <code>.env</code> (a backup is kept first), editing a row, running a command or merging a branch.</p>
+          </details>
+          <details>
+            <summary>What happens when I quit Larvyn? <Icon name="Plus" size={20} /></summary>
+            <p>Your workspace comes back when you open it again: terminal tabs and splits with the last part of their output, and the dev services that were running. Claude Code and Codex resume the same conversation, and OpenCode, Antigravity, Pi and Aider continue the latest one. Turn it off in <b>Settings → Workbench → Restore on start</b>.</p>
+          </details>
+          <details>
+            <summary>How do I update Larvyn? <Icon name="Plus" size={20} /></summary>
+            <p>Larvyn checks for new releases when it starts and every few hours. When one is out, <b>Update now</b> downloads it, verifies the checksum and restarts Larvyn. You can also check by hand in <b>Settings → About &amp; feedback</b>.</p>
           </details>
           <details>
             <summary>Can I extend Larvyn? <Icon name="Plus" size={20} /></summary>

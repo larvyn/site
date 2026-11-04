@@ -218,6 +218,8 @@ section.block { padding: 110px 0; position: relative; }
 .plugin-points { list-style: none; padding: 0; margin: 28px auto 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 28px; color: var(--text-2); font-size: 14.5px; }
 .plugin-points li { display: flex; gap: 8px; align-items: center; }
 .plugin-points .icon { color: var(--accent); flex: none; }
+#plugins .plugin-shot { max-width: 1040px; margin: 40px auto 0; }
+#plugins .plugin-gallery { margin-top: 28px; }
 #plugins .cta { display: flex; gap: 12px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
 
 /* tour */
