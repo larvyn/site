@@ -1,0 +1,97 @@
+---
+import Base from '../../layouts/Base.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import Icon from '../../components/Icon.astro';
+import PluginIcon from '../../components/PluginIcon.astro';
+import { PERMISSIONS, getPlugins, pluginUrl, size, type Listing } from '../../lib/plugins';
+import '../../styles/plugins.css';
+
+export async function getStaticPaths() {
+  return (await getPlugins()).map((p) => ({ params: { id: p.id }, props: { p } }));
+}
+
+const { p } = Astro.props as { p: Listing };
+const site = Astro.site!;
+const title = `${p.name} · Larvyn plugins`;
+const zip = p.download.split('/').pop();
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: p.name,
+    description: p.description,
+    softwareVersion: p.version,
+    applicationCategory: 'DeveloperApplication',
+    url: new URL(pluginUrl(p), site).href,
+    ...(p.author && { author: { '@type': 'Organization', name: p.author } }),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Plugins', item: new URL('/plugins/', site).href },
+      { '@type': 'ListItem', position: 2, name: p.name, item: new URL(pluginUrl(p), site).href },
+    ],
+  },
+];
+---
+
+<Base title={title} description={p.description} jsonLd={jsonLd}>
+  <SiteHeader />
+  <main class="plugins">
+    <section class="wrap plugin-page">
+      <a class="back" href="/plugins/"><Icon name="ArrowLeft" size={15} /> Plugins</a>
+
+      <header class="plugin-head">
+        <PluginIcon icon={p.icon} size={72} />
+        <div>
+          <h1>{p.name}</h1>
+          <p>{p.description}</p>
+        </div>
+      </header>
+
+      <dl class="plugin-meta">
+        <div><dt>Version</dt><dd class="mono">{p.version}</dd></div>
+        {p.larvyn && <div><dt>Needs Larvyn</dt><dd class="mono">{p.larvyn}</dd></div>}
+        {p.author && <div><dt>By</dt><dd>{p.author}</dd></div>}
+        <div><dt>Size</dt><dd>{size(p.size)}</dd></div>
+        <div><dt>ID</dt><dd class="mono">{p.id}</dd></div>
+      </dl>
+
+      <div class="plugin-cols">
+        <section>
+          <h2>Install</h2>
+          <ol>
+            <li>Open Larvyn's <b>Settings → Plugins → Marketplace</b>.</li>
+            <li>Find <b>{p.name}</b> and click <b>Install</b>. Larvyn shows what it may do before installing it.</li>
+          </ol>
+          <p class="alt">
+            Or download <a href={p.download} class="mono">{zip}</a> and use <b>Install .zip</b>.
+          </p>
+          <p class="sha mono">sha256 {p.sha256}</p>
+          <a class="btn sm" href={p.repo}><Icon name="ExternalLink" size={16} /> Source and README</a>
+        </section>
+
+        <section>
+          <h2>Permissions</h2>
+          {p.permissions.length === 0 ? (
+            <p>It asks for no permissions.</p>
+          ) : (
+            <ul class="perm-list">
+              {p.permissions.map((name) => (
+                <li class:list={[PERMISSIONS[name]?.sensitive && 'sensitive']}>
+                  {PERMISSIONS[name]?.label ?? name}
+                  {name === 'network' && p.network.length > 0 && <span class="mono"> ({p.network.join(', ')})</span>}
+                </li>
+              ))}
+            </ul>
+          )}
+          <p class="note">Larvyn enforces these itself. The plugin can't do anything else.</p>
+        </section>
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
+</Base>

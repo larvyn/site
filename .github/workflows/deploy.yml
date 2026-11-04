@@ -4,6 +4,10 @@ on:
   push:
     branches: [master]
   workflow_dispatch:
+  # The plugin pages are built from github.com/larvyn/plugins: rebuild so a
+  # new or updated plugin shows up within a few hours.
+  schedule:
+    - cron: '17 */6 * * *'
 
 concurrency:
   group: deploy

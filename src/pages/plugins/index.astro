@@ -1,0 +1,62 @@
+---
+import Base from '../../layouts/Base.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import Icon from '../../components/Icon.astro';
+import PluginIcon from '../../components/PluginIcon.astro';
+import { PERMISSIONS, REGISTRY, STARTER, getPlugins, pluginUrl } from '../../lib/plugins';
+import '../../styles/plugins.css';
+
+const plugins = await getPlugins();
+const site = Astro.site!;
+const title = 'Plugins · Larvyn';
+const description = 'Plugins add commands, stack items and views to Larvyn, the Laravel workbench. Install them from Settings → Plugins → Marketplace.';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Larvyn plugins',
+  itemListElement: plugins.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: p.name, url: new URL(pluginUrl(p), site).href })),
+};
+---
+
+<Base title={title} description={description} jsonLd={jsonLd}>
+  <SiteHeader />
+  <main class="plugins">
+    <section class="plugins-hero">
+      <div class="wrap">
+        <span class="eyebrow"><Icon name="Puzzle" size={15} /> Plugins</span>
+        <h1>Plugins</h1>
+        <p>Commands, stack items and views for Larvyn. Install them from <b>Settings → Plugins → Marketplace</b>.</p>
+      </div>
+    </section>
+
+    <section class="wrap plugin-grid" aria-label="Plugins">
+      {
+        plugins.map((p) => (
+          <a class="plugin-card" href={pluginUrl(p)}>
+            <PluginIcon icon={p.icon} />
+            <div class="plugin-card-body">
+              <h2>
+                {p.name} <span class="mono version">{p.version}</span>
+              </h2>
+              <p>{p.description}</p>
+              <ul class="perm-chips" aria-label="Permissions">
+                {p.permissions.map((name) => (
+                  <li class:list={[PERMISSIONS[name]?.sensitive && 'sensitive']}>{PERMISSIONS[name]?.label ?? name}</li>
+                ))}
+              </ul>
+              {p.author && <span class="author">{p.author}</span>}
+            </div>
+          </a>
+        ))
+      }
+    </section>
+
+    <section class="wrap plugins-more">
+      <a href={STARTER}><Icon name="Code" size={16} /> Write a plugin</a>
+      <a href={REGISTRY}><Icon name="Upload" size={16} /> List yours</a>
+    </section>
+  </main>
+  <SiteFooter />
+</Base>
