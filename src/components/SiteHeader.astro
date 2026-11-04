@@ -12,6 +12,7 @@ const at = (hash: string) => (home ? hash : `/${hash}`);
 // The Blog link appears once a post is published (drafts count only in dev).
 const hasPosts = (await getPosts()).length > 0;
 const onBlog = Astro.url.pathname.startsWith('/blog');
+const onPlugins = Astro.url.pathname.startsWith('/plugins');
 ---
 
 <header class="nav" id="nav">
@@ -24,6 +25,7 @@ const onBlog = Astro.url.pathname.startsWith('/blog');
       <a href={at('#palette')}>Palette</a>
       <a href={at('#install')}>Install</a>
       <a href={at('#faq')}>FAQ</a>
+      <a href="/plugins/" aria-current={onPlugins ? 'page' : undefined}>Plugins</a>
       {hasPosts && <a href="/blog/" aria-current={onBlog ? 'page' : undefined}>Blog</a>}
     </nav>
     <span class="spacer"></span>

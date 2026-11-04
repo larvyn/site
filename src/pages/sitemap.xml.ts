@@ -1,7 +1,8 @@
 import type { APIRoute } from 'astro';
 import { getPosts, postUrl } from '../lib/blog';
+import { getPlugins, pluginUrl } from '../lib/plugins';
 
-// Every public page: the home page, the blog and each published post.
+// Every public page: the home page, the blog and each published post, and the plugins.
 export const GET: APIRoute = async ({ site }) => {
   const base = site ?? new URL('https://larvyn.dev');
   const posts = (await getPosts()).filter((p) => !p.data.draft);
@@ -10,6 +11,8 @@ export const GET: APIRoute = async ({ site }) => {
     { loc: '/', lastmod: undefined as string | undefined },
     ...(posts.length ? [{ loc: '/blog/', lastmod: day(posts[0].data.updatedDate ?? posts[0].data.pubDate) }] : []),
     ...posts.map((p) => ({ loc: postUrl(p), lastmod: day(p.data.updatedDate ?? p.data.pubDate) })),
+    { loc: '/plugins/', lastmod: undefined },
+    ...(await getPlugins()).map((p) => ({ loc: pluginUrl(p), lastmod: undefined })),
   ];
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
