@@ -7,6 +7,12 @@ import SiteFooter from '../components/SiteFooter.astro';
 import { RELEASES_REPO, RELEASES, ISSUES, DISCUSSIONS } from '../lib/links';
 import { STARTER } from '../lib/plugins';
 
+// Brand logos from thesvg.org, keyed by file name. Brands without one keep a coloured dot.
+const logos = Object.fromEntries(
+  Object.entries(import.meta.glob<{ default: ImageMetadata }>('../assets/brands/*.svg', { eager: true }))
+    .map(([path, mod]) => [path.split('/').pop()!.replace('.svg', ''), mod.default.src]),
+);
+
 import overviewRunning from '../assets/screens/overview-running.png';
 import agents from '../assets/screens/agents.png';
 import terminals from '../assets/screens/terminals.png';
@@ -79,11 +85,11 @@ const features = [
   { icon: 'Command', title: 'Command palette', text: 'Ctrl K understands artisan, shell, PHP and plain English.' },
 ] as const;
 
-const stack = [
-  ['Laravel 10–13', '#ff2d20'], ['Herd', '#ff6a3d'], ['Flock', '#22b8cf'], ['Pest', '#a77bff'], ['PHPUnit', '#4c8dff'], ['Livewire', '#fb70a9'],
-  ['Inertia', '#9553e9'], ['Filament', '#f5c542'], ['Horizon', '#8b5cf6'], ['Reverb', '#ff2d20'], ['Octane', '#2dd4bf'],
-  ['Vite', '#a77bff'], ['Tailwind', '#38bdf8'], ['Claude Code', '#d97757'], ['Codex', '#3ddc84'], ['Antigravity CLI', '#4c8dff'],
-  ['Cursor Agent', '#a3a3ad'], ['OpenCode', '#f5c542'], ['Aider', '#2dd4bf'], ['MySQL', '#4c8dff'], ['PostgreSQL', '#38bdf8'], ['SQLite', '#a3a3ad'],
+const stack: [name: string, color: string, logo?: string][] = [
+  ['Laravel 10–13', '#ff2d20', 'laravel'], ['Herd', '#ff6a3d'], ['Flock', '#22b8cf'], ['Pest', '#a77bff'], ['PHPUnit', '#4c8dff'], ['Livewire', '#fb70a9', 'livewire'],
+  ['Inertia', '#9553e9', 'inertia'], ['Filament', '#f5c542'], ['Horizon', '#8b5cf6', 'horizon'], ['Reverb', '#ff2d20'], ['Octane', '#2dd4bf'],
+  ['Vite', '#a77bff', 'vite'], ['Tailwind', '#38bdf8', 'tailwind'], ['Claude Code', '#d97757', 'claude-code'], ['Codex', '#3ddc84', 'codex'], ['Antigravity CLI', '#4c8dff', 'antigravity'],
+  ['Cursor Agent', '#a3a3ad', 'cursor'], ['OpenCode', '#f5c542', 'opencode'], ['Aider', '#2dd4bf'], ['Pi', '#a3a3ad', 'pi'], ['MySQL', '#4c8dff', 'mysql'], ['PostgreSQL', '#38bdf8', 'postgresql'], ['SQLite', '#a3a3ad', 'sqlite'],
 ];
 ---
 
@@ -128,8 +134,8 @@ const stack = [
       <p>Built for the Laravel ecosystem and the agents you already use</p>
       <div class="marquee">
         <div class="marquee-track">
-          {[...stack, ...stack].map(([name, color]) => (
-            <span class="tag"><i style={`background:${color}`}></i>{name}</span>
+          {[...stack, ...stack].map(([name, color, logo]) => (
+            <span class="tag">{logo ? <img class="logo" src={logos[logo]} alt="" width="16" height="16" /> : <i style={`background:${color}`}></i>}{name}</span>
           ))}
         </div>
       </div>
@@ -212,9 +218,9 @@ const stack = [
           <h2>One prompt. Several agents. Pick the best result.</h2>
           <p>Write what you want in plain words. Larvyn creates a worktree per agent, copies your environment, starts each agent and shows its terminal live. When they finish, review every diff and merge with one click.</p>
           <div class="lanes">
-            <div class="lane"><span class="av" style="background:#d97757">C</span><div>Claude Code<code>larvyn/stock-validation-1</code></div><span class="st done">Done · +42 −3</span></div>
-            <div class="lane"><span class="av" style="background:#10a37f">X</span><div>Codex<code>larvyn/stock-validation-2</code></div><span class="st work">Working</span></div>
-            <div class="lane"><span class="av" style="background:#4c8dff">A</span><div>Antigravity CLI<code>larvyn/stock-validation-3</code></div><span class="st wait">Needs you</span></div>
+            <div class="lane"><span class="av"><img src={logos['claude-code']} alt="" width="18" height="18" /></span><div>Claude Code<code>larvyn/stock-validation-1</code></div><span class="st done">Done · +42 −3</span></div>
+            <div class="lane"><span class="av"><img src={logos['codex']} alt="" width="18" height="18" /></span><div>Codex<code>larvyn/stock-validation-2</code></div><span class="st work">Working</span></div>
+            <div class="lane"><span class="av"><img src={logos['antigravity']} alt="" width="18" height="18" /></span><div>Antigravity CLI<code>larvyn/stock-validation-3</code></div><span class="st wait">Needs you</span></div>
           </div>
         </div>
         <div class="reveal"><Screen src={agents} alt="Larvyn agents view with a prompt and Laravel playbooks" /></div>

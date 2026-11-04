@@ -179,6 +179,7 @@ code, kbd, .mono { font-family: var(--mono); }
 .marquee:hover .marquee-track { animation-play-state: paused; }
 .marquee .tag { font-size: 14px; padding: 8px 14px; border-radius: 10px; }
 .marquee .tag i { width: 8px; height: 8px; border-radius: 99px; display: inline-block; }
+.marquee .tag .logo { width: 16px; height: 16px; object-fit: contain; flex: none; }
 @keyframes scroll { to { transform: translateX(-50%); } }
 
 /* ---------- sections ---------- */
@@ -263,7 +264,8 @@ section.block { padding: 110px 0; position: relative; }
   padding: 11px 14px; border-radius: 12px; background: var(--bg-2); border: 1px solid var(--line-2);
   font-size: 14px;
 }
-.lane .av { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; font-weight: 700; font-size: 12px; color: #fff; }
+.lane .av { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; background: var(--bg-3, #1c1c22); border: 1px solid var(--line-2); flex: none; }
+.lane .av img { width: 18px; height: 18px; object-fit: contain; }
 .lane code { color: var(--text-3); font-size: 12px; display: block; }
 .lane .st { font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 99px; display: inline-flex; gap: 6px; align-items: center; }
 .lane .st::before { content: ''; width: 6px; height: 6px; border-radius: 9px; background: currentColor; }
