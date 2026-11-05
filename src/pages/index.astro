@@ -339,7 +339,7 @@ const stack: [name: string, color: string, logo?: string][] = [
         <div class="head reveal">
           <span class="eyebrow"><Icon name="LayoutGrid" size={14} /> Features</span>
           <h2>Everything you need. Nothing you have to configure.</h2>
-          <p>Add a folder and Larvyn detects the Laravel version, packages, frontend, database, queue and Herd or Flock URL on its own.</p>
+          <p>Add a folder and Larvyn detects the Laravel version, packages, frontend, database, queue and Herd or Flock URL on its own. Not a Laravel app? Terminals, agents, files and git still work.</p>
         </div>
         <div class="fgrid reveal">
           {features.map((f) => (
@@ -509,6 +509,10 @@ const stack: [name: string, color: string, logo?: string][] = [
           <details>
             <summary>Do I need Laravel Herd or Flock? <Icon name="Plus" size={20} /></summary>
             <p>No. Larvyn uses whatever PHP, Composer and Node are on your PATH, and picks up Herd automatically when it is installed, including its site URLs. With <a href="/blog/flock-integration/">Flock</a> installed, it can also serve each app at its own .test domain with HTTPS, and every agent’s worktree at its own URL. If Composer is missing, Larvyn can install it for you and verifies the installer’s signature.</p>
+          </details>
+          <details>
+            <summary>Can I use it on a project that isn’t Laravel? <Icon name="Plus" size={20} /></summary>
+            <p>Yes. Add any folder and Larvyn marks it <b>Not Laravel</b>, hiding the Laravel views: Artisan, routes, models, database, Tinker, tests, queues and logs. The rest keeps working: persistent terminals, coding agents in their own git worktrees, Files and the Ctrl P file finder, source control, the <code>.env</code> editor, Composer packages and audit when there is a <code>composer.json</code>, <code>npm run dev</code> in the stack when <code>package.json</code> has a <code>dev</code> script, the command palette, plugin commands and stack items, and a workspace that comes back after a restart.</p>
           </details>
           <details>
             <summary>Which coding agents work with it? <Icon name="Plus" size={20} /></summary>
