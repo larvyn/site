@@ -32,6 +32,7 @@ const ogImage =
 // The feed is announced once it exists (a published post).
 const hasFeed = (await getPosts()).some((p) => !p.data.draft);
 const ld = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+import Lightbox from '../components/Lightbox.astro';
 ---
 
 <!doctype html>
@@ -79,5 +80,6 @@ const ld = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
   </head>
   <body>
     <slot />
+    <Lightbox />
   </body>
 </html>
