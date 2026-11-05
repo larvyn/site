@@ -15,7 +15,10 @@ const logos = Object.fromEntries(
 );
 
 import overviewRunning from '../assets/screens/overview-running.png';
-import agents from '../assets/screens/agents.png';
+import agents from '../assets/screens/agents-boost.png';
+import flock from '../assets/screens/flock.png';
+import notLaravel from '../assets/screens/not-laravel.png';
+import setup from '../assets/screens/setup.png';
 import terminals from '../assets/screens/terminals.png';
 import tests from '../assets/screens/tests.png';
 import logs from '../assets/screens/logs.png';
@@ -62,7 +65,7 @@ try {
 
 const tour = [
   { id: 'overview', label: 'Overview', icon: 'LayoutDashboard', img: overview, text: '<b>Your project at a glance.</b> Versions, packages, .env facts, recent commits, a Doctor that checks your setup, and the whole dev stack one switch away.' },
-  { id: 'agents', label: 'Agents', icon: 'Bot', img: agents, text: '<b>Describe it, launch it.</b> Pick one or more coding agents, each gets its own git worktree with your .env and SQLite copied. Laravel playbooks get you started.' },
+  { id: 'agents', label: 'Agents', icon: 'Bot', img: agents, text: '<b>Describe it, launch it.</b> Pick one or more coding agents, each gets its own git worktree with your .env and SQLite copied. Laravel playbooks get you started, and Laravel Boost is one click away.' },
   { id: 'terminals', label: 'Terminals', icon: 'SquareTerminal', img: terminals, text: '<b>Real terminals that never die.</b> Full PTY with colors, links and search. Switch views or projects and they keep running with their scrollback.' },
   { id: 'tests', label: 'Tests', icon: 'TestTube2', img: tests, text: '<b>Every test, every failure, the exact line.</b> Run Pest or PHPUnit, re-run only what failed, open the file or hand the failure to an agent.' },
   { id: 'logs', label: 'Logs', icon: 'ScrollText', img: logs, text: '<b>laravel.log, readable.</b> Live tail with levels, parsed exceptions and stack frames that open in your editor. One click asks an agent to fix it.' },
@@ -431,6 +434,9 @@ const stack: [name: string, color: string, logo?: string][] = [
           <figure class="reveal"><Screen src={fileFinder} alt="Fuzzy file finder" /><figcaption><b>File finder</b>Ctrl P and a few letters open any file.</figcaption></figure>
           <figure class="reveal"><Screen src={newApp} alt="New Laravel application dialog" /><figcaption><b>New Laravel app</b>Starter kit, tests and database, in one dialog.</figcaption></figure>
           <figure class="reveal"><Screen src={pluginCommands} alt="Plugin commands in the command palette" /><figcaption><b>Plugin commands</b>Horizon: restart workers, right from Ctrl K.</figcaption></figure>
+          <figure class="reveal"><Screen src={flock} alt="Larvyn's Local site card, with the app and each agent's worktree served by Flock" /><figcaption><b>Served by Flock</b>Your app and every agent’s worktree at their own .test URL.</figcaption></figure>
+          <figure class="reveal"><Screen src={notLaravel} alt="A project that isn't Laravel open in Larvyn's Files view" /><figcaption><b>Not only Laravel</b>Terminals, agents, files and git work in any project.</figcaption></figure>
+          <figure class="reveal"><Screen src={setup} alt="Larvyn's first-run setup checking PHP, Node, Git and Composer" /><figcaption><b>Two-minute setup</b>Larvyn checks PHP, Node, Git and Composer, and shows how to install what’s missing.</figcaption></figure>
         </div>
       </div>
     </section>
