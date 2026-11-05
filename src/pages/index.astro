@@ -5,9 +5,20 @@ import Screen from '../components/Screen.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { RELEASES_REPO, RELEASES, ISSUES, DISCUSSIONS } from '../lib/links';
+import { STARTER } from '../lib/plugins';
+
+// Brand logos, keyed by file name: from thesvg.org, or from the project's own site when thesvg.org
+// has none. PHPUnit has no icon, only a wordmark, which then stands in for the name.
+const logos = Object.fromEntries(
+  Object.entries(import.meta.glob<{ default: ImageMetadata }>('../assets/brands/*.{svg,png}', { eager: true }))
+    .map(([path, mod]) => [path.split('/').pop()!.replace(/\.(svg|png)$/, ''), mod.default.src]),
+);
 
 import overviewRunning from '../assets/screens/overview-running.png';
-import agents from '../assets/screens/agents.png';
+import agents from '../assets/screens/agents-boost.png';
+import flock from '../assets/screens/flock.png';
+import notLaravel from '../assets/screens/not-laravel.png';
+import setup from '../assets/screens/setup.png';
 import terminals from '../assets/screens/terminals.png';
 import tests from '../assets/screens/tests.png';
 import logs from '../assets/screens/logs.png';
@@ -22,6 +33,14 @@ import artisan from '../assets/screens/artisan.png';
 import env from '../assets/screens/env.png';
 import overview from '../assets/screens/overview.png';
 import paletteAgent from '../assets/screens/palette-agent.png';
+import files from '../assets/screens/files.png';
+import fileFinder from '../assets/screens/file-finder.png';
+import newApp from '../assets/screens/new-app.png';
+import pluginMailpit from '../assets/screens/plugin-mailpit.png';
+import pluginsMarketplace from '../assets/screens/plugins-marketplace.png';
+import pluginPermissions from '../assets/screens/plugin-permissions.png';
+import pluginConfirm from '../assets/screens/plugin-confirm-command.png';
+import pluginCommands from '../assets/screens/plugin-commands.png';
 
 const DOWNLOAD = '#install';
 // Short URLs served by public/_redirects, which point at the scripts in the releases repo.
@@ -46,7 +65,7 @@ try {
 
 const tour = [
   { id: 'overview', label: 'Overview', icon: 'LayoutDashboard', img: overview, text: '<b>Your project at a glance.</b> Versions, packages, .env facts, recent commits, a Doctor that checks your setup, and the whole dev stack one switch away.' },
-  { id: 'agents', label: 'Agents', icon: 'Bot', img: agents, text: '<b>Describe it, launch it.</b> Pick one or more coding agents, each gets its own git worktree with your .env and SQLite copied. Laravel playbooks get you started.' },
+  { id: 'agents', label: 'Agents', icon: 'Bot', img: agents, text: '<b>Describe it, launch it.</b> Pick one or more coding agents, each gets its own git worktree with your .env and SQLite copied. Laravel playbooks get you started, and Laravel Boost is one click away.' },
   { id: 'terminals', label: 'Terminals', icon: 'SquareTerminal', img: terminals, text: '<b>Real terminals that never die.</b> Full PTY with colors, links and search. Switch views or projects and they keep running with their scrollback.' },
   { id: 'tests', label: 'Tests', icon: 'TestTube2', img: tests, text: '<b>Every test, every failure, the exact line.</b> Run Pest or PHPUnit, re-run only what failed, open the file or hand the failure to an agent.' },
   { id: 'logs', label: 'Logs', icon: 'ScrollText', img: logs, text: '<b>laravel.log, readable.</b> Live tail with levels, parsed exceptions and stack frames that open in your editor. One click asks an agent to fix it.' },
@@ -56,7 +75,9 @@ const tour = [
   { id: 'tinker', label: 'Tinker', icon: 'FlaskConical', img: tinker, text: '<b>Tinker with an editor.</b> Run PHP inside your booted app, see dumps or JSON, timing, memory and query count. Snippets and history included.' },
   { id: 'queues', label: 'Queues', icon: 'Timer', img: queues, text: '<b>Queues and schedule.</b> Failed jobs with their exceptions, retry or flush them, and every scheduled task with its next run.' },
   { id: 'git', label: 'Git', icon: 'GitBranch', img: git, text: '<b>Source control built in.</b> Status, diffs, commit, branches and worktrees, without leaving the app.' },
+  { id: 'files', label: 'Files', icon: 'FolderTree', img: files, text: '<b>Browse and edit your code.</b> The project tree and an editor with highlighting for PHP, Blade, JS/TS, Vue and more. Ctrl P jumps to any file by a few letters of its name.' },
   { id: 'deps', label: 'Dependencies', icon: 'Package', img: deps, text: '<b>Stay current and safe.</b> Outdated Composer packages split into safe and major updates, plus composer audit for known CVEs.' },
+  { id: 'mail', label: 'Mail', icon: 'Mail', img: pluginMailpit, text: '<b>Plugins add their own views.</b> The Mailpit plugin runs Mailpit in the stack and shows every email your app sends, right in the sidebar.' },
 ] as const;
 
 const features = [
@@ -76,13 +97,17 @@ const features = [
   { icon: 'ShieldCheck', title: 'Security audit', text: 'composer audit and outdated packages with one-click safe updates.' },
   { icon: 'Stethoscope', title: 'Project doctor', text: 'Checks vendor, APP_KEY, storage link, migrations and frontend dependencies.' },
   { icon: 'Command', title: 'Command palette', text: 'Ctrl K understands artisan, shell, PHP and plain English.' },
+  { icon: 'FolderTree', title: 'Files & finder', text: 'Browse and edit your code, and jump to any file with Ctrl P.' },
+  { icon: 'FolderPlus', title: 'New Laravel app', text: 'Starter kit, Pest or PHPUnit and database, ready to run.' },
+  { icon: 'History', title: 'Workspace restore', text: 'Terminals, agents and services come back after a restart.' },
+  { icon: 'Puzzle', title: 'Plugins', text: 'Add commands, services and views from the marketplace.' },
 ] as const;
 
-const stack = [
-  ['Laravel 10–13', '#ff2d20'], ['Herd', '#ff6a3d'], ['Flock', '#22b8cf'], ['Pest', '#a77bff'], ['PHPUnit', '#4c8dff'], ['Livewire', '#fb70a9'],
-  ['Inertia', '#9553e9'], ['Filament', '#f5c542'], ['Horizon', '#8b5cf6'], ['Reverb', '#ff2d20'], ['Octane', '#2dd4bf'],
-  ['Vite', '#a77bff'], ['Tailwind', '#38bdf8'], ['Claude Code', '#d97757'], ['Codex', '#3ddc84'], ['Antigravity CLI', '#4c8dff'],
-  ['Cursor Agent', '#a3a3ad'], ['OpenCode', '#f5c542'], ['Aider', '#2dd4bf'], ['MySQL', '#4c8dff'], ['PostgreSQL', '#38bdf8'], ['SQLite', '#a3a3ad'],
+const stack: [name: string, color: string, logo?: string][] = [
+  ['Laravel 10–13', '#ff2d20', 'laravel'], ['Herd', '#ff6a3d', 'herd'], ['Flock', '#22b8cf', 'flock'], ['Pest', '#a77bff', 'pest'], ['PHPUnit', '#4c8dff', 'phpunit-wordmark'], ['Livewire', '#fb70a9', 'livewire'],
+  ['Inertia', '#9553e9', 'inertia'], ['Filament', '#f5c542', 'filament'], ['Horizon', '#8b5cf6', 'horizon'], ['Reverb', '#ff2d20', 'reverb'], ['Octane', '#2dd4bf', 'octane'],
+  ['Vite', '#a77bff', 'vite'], ['Tailwind', '#38bdf8', 'tailwind'], ['Claude Code', '#d97757', 'claude-code'], ['Codex', '#3ddc84', 'codex'], ['Antigravity CLI', '#4c8dff', 'antigravity'],
+  ['Cursor Agent', '#a3a3ad', 'cursor'], ['OpenCode', '#f5c542', 'opencode'], ['Aider', '#2dd4bf', 'aider'], ['Pi', '#a3a3ad', 'pi'], ['MySQL', '#4c8dff', 'mysql'], ['PostgreSQL', '#38bdf8', 'postgresql'], ['SQLite', '#a3a3ad', 'sqlite'],
 ];
 ---
 
@@ -127,8 +152,10 @@ const stack = [
       <p>Built for the Laravel ecosystem and the agents you already use</p>
       <div class="marquee">
         <div class="marquee-track">
-          {[...stack, ...stack].map(([name, color]) => (
-            <span class="tag"><i style={`background:${color}`}></i>{name}</span>
+          {[...stack, ...stack].map(([name, color, logo]) => (
+            <span class="tag">{logo?.endsWith('-wordmark')
+              ? <img class="wordmark" src={logos[logo]} alt={name} height="16" />
+              : <>{logo ? <img class="logo" src={logos[logo]} alt="" width="16" height="16" /> : <i style={`background:${color}`}></i>}{name}</>}</span>
           ))}
         </div>
       </div>
@@ -211,9 +238,9 @@ const stack = [
           <h2>One prompt. Several agents. Pick the best result.</h2>
           <p>Write what you want in plain words. Larvyn creates a worktree per agent, copies your environment, starts each agent and shows its terminal live. When they finish, review every diff and merge with one click.</p>
           <div class="lanes">
-            <div class="lane"><span class="av" style="background:#d97757">C</span><div>Claude Code<code>larvyn/stock-validation-1</code></div><span class="st done">Done · +42 −3</span></div>
-            <div class="lane"><span class="av" style="background:#10a37f">X</span><div>Codex<code>larvyn/stock-validation-2</code></div><span class="st work">Working</span></div>
-            <div class="lane"><span class="av" style="background:#4c8dff">A</span><div>Antigravity CLI<code>larvyn/stock-validation-3</code></div><span class="st wait">Needs you</span></div>
+            <div class="lane"><span class="av"><img src={logos['claude-code']} alt="" width="18" height="18" /></span><div>Claude Code<code>larvyn/stock-validation-1</code></div><span class="st done">Done · +42 −3</span></div>
+            <div class="lane"><span class="av"><img src={logos['codex']} alt="" width="18" height="18" /></span><div>Codex<code>larvyn/stock-validation-2</code></div><span class="st work">Working</span></div>
+            <div class="lane"><span class="av"><img src={logos['antigravity']} alt="" width="18" height="18" /></span><div>Antigravity CLI<code>larvyn/stock-validation-3</code></div><span class="st wait">Needs you</span></div>
           </div>
         </div>
         <div class="reveal"><Screen src={agents} alt="Larvyn agents view with a prompt and Laravel playbooks" /></div>
@@ -315,7 +342,7 @@ const stack = [
         <div class="head reveal">
           <span class="eyebrow"><Icon name="LayoutGrid" size={14} /> Features</span>
           <h2>Everything you need. Nothing you have to configure.</h2>
-          <p>Add a folder and Larvyn detects the Laravel version, packages, frontend, database, queue and Herd or Flock URL on its own.</p>
+          <p>Add a folder and Larvyn detects the Laravel version, packages, frontend, database, queue and Herd or Flock URL on its own. Not a Laravel app? Terminals, agents, files and git still work.</p>
         </div>
         <div class="fgrid reveal">
           {features.map((f) => (
@@ -325,6 +352,51 @@ const stack = [
               <p>{f.text}</p>
             </div>
           ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Plugins -->
+    <section class="block" id="plugins">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="eyebrow"><Icon name="Puzzle" size={14} /> Plugins</span>
+          <h2>Missing a tool? Add it with a plugin.</h2>
+          <p>Mailpit, Horizon or the script your team runs ten times a day. Install plugins from the marketplace inside Larvyn, and they can only do what you allowed.</p>
+        </div>
+        <div class="pillars">
+          <div class="pillar reveal" style="--c: var(--accent-2)">
+            <div class="ico"><Icon name="Command" size={22} /></div>
+            <h3>Commands in Ctrl K</h3>
+            <p>Plugin commands show up in the palette, such as <i>Horizon: restart workers</i>, and run in a project terminal.</p>
+          </div>
+          <div class="pillar reveal" style="--c: var(--green)">
+            <div class="ico"><Icon name="Server" size={22} /></div>
+            <h3>Services in the Stack</h3>
+            <p>Run something like Mailpit next to serve and Vite, with the same toggle, output and restart as Larvyn’s own services.</p>
+          </div>
+          <div class="pillar reveal" style="--c: var(--cyan)">
+            <div class="ico"><Icon name="PanelLeft" size={22} /></div>
+            <h3>Views in the sidebar</h3>
+            <p>A screen of its own, such as a Mail inbox, in a sandboxed frame. Its buttons can run commands, Artisan and the dev stack.</p>
+          </div>
+        </div>
+        <div class="plugin-shot reveal">
+          <Screen src={pluginMailpit} alt="The Mailpit plugin's Mail view in Larvyn's sidebar, with order confirmation emails" />
+        </div>
+        <div class="gallery plugin-gallery">
+          <figure class="reveal"><Screen src={pluginsMarketplace} alt="The plugin marketplace in Larvyn's settings" /><figcaption><b>A marketplace inside Larvyn</b>Install in one click. Downloads are checked against the marketplace’s checksum.</figcaption></figure>
+          <figure class="reveal"><Screen src={pluginPermissions} alt="Larvyn asking before installing the Mailpit plugin, listing what it will be able to do" /><figcaption><b>You see what it may do</b>Sensitive permissions in red, before anything is installed.</figcaption></figure>
+          <figure class="reveal"><Screen src={pluginConfirm} alt="Larvyn asking to confirm the exact command a plugin wants to run" /><figcaption><b>Every command, confirmed once</b>Larvyn shows the exact command first, and asks again if it changes.</figcaption></figure>
+        </div>
+        <ul class="plugin-points reveal">
+          <li><Icon name="ShieldCheck" size={16} /> Larvyn checks every permission and asks before a command runs</li>
+          <li><Icon name="RefreshCw" size={16} /> Marketplace installs are verified by checksum and update themselves</li>
+          <li><Icon name="Code" size={16} /> A plugin is a <code>larvyn.json</code> and some HTML</li>
+        </ul>
+        <div class="cta reveal">
+          <a class="btn primary" href="/plugins/"><Icon name="Puzzle" size={18} /> Browse plugins</a>
+          <a class="btn" href={STARTER}><Icon name="Code" size={16} /> Write your own</a>
         </div>
       </div>
     </section>
@@ -359,6 +431,12 @@ const stack = [
           <figure class="reveal"><Screen src={env} alt=".env editor" /><figcaption><b>.env editor</b>Safe edits with an automatic backup.</figcaption></figure>
           <figure class="reveal"><Screen src={git} alt="Source control" /><figcaption><b>Source control</b>Diffs, commits, branches and worktrees.</figcaption></figure>
           <figure class="reveal"><Screen src={paletteAgent} alt="Command palette sending a task to an agent" /><figcaption><b>Command palette</b>Plain English becomes an agent task.</figcaption></figure>
+          <figure class="reveal"><Screen src={fileFinder} alt="Fuzzy file finder" /><figcaption><b>File finder</b>Ctrl P and a few letters open any file.</figcaption></figure>
+          <figure class="reveal"><Screen src={newApp} alt="New Laravel application dialog" /><figcaption><b>New Laravel app</b>Starter kit, tests and database, in one dialog.</figcaption></figure>
+          <figure class="reveal"><Screen src={pluginCommands} alt="Plugin commands in the command palette" /><figcaption><b>Plugin commands</b>Horizon: restart workers, right from Ctrl K.</figcaption></figure>
+          <figure class="reveal"><Screen src={flock} alt="Larvyn's Local site card, with the app and each agent's worktree served by Flock" /><figcaption><b>Served by Flock</b>Your app and every agent’s worktree at their own .test URL.</figcaption></figure>
+          <figure class="reveal"><Screen src={notLaravel} alt="A project that isn't Laravel open in Larvyn's Files view" /><figcaption><b>Not only Laravel</b>Terminals, agents, files and git work in any project.</figcaption></figure>
+          <figure class="reveal"><Screen src={setup} alt="Larvyn's first-run setup checking PHP, Node, Git and Composer" /><figcaption><b>Two-minute setup</b>Larvyn checks PHP, Node, Git and Composer, and shows how to install what’s missing.</figcaption></figure>
         </div>
       </div>
     </section>
@@ -391,7 +469,7 @@ const stack = [
         <div class="head reveal">
           <span class="eyebrow"><Icon name="FlaskConical" size={14} /> Public beta · {version}</span>
           <h2>Install with one command.</h2>
-          <p>Paste it in a terminal. Run the same command again any time to update.</p>
+          <p>Paste it in a terminal. From then on, Larvyn updates itself.</p>
         </div>
         <div class="install reveal">
           <div class="install-tabs" role="tablist">
@@ -416,7 +494,7 @@ const stack = [
           ))}
           <ul class="install-facts">
             <li><Icon name="ShieldCheck" size={15} /> Every download is checked against the release checksums</li>
-            <li><Icon name="RefreshCw" size={15} /> Re-run to update, your settings are kept</li>
+            <li><Icon name="RefreshCw" size={15} /> Updates itself, your settings are kept</li>
             <li><a href={RELEASES}><Icon name="ExternalLink" size={15} /> Release notes and manual downloads</a></li>
           </ul>
         </div>
@@ -439,6 +517,10 @@ const stack = [
             <p>No. Larvyn uses whatever PHP, Composer and Node are on your PATH, and picks up Herd automatically when it is installed, including its site URLs. With <a href="/blog/flock-integration/">Flock</a> installed, it can also serve each app at its own .test domain with HTTPS, and every agent’s worktree at its own URL. If Composer is missing, Larvyn can install it for you and verifies the installer’s signature.</p>
           </details>
           <details>
+            <summary>Can I use it on a project that isn’t Laravel? <Icon name="Plus" size={20} /></summary>
+            <p>Yes. Add any folder and Larvyn marks it <b>Not Laravel</b>, hiding the Laravel views: Artisan, routes, models, database, Tinker, tests, queues and logs. The rest keeps working: persistent terminals, coding agents in their own git worktrees, Files and the Ctrl P file finder, source control, the <code>.env</code> editor, Composer packages and audit when there is a <code>composer.json</code>, <code>npm run dev</code> in the stack when <code>package.json</code> has a <code>dev</code> script, the command palette, plugin commands and stack items, and a workspace that comes back after a restart.</p>
+          </details>
+          <details>
             <summary>Which coding agents work with it? <Icon name="Plus" size={20} /></summary>
             <p>Claude Code, Codex, Antigravity CLI, Cursor Agent, OpenCode, Aider and Pi. Larvyn detects which ones are installed and runs them in real terminals, so they behave exactly as they do in your shell.</p>
           </details>
@@ -449,6 +531,22 @@ const stack = [
           <details>
             <summary>Does Larvyn change my project? <Icon name="Plus" size={20} /></summary>
             <p>No. It reads your project to show routes, models, logs and data, and only writes when you ask: saving the <code>.env</code> (a backup is kept first), editing a row, running a command or merging a branch.</p>
+          </details>
+          <details>
+            <summary>What happens when I quit Larvyn? <Icon name="Plus" size={20} /></summary>
+            <p>Your workspace comes back when you open it again: terminal tabs and splits with the last part of their output, and the dev services that were running. Claude Code and Codex resume the same conversation, and OpenCode, Antigravity, Pi and Aider continue the latest one. Turn it off in <b>Settings → Workbench → Restore on start</b>.</p>
+          </details>
+          <details>
+            <summary>How do I update Larvyn? <Icon name="Plus" size={20} /></summary>
+            <p>Larvyn checks for new releases when it starts and every few hours. When one is out, <b>Update now</b> downloads it, verifies the checksum and restarts Larvyn. You can also check by hand in <b>Settings → About &amp; feedback</b>.</p>
+          </details>
+          <details>
+            <summary>Can I extend Larvyn? <Icon name="Plus" size={20} /></summary>
+            <p>Yes, with plugins. A plugin can add commands to Ctrl K, services to the Stack and views to the sidebar. Open <b>Settings → Plugins → Marketplace</b> to install one, or browse them at <a href="/plugins/">larvyn.dev/plugins</a>. To write your own, start from the <a href={STARTER}>plugin starter</a>.</p>
+          </details>
+          <details>
+            <summary>Are plugins safe to install? <Icon name="Plus" size={20} /></summary>
+            <p>Before installing, Larvyn shows what a plugin may do, with the sensitive permissions in red. Larvyn enforces those permissions itself, shows you each command before it first runs, and keeps an update that wants a new permission off until you approve it. Views can’t reach your files or the internet directly. If the marketplace revokes a harmful plugin, Larvyn turns it off.</p>
           </details>
           <details>
             <summary>Where is my data stored? <Icon name="Plus" size={20} /></summary>
