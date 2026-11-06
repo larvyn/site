@@ -15,6 +15,8 @@ draft: false
 
 Click **Review changes** on an agent and its diff opens in a panel to the right of the Agents view. The agent keeps working on the left, and you read its code on the right.
 
+![The Agents view with a Claude Code agent on the left, waiting after adding stock validation to checkout, and the review panel on the right showing its change to CheckoutController.php in split view, with Discard and Merge into current branch in the footer.](../../assets/blog/beta-13/review.png)
+
 - **Split or unified view.** The panel switches to unified on its own when it’s too narrow to compare side by side.
 - **A list of changed files** that jumps to each one. Each file can be folded, or opened in your editor at its first change.
 - **It follows the agent.** While the agent works, the diff refreshes on its own.
@@ -28,9 +30,8 @@ Larvyn knows Claude Code, Codex, OpenCode and a few more out of the box. Now you
 
 For example, a Claude Code that keeps its conversations in its own config folder:
 
-| Name | Works like | Command | Environment |
-|---|---|---|---|
-| Claude OS | Claude Code | `claude-os` | `CLAUDE_CONFIG_DIR=~/.claude-open-source` |
+![Settings, Agents card: a custom agent named Claude OS that works like Claude Code, runs the command claude-os and sets CLAUDE_CONFIG_DIR to ~/.claude-open-source.](../../assets/blog/beta-13/agents.png)
+
 
 Your agent shows up everywhere the built-in ones do: the Agents picker, running several agents at once, the new-tab menu and the default agent. It starts, resumes after a restart and takes its first prompt exactly like the agent it’s based on.
 
@@ -44,9 +45,13 @@ Paths are quoted so that nothing in a file name can run when the line is submitt
 
 Adding a project no longer starts with a folder dialog. Larvyn looks for the Laravel apps on your computer, in your home folder and the usual web roots (including Laragon, XAMPP and WAMP on Windows), and lists them newest first, with a filter. Apps you already added are marked, and clicking one simply opens it. **Browse manually…** is still there for anything the scan misses.
 
+![The Open a Laravel project dialog listing Helpdesk, Billing Api and Acme Store with their folders, Acme Store marked Added, and Rescan and Browse manually buttons.](../../assets/blog/beta-13/picker.png)
+
 ## Project icons and colors
 
 Right-click a project in the rail, or click the pencil in the sidebar, to change its name, color and badge. By default the badge is the GitHub avatar of whoever owns the project’s repository, so your client work and your open source projects are easy to tell apart. You can also upload an image, or pick initials or one of 55 icons.
+
+![The Customize project dialog for Acme Store: its name, the GitHub avatar or a custom image, a row of colors and a grid of icons.](../../assets/blog/beta-13/customize.png)
 
 The file editor also highlights many more languages, and projects that aren’t Laravel no longer show the Laravel-only views.
 
@@ -61,6 +66,8 @@ Agents that pick their conversation up after a restart also look cleaner: they r
 - Larvyn’s own plugins now carry a green **By Larvyn** badge. Other marketplace plugins show **Marketplace**, and plugins installed from a folder or a .zip show **Unverified**.
 - The permission dialog shows the plugin’s icon.
 - **Updates keep a plugin you turned off, off.** In beta.12, an update turned it back on.
+
+![The dialog to install Horizon 0.1.1 from the marketplace, with its icon, a green By Larvyn badge and the one permission it asks for: run commands in a terminal.](../../assets/blog/beta-13/plugin.png)
 
 ## Security fixes
 
