@@ -2,8 +2,9 @@ import type { APIRoute } from 'astro';
 import { getPosts, postUrl } from '../lib/blog';
 import { getPlugins, pluginUrl } from '../lib/plugins';
 import { ALL_PAGES } from '../lib/pages';
+import { docUrl, getDocs } from '../lib/docs';
 
-// Every public page: the home page, the feature and comparison pages, the blog and each published post, and the plugins.
+// Every public page: the home page, the feature and comparison pages, the docs, the blog and each published post, and the plugins.
 export const GET: APIRoute = async ({ site }) => {
   const base = site ?? new URL('https://larvyn.dev');
   const posts = (await getPosts()).filter((p) => !p.data.draft);
@@ -11,6 +12,7 @@ export const GET: APIRoute = async ({ site }) => {
   const urls = [
     { loc: '/', lastmod: undefined as string | undefined },
     ...ALL_PAGES.map((p) => ({ loc: p.path, lastmod: undefined })),
+    ...(await getDocs()).map((d) => ({ loc: docUrl(d), lastmod: undefined })),
     ...(posts.length ? [{ loc: '/blog/', lastmod: day(posts[0].data.updatedDate ?? posts[0].data.pubDate) }] : []),
     ...posts.map((p) => ({ loc: postUrl(p), lastmod: day(p.data.updatedDate ?? p.data.pubDate) })),
     { loc: '/plugins/', lastmod: undefined },

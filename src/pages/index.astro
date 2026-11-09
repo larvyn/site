@@ -34,6 +34,7 @@ import artisan from '../assets/screens/artisan.png';
 import env from '../assets/screens/env.png';
 import overview from '../assets/screens/overview.png';
 import paletteAgent from '../assets/screens/palette-agent.png';
+import cli from '../assets/screens/cli.png';
 import files from '../assets/screens/files.png';
 import fileFinder from '../assets/screens/file-finder.png';
 import newApp from '../assets/screens/new-app.png';
@@ -85,6 +86,9 @@ const features = [
   { icon: 'SquareTerminal', title: 'Persistent terminals', any: true, text: 'PTY sessions that survive view and project switches, with bell alerts when a process needs you.' },
   { icon: 'Bot', title: 'Parallel agents', any: true, text: 'Claude Code, Codex, Antigravity CLI, Cursor Agent, OpenCode, Aider and Pi, side by side.' },
   { icon: 'GitFork', title: 'Isolated worktrees', any: true, text: 'Each agent works on its own larvyn/<task> branch. Review the diff, merge the winner.' },
+  { icon: 'Plug', title: 'CLI & MCP for agents', any: true, text: 'The larvyn command and an MCP server: agents run the stack, tests and other agents.' },
+  { icon: 'ClipboardCheck', title: 'Spec first', any: true, text: 'One agent writes the spec, a fresh one reviews it, builders follow it and an auditor checks for drift.' },
+  { icon: 'MessageSquareCode', title: 'Comments on diffs', any: true, text: 'Comment on lines of an agent’s diff and send them all as one follow-up, like a PR review.' },
   { icon: 'Server', title: 'One-click dev stack', text: 'serve, Vite, queue or Horizon, scheduler, Pail, Reverb and Octane, together or one by one.' },
   { icon: 'Zap', title: 'Artisan studio', text: 'Every command with its arguments as a form, favourites, and a generator for anything make: creates.' },
   { icon: 'Waypoints', title: 'Route explorer', text: 'Filter by method, URI, name or middleware and open the controller at the right line.' },
@@ -102,6 +106,7 @@ const features = [
   { icon: 'FolderPlus', title: 'New Laravel app', text: 'Starter kit, Pest or PHPUnit and database, ready to run.' },
   { icon: 'History', title: 'Workspace restore', any: true, text: 'Terminals, agents and services come back after a restart.' },
   { icon: 'Puzzle', title: 'Plugins', any: true, text: 'Add commands, services and views from the marketplace.' },
+  { icon: 'Users', title: 'Team project file', any: true, text: '.larvyn/project.json shares commands, stack items, plugins and worktree setup with the repo.' },
 ] as const;
 
 const stack: [name: string, color: string, logo?: string][] = [
@@ -269,6 +274,25 @@ const stack: [name: string, color: string, logo?: string][] = [
           <a class="more-link" href="/agents/">How parallel agents work <Icon name="ArrowRight" size={15} /></a>
         </div>
         <div class="reveal"><Screen src={agents} alt="Larvyn agents view with a prompt and Laravel playbooks" /></div>
+      </div>
+    </section>
+
+    <!-- Agents use Larvyn: the larvyn command and MCP -->
+    <section class="block" id="cli" style="padding-top: 40px">
+      <div class="wrap split rev">
+        <div class="copy reveal">
+          <span class="eyebrow"><Icon name="SquareTerminal" size={14} /> CLI &amp; MCP</span>
+          <h2>Your agents use Larvyn too.</h2>
+          <p>Every Larvyn terminal has a <code>larvyn</code> command, and <code>larvyn mcp</code> serves the same tools over MCP. Agents see what you see: the project, the worktree, the dev stack, the tests and the log. So they check their own work before they say it’s done.</p>
+          <ul class="points">
+            <li><span class="ico"><Icon name="Server" size={16} /></span><div><b>Start the stack and wait</b><span><code>larvyn stack start vite --wait</code> returns when it’s ready. No second <code>artisan serve</code>.</span></div></li>
+            <li><span class="ico"><Icon name="TestTube2" size={16} /></span><div><b>Tests, logs and the database</b><span>Failures with <code>file:line</code>, the log’s errors, models and read-only SQL, in the agent’s own worktree.</span></div></li>
+            <li><span class="ico"><Icon name="Bot" size={16} /></span><div><b>Agents that start agents</b><span><code>larvyn agents start</code> and <code>wait</code> hand off a task and return the other agent’s report.</span></div></li>
+            <li><span class="ico"><Icon name="Plug" size={16} /></span><div><b>MCP in one line</b><span><code>claude mcp add larvyn -- larvyn mcp</code>, or any MCP client. Read-only tools are marked, so they run without asking.</span></div></li>
+          </ul>
+          <a class="more-link" href="/docs/cli/">Read the command reference <Icon name="ArrowRight" size={15} /></a>
+        </div>
+        <div class="reveal"><Screen src={cli} alt="A Larvyn terminal running larvyn context, larvyn stack list and larvyn test --filter Checkout, which reports 4 tests, 3 passed and 1 failed, with the failing assertion and its file and line" /></div>
       </div>
     </section>
 
@@ -551,6 +575,10 @@ const stack: [name: string, color: string, logo?: string][] = [
           <details>
             <summary>Which coding agents work with it? <Icon name="Plus" size={20} /></summary>
             <p>Claude Code, Codex, Antigravity CLI, Cursor Agent, OpenCode, Aider and Pi. Larvyn detects which ones are installed and runs them in real terminals, so they behave exactly as they do in your shell.</p>
+          </details>
+          <details>
+            <summary>Can my agents use Larvyn on their own? <Icon name="Plus" size={20} /></summary>
+            <p>Yes. Every Larvyn terminal has a <code>larvyn</code> command, so an agent can start the dev stack and wait until it is ready, run the tests and read the failures, read the log’s errors, query the database read-only and start other agents. <code>larvyn mcp</code> serves the same tools to Claude Code, Codex, Cursor or any MCP client, and <b>Settings → Agents know Larvyn</b> installs a skill and a session hook so agents use it without being told. See the <a href="/docs/">docs</a>.</p>
           </details>
           <details>
             <summary>Will agents touch my working copy? <Icon name="Plus" size={20} /></summary>
