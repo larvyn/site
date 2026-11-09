@@ -6,6 +6,7 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { RELEASES_REPO, RELEASES, ISSUES, DISCUSSIONS } from '../lib/links';
 import { STARTER } from '../lib/plugins';
+import { graph, organization, softwareApplication } from '../lib/schema';
 
 // Brand logos, keyed by file name: from thesvg.org, or from the project's own site when thesvg.org
 // has none. PHPUnit has no icon, only a wordmark, which then stands in for the name.
@@ -81,9 +82,9 @@ const tour = [
 ] as const;
 
 const features = [
-  { icon: 'SquareTerminal', title: 'Persistent terminals', text: 'PTY sessions that survive view and project switches, with bell alerts when a process needs you.' },
-  { icon: 'Bot', title: 'Parallel agents', text: 'Claude Code, Codex, Antigravity CLI, Cursor Agent, OpenCode, Aider and Pi, side by side.' },
-  { icon: 'GitFork', title: 'Isolated worktrees', text: 'Each agent works on its own larvyn/<task> branch. Review the diff, merge the winner.' },
+  { icon: 'SquareTerminal', title: 'Persistent terminals', any: true, text: 'PTY sessions that survive view and project switches, with bell alerts when a process needs you.' },
+  { icon: 'Bot', title: 'Parallel agents', any: true, text: 'Claude Code, Codex, Antigravity CLI, Cursor Agent, OpenCode, Aider and Pi, side by side.' },
+  { icon: 'GitFork', title: 'Isolated worktrees', any: true, text: 'Each agent works on its own larvyn/<task> branch. Review the diff, merge the winner.' },
   { icon: 'Server', title: 'One-click dev stack', text: 'serve, Vite, queue or Horizon, scheduler, Pail, Reverb and Octane, together or one by one.' },
   { icon: 'Zap', title: 'Artisan studio', text: 'Every command with its arguments as a form, favourites, and a generator for anything make: creates.' },
   { icon: 'Waypoints', title: 'Route explorer', text: 'Filter by method, URI, name or middleware and open the controller at the right line.' },
@@ -93,14 +94,14 @@ const features = [
   { icon: 'TestTube2', title: 'Test runner', text: 'Pest and PHPUnit with per-test results, filters, parallel runs and failure details.' },
   { icon: 'ScrollText', title: 'Log viewer', text: 'Live laravel.log with parsed exceptions and frames that open in your editor.' },
   { icon: 'Timer', title: 'Queues & schedule', text: 'Failed jobs, retries and every scheduled task with its next run time.' },
-  { icon: 'Braces', title: '.env editor', text: 'Edit the environment safely: a backup is kept before every save.' },
+  { icon: 'Braces', title: '.env editor', any: true, text: 'Edit the environment safely: a backup is kept before every save.' },
   { icon: 'ShieldCheck', title: 'Security audit', text: 'composer audit and outdated packages with one-click safe updates.' },
   { icon: 'Stethoscope', title: 'Project doctor', text: 'Checks vendor, APP_KEY, storage link, migrations and frontend dependencies.' },
-  { icon: 'Command', title: 'Command palette', text: 'Ctrl K understands artisan, shell, PHP and plain English.' },
-  { icon: 'FolderTree', title: 'Files & finder', text: 'Browse and edit your code, and jump to any file with Ctrl P.' },
+  { icon: 'Command', title: 'Command palette', any: true, text: 'Ctrl K understands artisan, shell, PHP and plain English.' },
+  { icon: 'FolderTree', title: 'Files & finder', any: true, text: 'Browse and edit your code, and jump to any file with Ctrl P.' },
   { icon: 'FolderPlus', title: 'New Laravel app', text: 'Starter kit, Pest or PHPUnit and database, ready to run.' },
-  { icon: 'History', title: 'Workspace restore', text: 'Terminals, agents and services come back after a restart.' },
-  { icon: 'Puzzle', title: 'Plugins', text: 'Add commands, services and views from the marketplace.' },
+  { icon: 'History', title: 'Workspace restore', any: true, text: 'Terminals, agents and services come back after a restart.' },
+  { icon: 'Puzzle', title: 'Plugins', any: true, text: 'Add commands, services and views from the marketplace.' },
 ] as const;
 
 const stack: [name: string, color: string, logo?: string][] = [
@@ -112,8 +113,9 @@ const stack: [name: string, color: string, logo?: string][] = [
 ---
 
 <Base
-  title="Larvyn: the Laravel workbench"
-  description="A free desktop app for Laravel: persistent terminals, parallel coding agents in git worktrees and every Laravel tool in one native window."
+  title="Larvyn: Laravel desktop app with parallel AI coding agents"
+  description="A free desktop app built for Laravel: persistent terminals, parallel coding agents in git worktrees and every Laravel tool in one native window. Terminals, agents and git work in any other project too."
+  jsonLd={graph(organization, softwareApplication(version), { '@type': 'WebSite', '@id': 'https://larvyn.dev/#site', name: 'Larvyn', url: 'https://larvyn.dev/', publisher: { '@id': 'https://larvyn.dev/#org' } })}
 >
   <SiteHeader home />
 
@@ -127,14 +129,15 @@ const stack: [name: string, color: string, logo?: string][] = [
         <p class="lead">
           Larvyn puts persistent terminals, parallel AI coding agents and every Laravel tool you reach for (Artisan, routes, models, database, Tinker, tests, queues and logs) into one fast desktop app.
         </p>
+        <p class="lead-sub">Your Next.js, Go or Python repos get the same terminals, agents and git. <a href="#any-project">Any project works <Icon name="ArrowRight" size={14} /></a></p>
         <div class="cta">
           <a class="btn primary" href={DOWNLOAD}><Icon name="Download" size={18} /> <span data-os-label>Install the beta</span></a>
           <a class="btn" href="#tour"><Icon name="Play" size={16} /> Take the tour</a>
         </div>
         <div class="meta">
           <span><Icon name="Check" size={15} /> Free, no account</span>
-          <span><Icon name="Check" size={15} /> Works with Herd and Flock</span>
-          <span><Icon name="Check" size={15} /> Laravel 10 to 13</span>
+          <a href="/integrations/"><Icon name="Check" size={15} /> Works with Herd and Flock</a>
+          <span><Icon name="Check" size={15} /> Laravel 10 to 13, and any other project</span>
           <span><Icon name="Check" size={15} /> Your code stays on your machine</span>
         </div>
 
@@ -167,7 +170,7 @@ const stack: [name: string, color: string, logo?: string][] = [
         <div class="head reveal">
           <span class="eyebrow"><Icon name="Sparkles" size={14} /> Three tools in one</span>
           <h2>Terminals, agents and Laravel. Finally in the same window.</h2>
-          <p>Stop juggling a terminal app, an agent manager, a database client, a log viewer and five browser tabs. Larvyn knows it is a Laravel project and builds everything around that.</p>
+          <p>Stop juggling a terminal app, an agent manager, a database client, a log viewer and five browser tabs. When the folder is a Laravel app, Larvyn knows it and builds everything around that.</p>
         </div>
         <div class="pillars">
           <div class="pillar reveal" style="--c: var(--cyan)">
@@ -201,6 +204,27 @@ const stack: [name: string, color: string, logo?: string][] = [
             </ul>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- Any project -->
+    <section class="block" id="any-project" style="padding-top: 40px">
+      <div class="wrap split rev">
+        <div class="copy reveal">
+          <span class="eyebrow"><Icon name="FolderOpen" size={14} /> Any project</span>
+          <h2>Built for Laravel. Ready for the rest of your repos.</h2>
+          <p>The API is Laravel, the front end is Next.js and there’s a Go worker on the side. Add each folder to Larvyn. The ones that aren’t Laravel are marked <b>Not Laravel</b>, the Laravel views step aside, and the workbench stays.</p>
+          <ul class="points">
+            <li><span class="ico"><Icon name="Bot" size={16} /></span><div><b>Terminals and parallel agents</b><span>Persistent terminals, and every agent in its own git worktree and branch, whatever the language.</span></div></li>
+            <li><span class="ico"><Icon name="FolderTree" size={16} /></span><div><b>Files, git and .env</b><span>The editor and Ctrl P finder, source control, and .env edits with a backup first.</span></div></li>
+            <li><span class="ico"><Icon name="Server" size={16} /></span><div><b>Your dev server in the Stack</b><span><code>npm run dev</code> starts from the switch when <code>package.json</code> has a dev script. Plugins add anything else.</span></div></li>
+          </ul>
+          <div class="any-tags">
+            {['Next.js', 'Nuxt', 'Node', 'Go', 'Python', 'Rust', 'Symfony', 'WordPress'].map((n) => <span class="tag">{n}</span>)}
+          </div>
+          <a class="more-link" href="/any-project/">What works in any project <Icon name="ArrowRight" size={15} /></a>
+        </div>
+        <div class="reveal"><Screen src={notLaravel} alt="A project that isn't Laravel open in Larvyn's Files view, marked Not Laravel" /></div>
       </div>
     </section>
 
@@ -242,6 +266,7 @@ const stack: [name: string, color: string, logo?: string][] = [
             <div class="lane"><span class="av"><img src={logos['codex']} alt="" width="18" height="18" /></span><div>Codex<code>larvyn/stock-validation-2</code></div><span class="st work">Working</span></div>
             <div class="lane"><span class="av"><img src={logos['antigravity']} alt="" width="18" height="18" /></span><div>Antigravity CLI<code>larvyn/stock-validation-3</code></div><span class="st wait">Needs you</span></div>
           </div>
+          <a class="more-link" href="/agents/">How parallel agents work <Icon name="ArrowRight" size={15} /></a>
         </div>
         <div class="reveal"><Screen src={agents} alt="Larvyn agents view with a prompt and Laravel playbooks" /></div>
       </div>
@@ -259,6 +284,7 @@ const stack: [name: string, color: string, logo?: string][] = [
             <li><span class="ico"><Icon name="Code2" size={16} /></span><div><b>Open the failing line</b><span>In VS Code, Cursor, PhpStorm, Zed, Windsurf, Sublime or Neovim.</span></div></li>
             <li><span class="ico"><Icon name="Bot" size={16} /></span><div><b>Ask an agent to fix it</b><span>The failure and trace go with the prompt.</span></div></li>
           </ul>
+          <a class="more-link" href="/test-runner/">More about the test runner <Icon name="ArrowRight" size={15} /></a>
         </div>
         <div class="reveal"><Screen src={tests} alt="Larvyn test runner with a failing test expanded" /></div>
       </div>
@@ -275,6 +301,7 @@ const stack: [name: string, color: string, logo?: string][] = [
             <li><span class="ico"><Icon name="Radio" size={16} /></span><div><b>Live tail</b><span>New entries appear as they are written.</span></div></li>
             <li><span class="ico"><Icon name="Filter" size={16} /></span><div><b>Filter by level and text</b><span>Errors, warnings, info, or any word.</span></div></li>
           </ul>
+          <a class="more-link" href="/log-viewer/">More about the log viewer <Icon name="ArrowRight" size={15} /></a>
         </div>
         <div class="reveal"><Screen src={logs} alt="Larvyn log viewer with an expanded exception" /></div>
       </div>
@@ -292,6 +319,7 @@ const stack: [name: string, color: string, logo?: string][] = [
             <li><span class="ico"><Icon name="TerminalSquare" size={16} /></span><div><b>SQL console</b><span>Run queries and read results in a grid.</span></div></li>
             <li><span class="ico"><Icon name="ListChecks" size={16} /></span><div><b>Migrations</b><span>See what ran and what is pending.</span></div></li>
           </ul>
+          <a class="more-link" href="/database-client/">More about the database client <Icon name="ArrowRight" size={15} /></a>
         </div>
         <div class="reveal"><Screen src={database} alt="Larvyn database browser showing the orders table" /></div>
       </div>
@@ -342,13 +370,13 @@ const stack: [name: string, color: string, logo?: string][] = [
         <div class="head reveal">
           <span class="eyebrow"><Icon name="LayoutGrid" size={14} /> Features</span>
           <h2>Everything you need. Nothing you have to configure.</h2>
-          <p>Add a folder and Larvyn detects the Laravel version, packages, frontend, database, queue and Herd or Flock URL on its own. Not a Laravel app? Terminals, agents, files and git still work.</p>
+          <p>Add a folder and Larvyn detects the Laravel version, packages, frontend, database, queue and Herd or Flock URL on its own. Not a Laravel app? Everything marked <span class="any-badge">Any project</span> works there too.</p>
         </div>
         <div class="fgrid reveal">
           {features.map((f) => (
             <div class="fcell">
               <Icon name={f.icon} size={22} />
-              <h4>{f.title}</h4>
+              <h4>{f.title}{'any' in f && <span class="any-badge">Any project</span>}</h4>
               <p>{f.text}</p>
             </div>
           ))}
@@ -434,7 +462,7 @@ const stack: [name: string, color: string, logo?: string][] = [
           <figure class="reveal"><Screen src={fileFinder} alt="Fuzzy file finder" /><figcaption><b>File finder</b>Ctrl P and a few letters open any file.</figcaption></figure>
           <figure class="reveal"><Screen src={newApp} alt="New Laravel application dialog" /><figcaption><b>New Laravel app</b>Starter kit, tests and database, in one dialog.</figcaption></figure>
           <figure class="reveal"><Screen src={pluginCommands} alt="Plugin commands in the command palette" /><figcaption><b>Plugin commands</b>Horizon: restart workers, right from Ctrl K.</figcaption></figure>
-          <figure class="reveal"><Screen src={flock} alt="Larvyn's Local site card, with the app and each agent's worktree served by Flock" /><figcaption><b>Served by Flock</b>Your app and every agent’s worktree at their own .test URL.</figcaption></figure>
+          <figure class="reveal"><Screen src={flock} alt="Larvyn's Local site card, with the app and each agent's worktree served by Flock" /><figcaption><b><a href="/integrations/flock/">Served by Flock</a></b>Your app and every agent’s worktree at their own .test URL.</figcaption></figure>
           <figure class="reveal"><Screen src={notLaravel} alt="A project that isn't Laravel open in Larvyn's Files view" /><figcaption><b>Not only Laravel</b>Terminals, agents, files and git work in any project.</figcaption></figure>
           <figure class="reveal"><Screen src={setup} alt="Larvyn's first-run setup checking PHP, Node, Git and Composer" /><figcaption><b>Two-minute setup</b>Larvyn checks PHP, Node, Git and Composer, and shows how to install what’s missing.</figcaption></figure>
         </div>
@@ -513,12 +541,12 @@ const stack: [name: string, color: string, logo?: string][] = [
             <p>Yes, and it will stay free. There is no paid tier and no account to create: install it and open a project.</p>
           </details>
           <details>
-            <summary>Do I need Laravel Herd or Flock? <Icon name="Plus" size={20} /></summary>
-            <p>No. Larvyn uses whatever PHP, Composer and Node are on your PATH, and picks up Herd automatically when it is installed, including its site URLs. With <a href="/blog/flock-integration/">Flock</a> installed, it can also serve each app at its own .test domain with HTTPS, and every agent’s worktree at its own URL. If Composer is missing, Larvyn can install it for you and verifies the installer’s signature.</p>
-          </details>
-          <details>
             <summary>Can I use it on a project that isn’t Laravel? <Icon name="Plus" size={20} /></summary>
             <p>Yes. Add any folder and Larvyn marks it <b>Not Laravel</b>, hiding the Laravel views: Artisan, routes, models, database, Tinker, tests, queues and logs. The rest keeps working: persistent terminals, coding agents in their own git worktrees, Files and the Ctrl P file finder, source control, the <code>.env</code> editor, Composer packages and audit when there is a <code>composer.json</code>, <code>npm run dev</code> in the stack when <code>package.json</code> has a <code>dev</code> script, the command palette, plugin commands and stack items, and a workspace that comes back after a restart.</p>
+          </details>
+          <details>
+            <summary>Do I need Laravel Herd or Flock? <Icon name="Plus" size={20} /></summary>
+            <p>No. Larvyn uses whatever PHP, Composer and Node are on your PATH, and picks up Herd automatically when it is installed, including its site URLs. With <a href="/integrations/flock/">Flock</a> installed, it can also serve each app at its own .test domain with HTTPS, and every agent’s worktree at its own URL. If Composer is missing, Larvyn can install it for you and verifies the installer’s signature.</p>
           </details>
           <details>
             <summary>Which coding agents work with it? <Icon name="Plus" size={20} /></summary>
@@ -599,8 +627,8 @@ const stack: [name: string, color: string, logo?: string][] = [
       <div class="wrap">
         <div class="final reveal">
           <img class="logo-big" src="/favicon.svg" alt="" width="72" height="72" />
-          <h2>Build Laravel apps<br />at the speed of thought.</h2>
-          <p>Terminals, agents and every Laravel tool in one native window. Free.</p>
+          <h2>Open a project.<br />Your tools are already there.</h2>
+          <p>Terminals, parallel agents and git for every repo, and the full Laravel workbench when it’s a Laravel app. Free, with no account.</p>
           <div class="cta">
             <a class="btn primary" href={DOWNLOAD}><Icon name="Download" size={18} /> <span data-os-label>Install the beta</span></a>
             <a class="btn" href="#tour"><Icon name="Play" size={16} /> See the tour</a>

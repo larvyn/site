@@ -1,6 +1,7 @@
 ---
 import { getPosts } from '../lib/blog';
 import { ISSUES, RELEASES } from '../lib/links';
+import { ALL_PAGES } from '../lib/pages';
 
 interface Props {
   home?: boolean;
@@ -22,6 +23,9 @@ const hasPosts = (await getPosts()).length > 0;
       <a href={at('#install')}>Install</a>
       <a href={RELEASES}>Releases</a>
       <a href={ISSUES}>Report a bug</a>
+    </nav>
+    <nav class="footer-pages" aria-label="Features and comparisons">
+      {ALL_PAGES.map((p) => <a href={p.path}>{p.label}</a>)}
     </nav>
     <span>
       © {new Date().getFullYear()} Ivan Mercedes &amp; Elminson De Oleo Baez. Laravel is a trademark of Laravel Holdings Inc.

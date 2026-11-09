@@ -1,0 +1,48 @@
+---
+import FeaturePage from '../layouts/FeaturePage.astro';
+import Icon from '../components/Icon.astro';
+import logs from '../assets/screens/logs.png';
+
+const faqs = [
+  { q: 'Which log does it read?', a: 'Your app’s <code>laravel.log</code>, live, as new entries are written.' },
+  { q: 'Do I need to install a package?', a: 'No. Larvyn reads the log file directly. Nothing is added to your project.' },
+  { q: 'Can I send an exception to an AI agent?', a: 'Yes. One click starts an agent with the exception and its trace in the prompt.' },
+];
+---
+
+<FeaturePage
+  title="Laravel log viewer with live tail and parsed exceptions"
+  description="Larvyn shows laravel.log live, with levels, parsed exceptions and stack frames that open in your editor. Filter by level or text and send an error to an AI agent. Free desktop app, no package to install."
+  crumb="Log viewer"
+  icon="ScrollText"
+  eyebrow="Laravel log viewer"
+  heading={'laravel.log,<br /><span class="grad">readable at last.</span>'}
+  lead="A live view of laravel.log that parses every entry: level, time, exception class and the first frame in your app. Expand an error to read the trace, open the file, or hand it to an agent."
+  shot={logs}
+  shotAlt="Larvyn's log viewer with an expanded exception and its stack trace"
+  faqs={faqs}
+  related={['/test-runner/', '/agents/', '/database-client/']}
+  ctaTitle="Stop tailing logs in a terminal."
+>
+  <section class="block">
+    <div class="wrap">
+      <div class="pillars">
+        <div class="pillar reveal" style="--c: var(--cyan)">
+          <div class="ico"><Icon name="Radio" size={22} /></div>
+          <h3>Live tail</h3>
+          <p>New entries appear as they are written, while you click through your app.</p>
+        </div>
+        <div class="pillar reveal" style="--c: var(--accent-2)">
+          <div class="ico"><Icon name="Filter" size={22} /></div>
+          <h3>Filter by level and text</h3>
+          <p>Errors, warnings, info, or any word in the message.</p>
+        </div>
+        <div class="pillar reveal" style="--c: var(--green)">
+          <div class="ico"><Icon name="Code2" size={22} /></div>
+          <h3>Frames that open</h3>
+          <p>Each stack frame in your code opens in your editor at the right line.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</FeaturePage>

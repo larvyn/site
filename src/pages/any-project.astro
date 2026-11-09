@@ -1,0 +1,76 @@
+---
+import FeaturePage from '../layouts/FeaturePage.astro';
+import Icon from '../components/Icon.astro';
+import Screen from '../components/Screen.astro';
+import notLaravel from '../assets/screens/not-laravel.png';
+import terminals from '../assets/screens/terminals.png';
+
+const works = [
+  { icon: 'SquareTerminal', title: 'Persistent terminals', text: 'Real PTY sessions that keep running and keep their scrollback when you switch views or projects.' },
+  { icon: 'Bot', title: 'Parallel coding agents', text: 'Claude Code, Codex, Cursor Agent, OpenCode, Aider, Pi and Antigravity CLI, each in its own git worktree.' },
+  { icon: 'GitBranch', title: 'Source control', text: 'Status, diffs, commits, branches and worktrees.' },
+  { icon: 'FolderTree', title: 'Files & finder', text: 'The project tree, an editor with highlighting for many languages, and Ctrl P.' },
+  { icon: 'Braces', title: '.env editor', text: 'Safe edits, with a backup kept before every save.' },
+  { icon: 'Server', title: 'npm run dev in the Stack', text: 'When package.json has a dev script, it starts from the Stack switch.' },
+  { icon: 'Package', title: 'Composer packages & audit', text: 'Outdated packages and known CVEs, when the folder has a composer.json.' },
+  { icon: 'Command', title: 'Command palette', text: 'Shell commands, plugin commands and agent tasks from Ctrl K.' },
+  { icon: 'Puzzle', title: 'Plugins', text: 'Plugin commands and stack items, such as Mailpit next to your dev server.' },
+  { icon: 'History', title: 'Workspace restore', text: 'Terminals, agents and services come back after a restart.' },
+];
+
+const faqs = [
+  { q: 'What happens when I add a folder that isn’t Laravel?', a: 'Larvyn marks it <b>Not Laravel</b> and hides the Laravel-only views (Artisan, routes, models, database, Tinker, tests, queues and logs) from the sidebar and the command palette. Everything else keeps working.' },
+  { q: 'Which languages and frameworks does it support?', a: 'Any. Terminals, agents, git and files don’t depend on the language, so a Next.js app, a Go service, a Python script or a WordPress theme all work. The dedicated views for routes, models, tests, logs and the database are Laravel only.' },
+  { q: 'Can my dev server run in the Stack?', a: 'If <code>package.json</code> has a <code>dev</code> script, <code>npm run dev</code> appears in the Stack with the same toggle, output and restart as the Laravel services. Plugins can add other stack items.' },
+  { q: 'Is it still free?', a: 'Yes. Larvyn is free for every project, with no account.' },
+];
+---
+
+<FeaturePage
+  title="A desktop workbench for any project: terminals, AI agents and git"
+  description="Larvyn is built for Laravel, but terminals, parallel AI coding agents in git worktrees, files and git work in any folder: Next.js, Node, Go, Python, Rust or WordPress. Free desktop app for Windows, macOS and Linux."
+  crumb="Any project"
+  icon="FolderOpen"
+  eyebrow="Any project"
+  heading={'Built for Laravel.<br /><span class="grad">Ready for your other repos.</span>'}
+  lead="Most Laravel developers also keep a JavaScript front end, a service in another language or a few scripts. Add those folders to Larvyn too. They get the same terminals, agents and git, in the same window as your Laravel app."
+  shot={notLaravel}
+  shotAlt="A project that isn't Laravel open in Larvyn's Files view, marked Not Laravel"
+  faqs={faqs}
+  related={['/agents/', '/test-runner/', '/database-client/']}
+  ctaTitle="One window for every repo you work on."
+>
+  <section class="block">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="eyebrow"><Icon name="Check" size={14} /> Works everywhere</span>
+        <h2>What works in any folder.</h2>
+        <p>Next.js, Nuxt, Node, Go, Python, Rust, Symfony, WordPress or a folder of shell scripts.</p>
+      </div>
+      <div class="fgrid reveal">
+        {works.map((f) => (
+          <div class="fcell">
+            <Icon name={f.icon as any} size={22} />
+            <h4>{f.title}</h4>
+            <p>{f.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top: 20px">
+    <div class="wrap split">
+      <div class="copy reveal">
+        <span class="eyebrow"><Icon name="Layers" size={14} /> Laravel and the rest</span>
+        <h2>Switch from the API to the front end without switching apps.</h2>
+        <p>Every project sits in the rail on the left. Its terminals, agents and services keep running while you work in another one, and <kbd class="k">Ctrl</kbd> <kbd class="k">⇧</kbd> <kbd class="k">]</kbd> jumps to the next project.</p>
+        <ul class="points">
+          <li><span class="ico"><Icon name="Layers" size={16} /></span><div><b>Laravel projects get everything</b><span>Artisan, routes, models, database, Tinker, tests, queues and logs.</span></div></li>
+          <li><span class="ico"><Icon name="FolderOpen" size={16} /></span><div><b>Other projects get the workbench</b><span>Terminals, agents, git, files and the Stack, without Laravel views in the way.</span></div></li>
+        </ul>
+      </div>
+      <div class="reveal"><Screen src={terminals} alt="Larvyn's persistent terminals with several tabs" /></div>
+    </div>
+  </section>
+</FeaturePage>

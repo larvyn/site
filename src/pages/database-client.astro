@@ -1,0 +1,45 @@
+---
+import FeaturePage from '../layouts/FeaturePage.astro';
+import Icon from '../components/Icon.astro';
+import Screen from '../components/Screen.astro';
+import database from '../assets/screens/database.png';
+import models from '../assets/screens/models.png';
+
+const faqs = [
+  { q: 'Which databases does it support?', a: 'MySQL, PostgreSQL, SQLite and SQL Server: the ones Laravel connects to. Larvyn goes through your app’s own connection, so it uses whatever your <code>.env</code> points at.' },
+  { q: 'Do I need to enter credentials?', a: 'No. There are no connection strings to copy. Larvyn reads them from your Laravel app.' },
+  { q: 'Is the SQL console safe?', a: 'Larvyn asks before it runs a statement that writes, including writes inside <code>WITH …</code> or after another statement.' },
+  { q: 'Can I use it for a database that isn’t behind a Laravel app?', a: 'No. For that, a general database client such as TablePlus is the better tool. See <a href="/compare/tableplus/">Larvyn vs TablePlus</a>.' },
+];
+---
+
+<FeaturePage
+  title="A Laravel database client that uses your app's connection"
+  description="Browse, search and edit rows, read table structure, foreign keys and indexes, check migrations and run SQL, through your Laravel app's own connection. MySQL, PostgreSQL, SQLite and SQL Server. Free desktop app."
+  crumb="Database client"
+  icon="Database"
+  eyebrow="Database"
+  heading={'A database client<br /><span class="grad">that already knows your app.</span>'}
+  lead="No connection strings to copy. Larvyn reads your tables through Laravel’s own connection, so it works with whatever your .env points at: MySQL, PostgreSQL, SQLite or SQL Server."
+  shot={database}
+  shotAlt="Larvyn's database browser showing the orders table"
+  faqs={faqs}
+  related={['/tinker/', '/log-viewer/', '/compare/tableplus/']}
+  ctaTitle="Open your tables without a connection form."
+>
+  <section class="block">
+    <div class="wrap split">
+      <div class="copy reveal">
+        <span class="eyebrow"><Icon name="Table" size={14} /> Rows, structure, SQL</span>
+        <h2>Everything you check while building a feature.</h2>
+        <ul class="points">
+          <li><span class="ico"><Icon name="Table" size={16} /></span><div><b>Browse, search and edit rows</b><span>Paginated, with inline updates and deletes.</span></div></li>
+          <li><span class="ico"><Icon name="KeyRound" size={16} /></span><div><b>Structure</b><span>Columns, indexes and foreign keys for every table.</span></div></li>
+          <li><span class="ico"><Icon name="TerminalSquare" size={16} /></span><div><b>SQL console</b><span>Run queries and read the results in a grid.</span></div></li>
+          <li><span class="ico"><Icon name="ListChecks" size={16} /></span><div><b>Migrations</b><span>See what ran and what is pending.</span></div></li>
+        </ul>
+      </div>
+      <div class="reveal"><Screen src={models} alt="Larvyn's model inspector with casts and relationships" /></div>
+    </div>
+  </section>
+</FeaturePage>
