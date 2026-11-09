@@ -1,0 +1,72 @@
+---
+import FeaturePage from '../../layouts/FeaturePage.astro';
+import Icon from '../../components/Icon.astro';
+import tinker from '../../assets/screens/tinker.png';
+
+// Tinkerwell facts from tinkerwell.app, checked on the date below. Keep them neutral and re-check before editing.
+const CHECKED = 'November 2026';
+const rows: [string, string, string][] = [
+  ['What it is', 'A desktop workbench for Laravel: terminals, AI agents and a view for each part of the app', 'A code runner for PHP: a scratchpad with multi-line editing and code completion'],
+  ['Run PHP in your app', 'Yes, in your local Laravel project, with timing, memory and query count', 'Yes, with expandable output, tables, graphs and email previews'],
+  ['Remote servers', 'No, local projects only', 'Yes: SSH, Laravel Cloud, Vapor, Docker and Kubernetes'],
+  ['Frameworks', 'Laravel; terminals, agents and git work in any folder', 'Laravel, Symfony, Statamic, WordPress and Magento, extendable to any PHP app'],
+  ['AI', 'Runs Claude Code, Codex and other agent CLIs in parallel git worktrees', 'Code generation from a description and AI code completion'],
+  ['Also included', 'Terminals, tests, logs, database, routes, models, queues, git, Artisan', 'Focused on running code'],
+  ['Price', 'Free, no account', 'Paid license (lifetime or standard)'],
+  ['Platforms', 'Windows, macOS, Linux', 'Windows, macOS, Linux'],
+];
+
+const faqs = [
+  { q: 'Can I use both?', a: 'Yes. They don’t conflict: Tinkerwell for running code on remote servers, Larvyn for local Laravel development.' },
+  { q: 'Is Larvyn’s Tinker editor a full Tinkerwell replacement?', a: 'For running code in your local Laravel app, it covers the common cases. If you need SSH, Vapor, Docker or other PHP frameworks, Tinkerwell does more.' },
+];
+---
+
+<FeaturePage
+  title="Larvyn vs Tinkerwell: which one do you need?"
+  description="Tinkerwell is a dedicated PHP code runner with remote server support. Larvyn is a free Laravel desktop workbench with a Tinker editor, terminals, AI agents, tests, logs and a database client. A fair comparison."
+  crumb="Larvyn vs Tinkerwell"
+  icon="Scale"
+  eyebrow="Comparison"
+  heading={'Larvyn vs Tinkerwell'}
+  lead="Tinkerwell is a dedicated code runner for PHP, built to run code anywhere your app lives. Larvyn is a workbench for local Laravel development that includes a Tinker editor. Here is where each one fits."
+  shot={tinker}
+  shotAlt="Larvyn's Tinker editor with an Eloquent query and its result"
+  faqs={faqs}
+  related={['/tinker/', '/agents/', '/compare/tableplus/']}
+>
+  <section class="block">
+    <div class="wrap">
+      <div class="compare-wrap reveal">
+        <table class="compare">
+          <thead><tr><th></th><th>Larvyn</th><th>Tinkerwell</th></tr></thead>
+          <tbody>{rows.map(([k, a, b]) => <tr><th scope="row">{k}</th><td>{a}</td><td>{b}</td></tr>)}</tbody>
+        </table>
+      </div>
+      <p class="compare-note">Tinkerwell details from <a href="https://tinkerwell.app/">tinkerwell.app</a>, checked in {CHECKED}. Tinkerwell is a product of its own makers; we’re not affiliated.</p>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top: 20px">
+    <div class="wrap">
+      <div class="choose reveal">
+        <div>
+          <h3><Icon name="Check" size={18} /> Choose Tinkerwell if</h3>
+          <ul>
+            <li>You run code on production or staging over SSH, Vapor, Docker or Kubernetes.</li>
+            <li>You work in Symfony, Statamic, WordPress or Magento.</li>
+            <li>Running code is the main thing you want from the tool.</li>
+          </ul>
+        </div>
+        <div>
+          <h3><Icon name="Check" size={18} /> Choose Larvyn if</h3>
+          <ul>
+            <li>You want Tinker next to your tests, logs, database and routes.</li>
+            <li>You run Claude Code, Codex or other agents and want them in separate worktrees.</li>
+            <li>You want a free tool for local Laravel development.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</FeaturePage>

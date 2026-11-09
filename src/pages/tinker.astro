@@ -1,0 +1,48 @@
+---
+import FeaturePage from '../layouts/FeaturePage.astro';
+import Icon from '../components/Icon.astro';
+import tinker from '../assets/screens/tinker.png';
+
+const faqs = [
+  { q: 'Is it Laravel Tinker?', a: 'It runs your PHP inside your booted Laravel app, like <code>php artisan tinker</code>, with an editor instead of a one-line prompt.' },
+  { q: 'Can I run code on a remote server?', a: 'No. Larvyn runs code in your local project. For SSH, Docker or Vapor, a dedicated code runner such as Tinkerwell fits better. See <a href="/compare/tinkerwell/">Larvyn vs Tinkerwell</a>.' },
+  { q: 'Can I run PHP from the command palette?', a: 'Yes. Type a line that looks like PHP in Ctrl K, such as <code>Order::count()</code>, and it runs in Tinker.' },
+];
+---
+
+<FeaturePage
+  title="Tinker editor: run PHP in your Laravel app"
+  description="Write PHP in an editor and run it inside your booted Laravel app. See dumps or JSON with timing, memory and query count, keep snippets and history. Part of Larvyn, a free Laravel desktop app."
+  crumb="Tinker editor"
+  icon="FlaskConical"
+  eyebrow="Tinker"
+  heading={'Tinker,<br /><span class="grad">with an editor.</span>'}
+  lead="Write PHP, press Ctrl Enter and it runs inside your booted Laravel app. Read dumps or JSON with the time it took, the memory it used and the queries it ran."
+  shot={tinker}
+  shotAlt="Larvyn's Tinker editor with an Eloquent query and its result"
+  faqs={faqs}
+  related={['/database-client/', '/compare/tinkerwell/', '/test-runner/']}
+  ctaTitle="Try an Eloquent query in ten seconds."
+>
+  <section class="block">
+    <div class="wrap">
+      <div class="pillars">
+        <div class="pillar reveal" style="--c: var(--cyan)">
+          <div class="ico"><Icon name="Timer" size={22} /></div>
+          <h3>Timing, memory, queries</h3>
+          <p>Every run tells you how long it took, how much memory it used and how many queries it made.</p>
+        </div>
+        <div class="pillar reveal" style="--c: var(--accent-2)">
+          <div class="ico"><Icon name="Bookmark" size={22} /></div>
+          <h3>Snippets and history</h3>
+          <p>Save the queries you run every week, and get back the one you ran an hour ago.</p>
+        </div>
+        <div class="pillar reveal" style="--c: var(--green)">
+          <div class="ico"><Icon name="Command" size={22} /></div>
+          <h3>From the palette</h3>
+          <p>Type PHP in Ctrl K and Larvyn runs it in Tinker.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</FeaturePage>

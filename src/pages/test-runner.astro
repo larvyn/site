@@ -1,0 +1,53 @@
+---
+import FeaturePage from '../layouts/FeaturePage.astro';
+import Icon from '../components/Icon.astro';
+import tests from '../assets/screens/tests.png';
+
+const faqs = [
+  { q: 'Does it work with Pest and PHPUnit?', a: 'Yes. Larvyn runs <code>php artisan test</code>, so it uses whatever your project is set up with, Pest or PHPUnit, including parallel runs.' },
+  { q: 'Do I need to configure anything?', a: 'No. Add the project folder and the Tests view is ready. Larvyn uses the PHP and Composer on your PATH, or Herd’s.' },
+  { q: 'Can an agent fix a failing test?', a: 'Yes. <b>Ask an agent</b> sends the failure, its message and the trace with the prompt. With worktrees on, the agent works on its own branch and you review the diff.' },
+  { q: 'Which editors can open the failing line?', a: 'VS Code, Cursor, PhpStorm, Zed, Windsurf, Sublime Text and Neovim.' },
+];
+---
+
+<FeaturePage
+  title="Pest & PHPUnit test runner for Laravel"
+  description="Run Pest or PHPUnit in Larvyn and see every Laravel test grouped by class, with the failure message, the trace and the exact line in your code. Re-run failures or hand them to an AI agent. Free desktop app."
+  crumb="Test runner"
+  icon="TestTube2"
+  eyebrow="Pest & PHPUnit"
+  heading={'Every failing test.<br /><span class="grad">The exact line.</span>'}
+  lead="Larvyn runs <code>php artisan test</code> and shows every test grouped by class. Failures come with the message, the trace and the line in your code, not in vendor/."
+  shot={tests}
+  shotAlt="Larvyn's test runner with a failing Pest test expanded"
+  faqs={faqs}
+  related={['/agents/', '/log-viewer/', '/tinker/']}
+  ctaTitle="Go from red to green faster."
+>
+  <section class="block">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="eyebrow"><Icon name="ListChecks" size={14} /> In the Tests view</span>
+        <h2>Less scrolling through terminal output.</h2>
+      </div>
+      <div class="pillars">
+        <div class="pillar reveal" style="--c: var(--cyan)">
+          <div class="ico"><Icon name="RotateCcw" size={22} /></div>
+          <h3>Re-run what failed</h3>
+          <p>Run only the failures, a single test, or the suite with filters and in parallel.</p>
+        </div>
+        <div class="pillar reveal" style="--c: var(--accent-2)">
+          <div class="ico"><Icon name="Code2" size={22} /></div>
+          <h3>Open the failing line</h3>
+          <p>One click opens the file at the line in VS Code, Cursor, PhpStorm, Zed, Windsurf, Sublime or Neovim.</p>
+        </div>
+        <div class="pillar reveal" style="--c: var(--green)">
+          <div class="ico"><Icon name="Bot" size={22} /></div>
+          <h3>Ask an agent to fix it</h3>
+          <p>The failure and its trace go with the prompt, to Claude Code, Codex or any agent you use.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</FeaturePage>

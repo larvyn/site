@@ -1,0 +1,96 @@
+---
+import FeaturePage from '../layouts/FeaturePage.astro';
+import Icon from '../components/Icon.astro';
+import Screen from '../components/Screen.astro';
+import agents from '../assets/screens/agents-boost.png';
+import flock from '../assets/screens/flock.png';
+import paletteAgent from '../assets/screens/palette-agent.png';
+import git from '../assets/screens/git.png';
+
+const faqs = [
+  { q: 'Which coding agents does Larvyn run?', a: 'Claude Code, Codex, Antigravity CLI, Cursor Agent, OpenCode, Aider and Pi. Larvyn finds the ones you have installed. You can also add your own in <b>Settings → Agents → Add agent</b>: a name, the built-in agent it works like, a command and its environment.' },
+  { q: 'Do I need a new subscription or API key?', a: 'No. Larvyn starts the agent CLIs you already have, in real terminals, so they use your own login and behave exactly as they do in your shell.' },
+  { q: 'Will an agent change my working copy?', a: 'Only if you want it to. With worktrees on, each agent gets its own <code>larvyn/&lt;task&gt;</code> branch in a separate folder, with your <code>.env</code> and SQLite database copied. Those copies are never committed. You review the diff and decide what to merge.' },
+  { q: 'What happens to agents when I quit Larvyn?', a: 'They come back. Claude Code and Codex resume the same conversation, and OpenCode, Antigravity, Pi and Aider continue the latest one. An agent that can’t resume says why and waits for <b>Relaunch</b>.' },
+  { q: 'Does it work on projects that aren’t Laravel?', a: 'Yes. Agents, worktrees and the review panel work in any git repository. Laravel projects also get playbooks and one-click Laravel Boost.' },
+];
+---
+
+<FeaturePage
+  title="Run Claude Code, Codex and other AI agents in parallel"
+  description="Larvyn runs Claude Code, Codex, Cursor Agent, OpenCode, Aider and more side by side, each in its own git worktree with your .env and database copied. Review every diff and merge the best one. Free desktop app."
+  crumb="Parallel AI agents"
+  icon="Bot"
+  eyebrow="Parallel AI coding agents"
+  heading={'One prompt. Several agents.<br /><span class="grad">Merge the best result.</span>'}
+  lead="Larvyn starts Claude Code, Codex, Cursor Agent and other agent CLIs side by side, each on its own git branch and folder. Watch them work in live terminals, read every diff, and merge the one you like."
+  shot={agents}
+  shotAlt="Larvyn's Agents view with a task prompt, agent picker and Laravel playbooks"
+  faqs={faqs}
+  related={['/integrations/flock/', '/any-project/', '/test-runner/']}
+  ctaTitle="Give your next task to three agents."
+  ctaText="Larvyn is free, with no account. It runs the agent CLIs you already have."
+>
+  <section class="block">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="eyebrow"><Icon name="Workflow" size={14} /> How it works</span>
+        <h2>From a sentence to a merged branch in four steps.</h2>
+      </div>
+      <div class="steps">
+        <div class="step reveal"><h4>Describe the task</h4><p>In the Agents view or in Ctrl K, in plain words. Or start from a Laravel playbook.</p></div>
+        <div class="step reveal"><h4>Pick the agents</h4><p>Each one gets a <code>larvyn/&lt;task&gt;</code> branch in its own worktree, with your <code>.env</code> and SQLite copied in.</p></div>
+        <div class="step reveal"><h4>Watch and answer</h4><p>Live status per agent: working, waiting for you, or done. A bell tells you when one needs input.</p></div>
+        <div class="step reveal"><h4>Review and merge</h4><p>Read each diff next to the agent’s terminal, then <b>Merge</b> or <b>Discard</b>.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top: 20px">
+    <div class="wrap split">
+      <div class="copy reveal">
+        <span class="eyebrow"><Icon name="GitFork" size={14} /> Worktrees</span>
+        <h2>Agents that can’t step on each other.</h2>
+        <p>Two agents editing one folder overwrite each other’s work. In Larvyn every agent works in its own git worktree, so you can run three on the same task and compare.</p>
+        <ul class="points">
+          <li><span class="ico"><Icon name="Braces" size={16} /></span><div><b>Ready to run</b><span>Your <code>.env</code> and SQLite database are copied into each worktree and never committed.</span></div></li>
+          <li><span class="ico"><Icon name="Globe" size={16} /></span><div><b>A URL per worktree</b><span>With <a href="/integrations/flock/">Flock</a>, each agent’s copy of the app is served at its own <code>.test</code> address.</span></div></li>
+          <li><span class="ico"><Icon name="ShieldCheck" size={16} /></span><div><b>Your main checkout stays clean</b><span>Nothing lands there until you merge it.</span></div></li>
+        </ul>
+      </div>
+      <div class="reveal"><Screen src={flock} alt="Larvyn's Local site card with the app and each agent's worktree served by Flock" /></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap split rev">
+      <div class="copy reveal">
+        <span class="eyebrow"><Icon name="FileDiff" size={14} /> Review</span>
+        <h2>The diff next to the agent that wrote it.</h2>
+        <p><b>Review changes</b> opens the agent’s diff in a panel beside its terminal. It refreshes while the agent works, so you can steer it before it finishes.</p>
+        <ul class="points">
+          <li><span class="ico"><Icon name="Columns2" size={16} /></span><div><b>Split or unified</b><span>A list of changed files, folding, open in editor and copy.</span></div></li>
+          <li><span class="ico"><Icon name="GitMerge" size={16} /></span><div><b>Merge or discard</b><span>One click commits the agent’s work and merges its branch.</span></div></li>
+          <li><span class="ico"><Icon name="TestTube2" size={16} /></span><div><b>Test before you merge</b><span>Run the suite in any worktree and send failures back to the agent.</span></div></li>
+        </ul>
+      </div>
+      <div class="reveal"><Screen src={git} alt="Larvyn's source control view with a diff" /></div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top: 20px">
+    <div class="wrap split">
+      <div class="copy reveal">
+        <span class="eyebrow"><Icon name="Command" size={14} /> Everywhere</span>
+        <h2>Hand work to an agent from wherever you are.</h2>
+        <p>Type a task in Ctrl K and it becomes an agent run. A failing test or a log exception goes to an agent with one click, with its trace attached.</p>
+        <ul class="points">
+          <li><span class="ico"><Icon name="Image" size={16} /></span><div><b>Paste screenshots</b><span>Claude Code, Codex and similar agents receive the image. Dropped files arrive as quoted paths.</span></div></li>
+          <li><span class="ico"><Icon name="UserPlus" size={16} /></span><div><b>Your own agents</b><span>Add a custom command, such as a Claude Code with its own config folder.</span></div></li>
+          <li><span class="ico"><Icon name="History" size={16} /></span><div><b>They survive restarts</b><span>Conversations resume when you open Larvyn again.</span></div></li>
+        </ul>
+      </div>
+      <div class="reveal"><Screen src={paletteAgent} alt="Larvyn's command palette turning a sentence into an agent task" /></div>
+    </div>
+  </section>
+</FeaturePage>
