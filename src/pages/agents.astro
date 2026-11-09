@@ -6,12 +6,14 @@ import agents from '../assets/screens/agents-boost.png';
 import flock from '../assets/screens/flock.png';
 import paletteAgent from '../assets/screens/palette-agent.png';
 import git from '../assets/screens/git.png';
+import cli from '../assets/screens/cli.png';
 
 const faqs = [
   { q: 'Which coding agents does Larvyn run?', a: 'Claude Code, Codex, Antigravity CLI, Cursor Agent, OpenCode, Aider and Pi. Larvyn finds the ones you have installed. You can also add your own in <b>Settings → Agents → Add agent</b>: a name, the built-in agent it works like, a command and its environment.' },
   { q: 'Do I need a new subscription or API key?', a: 'No. Larvyn starts the agent CLIs you already have, in real terminals, so they use your own login and behave exactly as they do in your shell.' },
   { q: 'Will an agent change my working copy?', a: 'Only if you want it to. With worktrees on, each agent gets its own <code>larvyn/&lt;task&gt;</code> branch in a separate folder, with your <code>.env</code> and SQLite database copied. Those copies are never committed. You review the diff and decide what to merge.' },
   { q: 'What happens to agents when I quit Larvyn?', a: 'They come back. Claude Code and Codex resume the same conversation, and OpenCode, Antigravity, Pi and Aider continue the latest one. An agent that can’t resume says why and waits for <b>Relaunch</b>.' },
+  { q: 'Can an agent run the tests or start the dev server itself?', a: 'Yes. Every Larvyn terminal has a <code>larvyn</code> command: <code>larvyn stack start vite --wait</code>, <code>larvyn test</code>, <code>larvyn logs errors</code>, <code>larvyn db query</code> and more. <code>larvyn mcp</code> serves the same tools over MCP. See the <a href="/docs/cli/">command reference</a>.' },
   { q: 'Does it work on projects that aren’t Laravel?', a: 'Yes. Agents, worktrees and the review panel work in any git repository. Laravel projects also get playbooks and one-click Laravel Boost.' },
 ];
 ---
@@ -80,6 +82,23 @@ const faqs = [
 
   <section class="block" style="padding-top: 20px">
     <div class="wrap split">
+      <div class="copy reveal">
+        <span class="eyebrow"><Icon name="SquareTerminal" size={14} /> CLI &amp; MCP</span>
+        <h2>Agents that check their own work.</h2>
+        <p>An agent in a Larvyn terminal has the <code>larvyn</code> command, or the same tools over MCP. It starts the dev stack and waits until it is ready, runs the tests and reads the failures, and reads the log’s errors, all in its own worktree.</p>
+        <ul class="points">
+          <li><span class="ico"><Icon name="Workflow" size={16} /></span><div><b>Agents that start agents</b><span><code>larvyn agents start</code> hands off a task in a new worktree; <code>agents wait</code> returns its report, or as soon as it needs you.</span></div></li>
+          <li><span class="ico"><Icon name="Lock" size={16} /></span><div><b>Locks for what they share</b><span><code>larvyn lock acquire db</code> makes agents take turns before migrating one database.</span></div></li>
+          <li><span class="ico"><Icon name="Sparkles" size={16} /></span><div><b>Set up once</b><span><b>Settings → Agents know Larvyn</b> installs a skill and a session hook in Claude Code and Codex.</span></div></li>
+        </ul>
+        <a class="more-link" href="/docs/mcp/">Add the MCP server <Icon name="ArrowRight" size={15} /></a>
+      </div>
+      <div class="reveal"><Screen src={cli} alt="A Larvyn terminal running larvyn context, larvyn stack list and a failing larvyn test run" /></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap split rev">
       <div class="copy reveal">
         <span class="eyebrow"><Icon name="Command" size={14} /> Everywhere</span>
         <h2>Hand work to an agent from wherever you are.</h2>

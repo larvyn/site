@@ -1,0 +1,59 @@
+/* Docs: a sidebar, the page and its headings. The prose comes from blog.css. */
+
+.docs-grid {
+  display: grid; grid-template-columns: 200px minmax(0, 1fr) 190px; gap: 48px;
+  padding: 48px 0 96px; align-items: start;
+}
+.docs-nav, .docs-toc { position: sticky; top: 88px; font-size: 14px; }
+.docs-nav summary {
+  list-style: none; display: flex; gap: 8px; align-items: center; cursor: default;
+  color: var(--text); font-weight: 600; margin-bottom: 10px;
+}
+.docs-nav summary::-webkit-details-marker { display: none; }
+.docs-nav ul, .docs-toc ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.docs-nav a {
+  display: block; padding: 6px 10px; border-radius: 8px; color: var(--text-2);
+  border: 1px solid transparent;
+}
+.docs-nav a:hover { color: var(--text); background: var(--bg-2); }
+.docs-nav a[aria-current='page'] { color: var(--text); background: var(--accent-soft); border-color: var(--accent-line); }
+
+.docs-toc b { display: block; color: var(--text-3); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+.docs-toc a { display: block; padding: 4px 0; color: var(--text-2); line-height: 1.4; }
+.docs-toc a:hover { color: var(--accent-2); }
+
+.docs-body { min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+.docs-body h1 { font-size: clamp(32px, 4.4vw, 44px); line-height: 1.08; letter-spacing: -0.03em; margin: 6px 0 0; text-wrap: balance; }
+.docs-body .lede { font-size: 18px; line-height: 1.55; color: var(--text-2); margin: 0 0 12px; text-wrap: pretty; }
+.docs-body .prose { width: 100%; margin: 0; font-size: 16.5px; }
+.docs-body .prose h2 { font-size: 25px; margin-top: 2em; }
+.docs-body .prose h3 { font-size: 19px; }
+.docs-body .prose pre { font-size: 13.5px; }
+.docs-body .crumbs { align-self: flex-start; justify-content: flex-start; margin: 0; }
+.docs-body .prose table { display: table; table-layout: fixed; }
+.docs-body .prose td:first-child { width: 40%; }
+.docs-body .prose td code { white-space: normal; overflow-wrap: anywhere; }
+
+.docs-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 48px; }
+.docs-pager a {
+  display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; border-radius: 12px;
+  border: 1px solid var(--line-2); background: var(--bg-1); transition: border-color 0.2s;
+}
+.docs-pager a:hover { border-color: var(--accent-line); }
+.docs-pager a span { display: inline-flex; gap: 6px; align-items: center; color: var(--text-3); font-size: 13px; }
+.docs-pager a.next { text-align: right; align-items: flex-end; grid-column: 2; }
+
+@media (max-width: 1100px) {
+  .docs-grid { grid-template-columns: 190px minmax(0, 1fr); gap: 36px; }
+  .docs-toc { display: none; }
+}
+@media (max-width: 760px) {
+  .docs-grid { grid-template-columns: 1fr; gap: 20px; padding-top: 24px; }
+  .docs-nav { position: static; padding: 12px 14px; border: 1px solid var(--line-2); border-radius: 12px; background: var(--bg-1); }
+  .docs-nav summary { margin: 0; cursor: pointer; }
+  .docs-nav details[open] summary { margin-bottom: 10px; }
+  .docs-pager { grid-template-columns: 1fr; }
+  .docs-body .prose table { display: block; table-layout: auto; }
+  .docs-body .prose td:first-child { width: auto; min-width: 220px; }
+  .docs-pager a.next { grid-column: 1; }
+}
