@@ -45,5 +45,5 @@ Key facts:
 ## Optional
 
 - [Blog](https://larvyn.dev/blog/): release notes and guides
-- [Releases](https://github.com/larvyn/releases/releases): downloads and changelogs
-- [Issues](https://github.com/larvyn/releases/issues): bug reports
+- [Releases](https://github.com/larvyn/larvyn/releases): downloads and changelogs
+- [Issues](https://github.com/larvyn/larvyn/issues): bug reports

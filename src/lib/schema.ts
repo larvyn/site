@@ -1,5 +1,5 @@
 // Structured data (schema.org) shared by the home page and the feature pages.
-import { RELEASES, RELEASES_REPO, SOURCE } from './links';
+import { RELEASES, SOURCE } from './links';
 
 const SITE = 'https://larvyn.dev';
 
@@ -9,7 +9,7 @@ export const organization = {
   name: 'Larvyn',
   url: `${SITE}/`,
   logo: `${SITE}/favicon.svg`,
-  sameAs: [`https://github.com/larvyn`, SOURCE, `https://github.com/${RELEASES_REPO}`],
+  sameAs: [`https://github.com/larvyn`, SOURCE],
 };
 
 export function softwareApplication(version?: string) {
