@@ -1,5 +1,5 @@
 // Structured data (schema.org) shared by the home page and the feature pages.
-import { RELEASES, RELEASES_REPO } from './links';
+import { RELEASES, RELEASES_REPO, SOURCE } from './links';
 
 const SITE = 'https://larvyn.dev';
 
@@ -9,7 +9,7 @@ export const organization = {
   name: 'Larvyn',
   url: `${SITE}/`,
   logo: `${SITE}/favicon.svg`,
-  sameAs: [`https://github.com/larvyn`, `https://github.com/${RELEASES_REPO}`],
+  sameAs: [`https://github.com/larvyn`, SOURCE, `https://github.com/${RELEASES_REPO}`],
 };
 
 export function softwareApplication(version?: string) {
@@ -18,7 +18,7 @@ export function softwareApplication(version?: string) {
     '@id': `${SITE}/#app`,
     name: 'Larvyn',
     description:
-      'A free desktop app for Laravel: persistent terminals, parallel AI coding agents in git worktrees, and Artisan, routes, models, database, Tinker, tests, queues and logs in one native window. Terminals, agents and git also work in projects that are not Laravel.',
+      'A free, open source (MIT) desktop app for Laravel: persistent terminals, parallel AI coding agents in git worktrees, and Artisan, routes, models, database, Tinker, tests, queues and logs in one native window. Terminals, agents and git also work in projects that are not Laravel.',
     url: `${SITE}/`,
     applicationCategory: 'DeveloperApplication',
     applicationSubCategory: 'Laravel development tool',
@@ -28,6 +28,8 @@ export function softwareApplication(version?: string) {
     installUrl: `${SITE}/#install`,
     fileSize: '12MB',
     isAccessibleForFree: true,
+    license: 'https://opensource.org/licenses/MIT',
+    codeRepository: SOURCE,
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
     publisher: { '@id': `${SITE}/#org` },
     image: `${SITE}/og.png`,
