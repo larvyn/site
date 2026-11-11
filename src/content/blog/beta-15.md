@@ -1,17 +1,25 @@
 ---
-title: 'Your agents can now use Larvyn too'
-description: 'A local API, the larvyn command and an MCP server let agents start your dev stack, run tests and hand work to other agents. Plus comments on an agent’s diff.'
-pubDate: 2026-11-08
+title: 'Larvyn beta.15: open source, and your agents can use Larvyn too'
+description: 'Larvyn v0.1.0-beta.15 is open source (MIT). Agents can drive Larvyn through a CLI and MCP, plus Spec first, comments on an agent’s diff and a light theme.'
+pubDate: 2026-11-11
 author: Ivan Mercedes
 tags: ['Agents', 'Release']
 cover: ../../assets/blog/agents-api/cover.png
 coverAlt: 'The headline “Your agents can now use Larvyn too” next to a checklist: start the dev stack and wait, tests and log errors, agents that start agents, MCP tools, a skill and a session hook, comments on an agent’s diff, team settings in the repo.'
-draft: true
+draft: false
 ---
+
+**Larvyn v0.1.0-beta.15** is out, and it’s a big one. Larvyn is now open source, agents can drive the app themselves, and there’s a new spec-first way to run them.
+
+## Larvyn is open source
+
+The source code is now public under the [MIT License](https://github.com/larvyn/larvyn/blob/master/LICENSE), at [github.com/larvyn/larvyn](https://github.com/larvyn/larvyn). You can read how it works, build it yourself, and send a pull request. Larvyn is still free, and always will be.
+
+## Your agents can now use Larvyn too
 
 Until now, Larvyn was something *you* used to run agents. An agent working in one of its terminals couldn’t see what you saw: which project it was in, whether the server was running, what the last test run said. So it ran `php artisan serve` again, opened its own Vite, and read raw terminal output to guess when things were ready.
 
-This release changes that. **Agents get the same tools you have**, through a local API, a `larvyn` command and an MCP server. They can start the dev stack and wait until it’s ready, run tests and read the failures, read the log’s errors, and start other agents and wait for their result. All of it from the project and worktree they’re in.
+Beta.15 changes that. **Agents get the same tools you have**, through a local API, a `larvyn` command and an MCP server. They can start the dev stack and wait until it’s ready, run tests and read the failures, read the log’s errors, and start other agents and wait for their result. All of it from the project and worktree they’re in.
 
 For you, that means an agent can check its own work before it says it’s done, and you stop finding a second `artisan serve` or Vite that an agent started on its own.
 
@@ -26,6 +34,8 @@ Every terminal Larvyn opens now has a `larvyn` command on its PATH, and knows wh
 - **`larvyn test`** runs the suite in a terminal you can watch, then prints a summary and each failure with its `file:line`. It exits 1 when anything fails, so an agent knows without reading the output.
 - **`larvyn artisan …`** runs any Artisan command in the agent’s own folder. Commands that never finish, like `serve` or `queue:work`, are refused and point to `stack` instead.
 - **`larvyn logs errors --since 1h`** lists the errors in the Laravel log, with `--trace` when you want the stack trace.
+
+There’s more: the project’s models, read-only database queries and ports. **`larvyn lock acquire db`** lets several agents take turns on something they share, like the database. A lock waits while another agent holds it, and ends after its `--ttl` or when its terminal closes.
 
 `larvyn help` lists every command, and `--json` works on all of them. Run in an agent’s worktree, they act on that worktree and leave your main checkout alone.
 
@@ -56,7 +66,7 @@ For agents that prefer MCP over a shell, **`larvyn mcp`** serves the same comman
 claude mcp add larvyn -- larvyn mcp
 ```
 
-Read-only tools (`context`, the `list`, `read`, `status` and `wait` tools, log errors) are marked as such, so clients can run them without asking. A long `agents_wait` doesn’t block the other calls.
+Read-only tools (`context`, the `list`, `read`, `status` and `wait` tools, log errors) are marked as such, so clients can run them without asking. A long `agents_wait` doesn’t block the other calls. The Laravel playbooks (CRUD, tests, N+1, security review, upgrade…) are MCP prompts too: in Claude Code they show up in the `/` menu, filled in for your project.
 
 To make agents use all this without being told, open **Settings → Agents know Larvyn** and click **Set up agents**:
 
@@ -65,6 +75,17 @@ To make agents use all this without being told, open **Settings → Agents know 
 It installs a `larvyn` skill and a session-start hook in Claude Code and Codex (`larvyn agents setup` does the same from a terminal). When an agent starts in a Larvyn terminal, the hook tells it the project, the worktree and branch, the local URL and what’s running. Anywhere else it stays silent.
 
 It only sets up agents you have installed. Your settings files keep their other hooks, key order and formatting, and the old version is saved next to them as a backup. **Preview** shows every file it would touch before anything is written, and **Remove** takes out only what Larvyn added.
+
+## Spec first (Elephant-Goldfish)
+
+Some features are worth planning before anyone writes code. Switch the Agents composer to **Spec first** and Larvyn runs them in four steps:
+
+1. **The Elephant** explores the code and writes a spec in `.larvyn/specs/<slug>.md`: data model, routes and validation, policies, edge cases, tests. It writes no code, and asks you in its terminal about anything unclear.
+2. **The Goldfish**, a fresh agent with no memory, reads the spec cold against the code and writes a review that starts with its verdict: `READY`, `NEEDS REVISION` or `BLOCKED`. By default it’s a different agent from the author. **Revise with the Elephant** hands the review back, and the loop goes on until a review says READY.
+3. **Builders** take the approved spec, each in its own worktree with a copy of it. Building without a READY review asks first.
+4. **The drift check.** Another fresh agent compares each attempt with the spec and lists every requirement done, done differently or missing, plus anything nobody asked for. **Send fixes** gives that report to the builder, and you merge the best attempt.
+
+Specs are local working files: Larvyn keeps `.larvyn/specs/` out of git and out of merges. The same workflow runs from the terminal with `larvyn specs draft|review|revise|build|drift|fix`, so an agent can run it too.
 
 ## Comment on an agent’s diff
 
@@ -111,14 +132,21 @@ Some setup belongs to the whole team: the commands everyone runs, and what a fre
 
 Larvyn picks up changes to the file on its own, after a `git pull` or a branch switch. A wrong entry is skipped and listed; a file that doesn’t parse keeps the last version that loaded, and the Doctor shows why.
 
+## Light theme
+
+Larvyn finally has a light theme. Pick it in **Settings → Workbench → Theme**: follow the system, light or dark. Terminals and the code editor switch with it.
+
 ## Privacy, in one place
 
-**Settings → Privacy** (and the README) now list every connection Larvyn makes, and when. The list is short. Larvyn checks GitHub for updates, reads the plugin marketplace, downloads Composer if you don’t have it, and fetches project avatars from GitHub. It has no telemetry, accounts or analytics, and it sends nothing about your projects, code, `.env` files or terminals.
+A new **Privacy** card in **Settings → About** (and the README) now list every connection Larvyn makes, and when. The list is short. Larvyn checks GitHub for updates, reads the plugin marketplace, downloads Composer if you don’t have it, and fetches project avatars from GitHub. It has no telemetry, accounts or analytics, and it sends nothing about your projects, code, `.env` files or terminals.
 
 ![The Privacy card in Settings: Larvyn is free and has no telemetry, accounts or analytics, followed by a table of what it connects to for updates, plugins, Composer, project icons and feedback.](../../assets/blog/agents-api/privacy.png)
 
 ## Smaller things
 
+- **Quieter defaults for new installs.** Agents ask before acting, only shells start again when Larvyn opens (services and agents wait for **Relaunch**), and Flock is off until you turn it on. Existing installs keep their settings.
+- **macOS:** “Open a project” no longer sets off privacy prompts for Music, Photos, Desktop, Documents, Downloads or network volumes. When it skips those folders the picker says so, with **Search them too**. Folders served by Herd and Valet are searched first, on every platform.
+- The breadcrumbs no longer run under the search bar in a narrow window or with a long branch name.
 - **Copy and paste with the mouse.** Right-click a terminal for **Copy** and **Paste**. Inside apps that capture the mouse, like Claude Code or vim, hold **Option** while dragging to select.
 - **Agents’ last rows are back.** Claude Code’s input box and status line were sometimes cut off at the bottom of a terminal. Terminals now measure themselves again once their font has loaded.
 - **macOS:** the window now has its close, minimise and full screen buttons.
@@ -135,10 +163,18 @@ The last findings from our security review are fixed:
 
 The new local API is a socket only your user can open, with a token that changes at every start. It is never an HTTP server, so a web page open in your browser can’t reach it.
 
+## Also out: beta.16 and beta.17
+
+Two small releases followed on the same day:
+
+- **beta.16** moves releases, bug reports and Discussions to [github.com/larvyn/larvyn](https://github.com/larvyn/larvyn), next to the code. Larvyn checks for updates there from now on. There’s nothing to do on your side: older versions still update as before, and the install commands stay the same.
+- **beta.17**: hovering a project icon in the left rail shows its name and path right away.
+
 ## Get started
 
 1. Update Larvyn from inside the app, or install it from the [download section](/#install).
 2. Open **Settings → Agents know Larvyn** and click **Set up agents**.
 3. In any Larvyn terminal, try `larvyn context` and `larvyn help`.
+4. For your next feature, switch the Agents composer to **Spec first**.
 
-Found a bug? Use **Report a bug** at the top of the app.
+Found a bug? Use **Report a bug** at the top of the app, or [open an issue](https://github.com/larvyn/larvyn/issues/new/choose).
