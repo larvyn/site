@@ -20,7 +20,7 @@ npm run preview  # serve dist/
 - `src/assets/screens/`: real Larvyn screenshots of a sample store app (Acme Store).
 - `public/og.png`: social preview image.
 
-The download buttons go to the `#install` section, which shows the `curl` / `irm` install command for each OS and opens the visitor's OS tab. The version in the beta pill is read from the newest release of `larvyn/releases` at build time, so rebuild the site after each release.
+The download buttons go to the `#install` section, which shows the `curl` / `irm` install command for each OS and opens the visitor's OS tab. The version in the beta pill is read from the newest release of `larvyn/larvyn` at build time, so rebuild the site after each release.
 
 ## Blog
 
