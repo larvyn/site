@@ -4,7 +4,7 @@ import Icon from '../components/Icon.astro';
 import Screen from '../components/Screen.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { RELEASES_REPO, RELEASES, ISSUES, DISCUSSIONS } from '../lib/links';
+import { RELEASES_REPO, RELEASES, ISSUES, DISCUSSIONS, SOURCE, LICENSE } from '../lib/links';
 import { STARTER } from '../lib/plugins';
 import { graph, organization, softwareApplication } from '../lib/schema';
 
@@ -118,8 +118,8 @@ const stack: [name: string, color: string, logo?: string][] = [
 ---
 
 <Base
-  title="Larvyn: Laravel desktop app with parallel AI coding agents"
-  description="A free desktop app built for Laravel: persistent terminals, parallel coding agents in git worktrees and every Laravel tool in one native window. Terminals, agents and git work in any other project too."
+  title="Larvyn: open source Laravel desktop app with parallel AI coding agents"
+  description="A free, open source desktop app built for Laravel: persistent terminals, parallel coding agents in git worktrees and every Laravel tool in one native window. Terminals, agents and git work in any other project too."
   jsonLd={graph(organization, softwareApplication(version), { '@type': 'WebSite', '@id': 'https://larvyn.dev/#site', name: 'Larvyn', url: 'https://larvyn.dev/', publisher: { '@id': 'https://larvyn.dev/#org' } })}
 >
   <SiteHeader home />
@@ -129,18 +129,20 @@ const stack: [name: string, color: string, logo?: string][] = [
     <section class="hero">
       <div class="grid-bg"></div>
       <div class="wrap">
-        <a class="pill" href="#install"><b>BETA</b> {version} is out for Windows, macOS and Linux <Icon name="ArrowRight" size={14} /></a>
-        <h1>Your whole Laravel workflow.<br /><span class="grad">One native app.</span></h1>
+        <a class="pill" href="#open-source"><b>NEW</b> Larvyn is now open source, under MIT <Icon name="ArrowRight" size={14} /></a>
+        <h1>Your whole Laravel workflow.<br /><span class="grad">One open source app.</span></h1>
         <p class="lead">
-          Larvyn puts persistent terminals, parallel AI coding agents and every Laravel tool you reach for (Artisan, routes, models, database, Tinker, tests, queues and logs) into one fast desktop app.
+          Larvyn puts persistent terminals, parallel AI coding agents and every Laravel tool you reach for (Artisan, routes, models, database, Tinker, tests, queues and logs) into one fast, native desktop app.
         </p>
         <p class="lead-sub">Your Next.js, Go or Python repos get the same terminals, agents and git. <a href="#any-project">Any project works <Icon name="ArrowRight" size={14} /></a></p>
         <div class="cta">
           <a class="btn primary" href={DOWNLOAD}><Icon name="Download" size={18} /> <span data-os-label>Install the beta</span></a>
+          <a class="btn" href={SOURCE}><Icon name="Star" size={16} /> Star on GitHub</a>
           <a class="btn" href="#tour"><Icon name="Play" size={16} /> Take the tour</a>
         </div>
         <div class="meta">
-          <span><Icon name="Check" size={15} /> Free, no account</span>
+          <a href={SOURCE}><Icon name="Check" size={15} /> Free and open source (MIT)</a>
+          <span><Icon name="Check" size={15} /> No account</span>
           <a href="/integrations/"><Icon name="Check" size={15} /> Works with Herd and Flock</a>
           <span><Icon name="Check" size={15} /> Laravel 10 to 13, and any other project</span>
           <span><Icon name="Check" size={15} /> Your code stays on your machine</span>
@@ -500,7 +502,7 @@ const stack: [name: string, color: string, logo?: string][] = [
           <div class="spec reveal"><strong>12<em>MB</em></strong><span>A native Go app with the system WebView. No Electron, no bundled browser.</span></div>
           <div class="spec reveal"><strong>7</strong><span>Coding agent CLIs supported, each in its own git worktree.</span></div>
           <div class="spec reveal"><strong>16</strong><span>Views for terminals, agents and every part of a Laravel app.</span></div>
-          <div class="spec reveal"><strong>0</strong><span>Accounts, telemetry or cloud. Everything runs on your machine.</span></div>
+          <div class="spec reveal"><strong>0</strong><span>Accounts, telemetry or cloud. Everything runs on your machine, and the code is open.</span></div>
         </div>
         <div class="keys reveal">
           <div>Command palette <span><kbd class="k">Ctrl</kbd><kbd class="k">K</kbd></span></div>
@@ -511,6 +513,38 @@ const stack: [name: string, color: string, logo?: string][] = [
           <div>Toggle sidebar <span><kbd class="k">Ctrl</kbd><kbd class="k">B</kbd></span></div>
           <div>Launch agent · run Tinker <span><kbd class="k">Ctrl</kbd><kbd class="k">↵</kbd></span></div>
           <div>Save .env <span><kbd class="k">Ctrl</kbd><kbd class="k">S</kbd></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Open source -->
+    <section class="block" id="open-source">
+      <div class="wrap">
+        <div class="head reveal">
+          <span class="eyebrow"><Icon name="CodeXml" size={14} /> Open source</span>
+          <h2>Larvyn is open source.</h2>
+          <p>All of Larvyn’s code is on GitHub under the MIT license: the Go backend, the React front end, the <code>larvyn</code> command and the MCP server. Read it, build it, fork it, or help make it better.</p>
+        </div>
+        <div class="pillars">
+          <div class="pillar reveal" style="--c: var(--green)">
+            <div class="ico"><Icon name="Eye" size={22} /></div>
+            <h3>See what runs on your machine</h3>
+            <p>Larvyn runs your terminals and your agents and reads your <code>.env</code>. Now you can check every line that touches them, not just take our word for it.</p>
+          </div>
+          <div class="pillar reveal" style="--c: var(--accent-2)">
+            <div class="ico"><Icon name="Scale" size={22} /></div>
+            <h3>MIT, no catch</h3>
+            <p>Use it at work, change it, ship your own build. There is no paid tier waiting behind it and no account to create.</p>
+          </div>
+          <div class="pillar reveal" style="--c: var(--cyan)">
+            <div class="ico"><Icon name="GitPullRequest" size={22} /></div>
+            <h3>Build it with us</h3>
+            <p>Fix the bug that bothers you, add the agent CLI you use, or open a discussion about where Larvyn should go next. Pull requests are welcome.</p>
+          </div>
+        </div>
+        <div class="cta reveal">
+          <a class="btn primary" href={SOURCE}><Icon name="Star" size={18} /> Star on GitHub</a>
+          <a class="btn" href={LICENSE}><Icon name="Scale" size={16} /> Read the license</a>
         </div>
       </div>
     </section>
@@ -563,6 +597,10 @@ const stack: [name: string, color: string, logo?: string][] = [
           <details open>
             <summary>Is Larvyn free? <Icon name="Plus" size={20} /></summary>
             <p>Yes, and it will stay free. There is no paid tier and no account to create: install it and open a project.</p>
+          </details>
+          <details>
+            <summary>Is Larvyn open source? <Icon name="Plus" size={20} /></summary>
+            <p>Yes. The full source is at <a href={SOURCE}>github.com/larvyn/larvyn</a> under the <a href={LICENSE}>MIT license</a>. Larvyn is a Go app built with Wails 3, with a React front end. You can read the code, build it yourself, fork it and send pull requests. Bugs and questions still go to <a href={ISSUES}>issues</a> and <a href={DISCUSSIONS}>Discussions</a>.</p>
           </details>
           <details>
             <summary>Can I use it on a project that isn’t Laravel? <Icon name="Plus" size={20} /></summary>
@@ -656,10 +694,10 @@ const stack: [name: string, color: string, logo?: string][] = [
         <div class="final reveal">
           <img class="logo-big" src="/favicon.svg" alt="" width="72" height="72" />
           <h2>Open a project.<br />Your tools are already there.</h2>
-          <p>Terminals, parallel agents and git for every repo, and the full Laravel workbench when it’s a Laravel app. Free, with no account.</p>
+          <p>Terminals, parallel agents and git for every repo, and the full Laravel workbench when it’s a Laravel app. Free and open source, with no account.</p>
           <div class="cta">
             <a class="btn primary" href={DOWNLOAD}><Icon name="Download" size={18} /> <span data-os-label>Install the beta</span></a>
-            <a class="btn" href="#tour"><Icon name="Play" size={16} /> See the tour</a>
+            <a class="btn" href={SOURCE}><Icon name="Star" size={16} /> Star on GitHub</a>
           </div>
         </div>
       </div>
