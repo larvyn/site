@@ -144,6 +144,8 @@ Larvyn picks up changes to the file on its own, after a `git pull` or a branch s
 
 Larvyn finally has a light theme. Pick it in **Settings → Workbench → Theme**: follow the system, light or dark. Terminals and the code editor switch with it.
 
+![Larvyn’s Overview of the Acme Store app, split diagonally: the left half in the new light theme, the right half in the dark theme, with the sidebar, the dev stack, the Doctor and the Local site card in both.](../../assets/blog/agents-api/theme.png)
+
 ## Privacy, in one place
 
 A new **Privacy** card in **Settings → About** (and the README) now lists every connection Larvyn makes, and when. The list is short. Larvyn checks GitHub for updates, reads the plugin marketplace, downloads Composer if you don’t have it, and fetches project avatars from GitHub. It has no telemetry, accounts or analytics, and it sends nothing about your projects, code, `.env` files or terminals.
