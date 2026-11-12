@@ -1,0 +1,88 @@
+---
+// One docs page: the sidebar with every page, the page's prose, its own headings on the right and the next page.
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import Icon from '../../components/Icon.astro';
+import { docSlug, docUrl, getDocs, type Doc } from '../../lib/docs';
+import { breadcrumbs, graph, organization } from '../../lib/schema';
+import '../../styles/blog.css';
+import '../../styles/docs.css';
+
+export async function getStaticPaths() {
+  const docs = await getDocs();
+  return docs.map((doc, i) => ({ params: { slug: docSlug(doc) }, props: { doc, docs, prev: docs[i - 1], next: docs[i + 1] } }));
+}
+
+interface Props {
+  doc: Doc;
+  docs: Doc[];
+  prev?: Doc;
+  next?: Doc;
+}
+
+const { doc, docs, prev, next } = Astro.props;
+const { Content, headings } = await render(doc);
+const { title, description } = doc.data;
+const path = docUrl(doc);
+const isIndex = doc.id === 'index';
+const toc = headings.filter((h) => h.depth === 2);
+const crumbs: [string, string][] = isIndex ? [['Docs', '/docs/']] : [['Docs', '/docs/'], [doc.data.label ?? title, path]];
+const jsonLd = graph(organization, breadcrumbs(crumbs), {
+  '@type': 'TechArticle',
+  headline: title,
+  description,
+  url: new URL(path, Astro.site).href,
+  inLanguage: 'en',
+  publisher: { '@id': 'https://larvyn.dev/#org' },
+});
+---
+
+<Base title={`${title} · Larvyn docs`} description={description} jsonLd={jsonLd}>
+  <SiteHeader />
+  <main class="docs">
+    <div class="docs-grid wrap">
+      <nav class="docs-nav" aria-label="Docs">
+        <details open>
+          <summary><Icon name="BookOpen" size={15} /> Docs</summary>
+          <ul>
+            {docs.map((d) => (
+              <li><a href={docUrl(d)} aria-current={d.id === doc.id ? 'page' : undefined}>{d.data.label ?? d.data.title}</a></li>
+            ))}
+          </ul>
+        </details>
+      </nav>
+
+      <article class="docs-body">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="/">Larvyn</a>
+          <Icon name="ChevronRight" size={13} />
+          {isIndex ? <span>Docs</span> : <a href="/docs/">Docs</a>}
+        </nav>
+        <h1>{title}</h1>
+        <p class="lede">{description}</p>
+        <div class="prose">
+          <Content />
+        </div>
+        <nav class="docs-pager" aria-label="Previous and next page">
+          {prev ? <a href={docUrl(prev)}><span><Icon name="ArrowLeft" size={14} /> Previous</span><b>{prev.data.label ?? prev.data.title}</b></a> : <span />}
+          {next && <a class="next" href={docUrl(next)}><span>Next <Icon name="ArrowRight" size={14} /></span><b>{next.data.label ?? next.data.title}</b></a>}
+        </nav>
+      </article>
+
+      {toc.length > 1 && (
+        <aside class="docs-toc" aria-label="On this page">
+          <b>On this page</b>
+          <ul>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ul>
+        </aside>
+      )}
+    </div>
+  </main>
+  <SiteFooter />
+
+  <script>
+    // On a phone the page list starts folded, so the page itself comes first.
+    if (matchMedia('(max-width: 760px)').matches) document.querySelector('.docs-nav details')?.removeAttribute('open');
+  </script>
+</Base>

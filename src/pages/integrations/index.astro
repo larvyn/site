@@ -1,0 +1,56 @@
+---
+import FeaturePage from '../../layouts/FeaturePage.astro';
+import Icon from '../../components/Icon.astro';
+
+const logos = Object.fromEntries(
+  Object.entries(import.meta.glob<{ default: ImageMetadata }>('../../assets/brands/*.{svg,png}', { eager: true }))
+    .map(([path, mod]) => [path.split('/').pop()!.replace(/\.(svg|png)$/, ''), mod.default.src]),
+);
+
+const items: { title: string; logos?: string[]; icon?: string; text: string; href?: string; cta?: string }[] = [
+  { title: 'Flock', logos: ['flock'], text: 'Serve each Laravel app at https://<folder>.test, pick PHP per app, and give every agent’s worktree its own URL.', href: '/integrations/flock/', cta: 'How it works' },
+  { title: 'Laravel Herd', logos: ['herd'], text: 'Larvyn picks up Herd automatically when it’s installed, including its PHP and its site URLs.' },
+  { title: 'Laravel Boost', logos: ['laravel'], text: 'One click from the Agents view installs Boost, so agents get version-specific docs, your schema, routes, logs and Tinker over MCP.', href: '/agents/', cta: 'About agents' },
+  { title: 'Coding agents', logos: ['claude-code', 'codex', 'cursor', 'opencode', 'aider', 'pi', 'antigravity'], text: 'Claude Code, Codex, Cursor Agent, OpenCode, Aider, Pi and Antigravity CLI, each in its own git worktree. Add your own too.', href: '/agents/', cta: 'Parallel agents' },
+  { title: 'Your editor', icon: 'Code2', text: 'Tests, logs, routes and the diff panel open files at the right line in VS Code, Cursor, PhpStorm, Zed, Windsurf, Sublime Text or Neovim.' },
+  { title: 'Plugins', icon: 'Puzzle', text: 'Mailpit, Horizon and more from the marketplace, with permissions Larvyn enforces. Or write your own.', href: '/plugins/', cta: 'Browse plugins' },
+];
+
+const faqs = [
+  { q: 'Do I need any of these to use Larvyn?', a: 'No. Larvyn works with the PHP, Composer and Node on your PATH. Each integration shows up only once the tool is installed.' },
+  { q: 'Can I suggest an integration?', a: 'Yes. Open a thread in <a href="https://github.com/larvyn/larvyn/discussions">Discussions</a>, or build it as a <a href="/plugins/">plugin</a>.' },
+];
+---
+
+<FeaturePage
+  title="Integrations: Flock, Herd, Laravel Boost, coding agents and editors"
+  description="Larvyn works with the tools around your Laravel app: Flock and Laravel Herd for local sites, Laravel Boost, Claude Code, Codex and other coding agents, your editor, and plugins like Mailpit and Horizon."
+  crumb="Integrations"
+  icon="Plug"
+  eyebrow="Integrations"
+  heading={'Works with the tools<br /><span class="grad">you already use.</span>'}
+  lead="Larvyn finds what you have installed and fits in around it: your local server, your coding agents and your editor."
+  faqs={faqs}
+  related={['/integrations/flock/', '/agents/', '/any-project/']}
+>
+  <section class="block" style="padding-top: 40px">
+    <div class="wrap">
+      <div class="integrations">
+        {items.map((it) => {
+          const Tag = it.href ? 'a' : 'div';
+          return (
+            <Tag class="integration reveal" href={it.href}>
+              <div class="int-logos">
+                {it.logos?.map((l) => <img src={logos[l]} alt="" width="26" height="26" loading="lazy" />)}
+                {it.icon && <Icon name={it.icon as any} size={24} />}
+              </div>
+              <h3>{it.title}</h3>
+              <p>{it.text}</p>
+              {it.href && <span class="go">{it.cta} <Icon name="ArrowRight" size={14} /></span>}
+            </Tag>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+</FeaturePage>

@@ -1,6 +1,7 @@
 ---
 import { getPosts } from '../lib/blog';
-import { ISSUES, RELEASES } from '../lib/links';
+import { ISSUES, RELEASES, SOURCE } from '../lib/links';
+import { ALL_PAGES } from '../lib/pages';
 
 interface Props {
   home?: boolean;
@@ -18,14 +19,19 @@ const hasPosts = (await getPosts()).length > 0;
       <a href={at('#tour')}>Tour</a>
       <a href={at('#features')}>Features</a>
       <a href={at('#faq')}>FAQ</a>
+      <a href="/docs/">Docs</a>
       {hasPosts && <a href="/blog/">Blog</a>}
       <a href={at('#install')}>Install</a>
+      <a href={SOURCE}>Source code</a>
       <a href={RELEASES}>Releases</a>
       <a href={ISSUES}>Report a bug</a>
     </nav>
+    <nav class="footer-pages" aria-label="Features and comparisons">
+      {ALL_PAGES.map((p) => <a href={p.path}>{p.label}</a>)}
+    </nav>
     <span>
       © {new Date().getFullYear()} Ivan Mercedes &amp; Elminson De Oleo Baez. Laravel is a trademark of Laravel Holdings Inc.
-      Larvyn is not affiliated with or endorsed by Laravel.
+      Larvyn is open source under the MIT license. It is not affiliated with or endorsed by Laravel.
     </span>
   </div>
 </footer>

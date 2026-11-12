@@ -13,6 +13,7 @@ const at = (hash: string) => (home ? hash : `/${hash}`);
 const hasPosts = (await getPosts()).length > 0;
 const onBlog = Astro.url.pathname.startsWith('/blog');
 const onPlugins = Astro.url.pathname.startsWith('/plugins');
+const onDocs = Astro.url.pathname.startsWith('/docs');
 ---
 
 <header class="nav" id="nav">
@@ -22,6 +23,7 @@ const onPlugins = Astro.url.pathname.startsWith('/plugins');
       <a href={at('#tour')}>Tour</a>
       <a href={at('#agents')}>Agents</a>
       <a href={at('#features')}>Features</a>
+      <a href="/docs/" aria-current={onDocs ? 'page' : undefined}>Docs</a>
       <a href={at('#palette')}>Palette</a>
       <a href={at('#install')}>Install</a>
       <a href={at('#faq')}>FAQ</a>

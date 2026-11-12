@@ -1,0 +1,49 @@
+# Larvyn
+
+> Larvyn is a free desktop app for Laravel developers (Windows, macOS, Linux). It puts persistent terminals, parallel AI coding agents in git worktrees and every Laravel tool (Artisan, routes, models, database, Tinker, tests, queues, logs) into one native window. Terminals, agents, files and git also work in projects that aren't Laravel. It is in public beta, free, with no account, no telemetry and no cloud: everything runs on your machine.
+
+Key facts:
+
+- Native Go app using the system WebView, about 12 MB. No Electron.
+- Supports Laravel 10 to 13. Works with Laravel Herd and Flock, or with whatever PHP, Composer and Node are on the PATH.
+- Runs these coding agent CLIs: Claude Code, Codex, Antigravity CLI, Cursor Agent, OpenCode, Aider and Pi, plus custom agents. It uses the CLIs and logins you already have; it is not an AI model or a subscription.
+- Each agent can work in its own git worktree on a `larvyn/<task>` branch, with `.env` and the SQLite database copied in. You review the diff and merge or discard.
+- Laravel-only views: Artisan studio, routes, models, database browser (MySQL, PostgreSQL, SQLite, SQL Server, through the app's own connection), Tinker editor, Pest/PHPUnit test runner, queues and schedule, laravel.log viewer, project doctor.
+- In any folder ("Not Laravel" projects): persistent terminals, agents in worktrees, files and Ctrl P finder, source control, .env editor, Composer audit when there is a composer.json, `npm run dev` in the dev stack when package.json has a dev script, command palette, plugins, workspace restore.
+- Agents can drive Larvyn: every Larvyn terminal has a `larvyn` command (context, terminals, dev stack with wait-until-ready, artisan, tests, log errors, models, read-only database queries, starting and waiting for other agents, locks, specs), and `larvyn mcp` serves the same commands as MCP tools (`claude mcp add larvyn -- larvyn mcp`).
+- `.larvyn/project.json`, committed with the code, shares commands, dev-stack items, required plugins and agent worktree setup steps with the team.
+- Plugins add commands, dev-stack services and sidebar views, with permissions Larvyn enforces.
+- Install: `curl -fsSL https://larvyn.dev/install.sh | sh` (macOS, Linux) or `irm https://larvyn.dev/install.ps1 | iex` (Windows PowerShell). It updates itself.
+
+## Pages
+
+- [Home](https://larvyn.dev/): overview, product tour, install and FAQ
+- [Parallel AI agents](https://larvyn.dev/agents/): Claude Code, Codex and other agents in separate git worktrees
+- [Any project](https://larvyn.dev/any-project/): what works in projects that aren't Laravel
+- [Test runner](https://larvyn.dev/test-runner/): Pest and PHPUnit with failures at the exact line
+- [Log viewer](https://larvyn.dev/log-viewer/): live laravel.log with parsed exceptions
+- [Database client](https://larvyn.dev/database-client/): rows, structure and SQL through the app's connection
+- [Tinker editor](https://larvyn.dev/tinker/): run PHP in the booted app
+- [Integrations](https://larvyn.dev/integrations/): Flock, Laravel Herd, Laravel Boost, coding agents, editors
+- [Flock integration](https://larvyn.dev/integrations/flock/): each Laravel app and each agent worktree at its own https .test URL
+- [Plugins](https://larvyn.dev/plugins/): plugin marketplace
+
+## Docs
+
+- [Docs overview](https://larvyn.dev/docs/)
+- [The larvyn command](https://larvyn.dev/docs/cli/): every CLI command, its options and exit codes
+- [MCP server](https://larvyn.dev/docs/mcp/): setup for Claude Code, Codex, Cursor and OpenCode, and the list of tools
+- [Agent setup](https://larvyn.dev/docs/agent-setup/): the larvyn skill and session-start hook for Claude Code and Codex
+- [Project settings](https://larvyn.dev/docs/project-json/): .larvyn/project.json
+- [Spec first](https://larvyn.dev/docs/spec-first/): the Elephant-Goldfish workflow
+
+## Comparisons
+
+- [Larvyn vs Tinkerwell](https://larvyn.dev/compare/tinkerwell/)
+- [Larvyn vs TablePlus](https://larvyn.dev/compare/tableplus/)
+
+## Optional
+
+- [Blog](https://larvyn.dev/blog/): release notes and guides
+- [Releases](https://github.com/larvyn/larvyn/releases): downloads and changelogs
+- [Issues](https://github.com/larvyn/larvyn/issues): bug reports

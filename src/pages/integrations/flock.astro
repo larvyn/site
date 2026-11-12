@@ -1,0 +1,86 @@
+---
+import FeaturePage from '../../layouts/FeaturePage.astro';
+import Icon from '../../components/Icon.astro';
+import Screen from '../../components/Screen.astro';
+import overview from '../../assets/blog/flock/overview.png';
+import after from '../../assets/blog/flock/after.png';
+import flockAgents from '../../assets/screens/flock.png';
+
+// Facts from the Flock integration post (src/content/blog/flock-integration.md).
+const faqs = [
+  { q: 'What is Flock?', a: '<a href="https://flockphp.com">Flock</a> is a free, open source local PHP environment for Windows, macOS and Linux. It runs PHP, Node, databases and <code>*.test</code> sites with trusted HTTPS, without Docker.' },
+  { q: 'Do I need Flock to use Larvyn?', a: 'No. It’s optional. Without Flock, Larvyn runs <code>php artisan serve</code> for you, and it still detects Laravel Herd and Valet. Nothing about Flock appears until Flock is installed.' },
+  { q: 'Does Larvyn change my .env?', a: 'Only <code>APP_URL</code>, and only when it was empty or <code>localhost</code>. Larvyn backs up the <code>.env</code> first, and <b>Stop serving</b> puts the old value back. A URL you chose yourself is never overwritten.' },
+  { q: 'Can I keep using Flock’s own app and flk command?', a: 'Yes. Larvyn reads Flock’s local API and makes changes through <code>flk</code>, exactly as you would type them. Flock stays the source of truth, and Larvyn notices changes you make outside it within a few seconds.' },
+  { q: 'Which version of Larvyn has it?', a: 'Every version since <b>v0.1.0-beta.9</b>. Read the full story in <a href="/blog/flock-integration/">the announcement</a>.' },
+];
+---
+
+<FeaturePage
+  title="Larvyn + Flock: every Laravel app and every AI agent at its own .test URL"
+  description="With Flock installed, Larvyn serves each Laravel app at https://<folder>.test, picks a PHP version per app, and gives every AI agent's git worktree its own URL. Both free, on Windows, macOS and Linux."
+  crumb="Flock integration"
+  icon="Globe"
+  eyebrow="Integration · Flock"
+  heading={'Every app and every agent<br /><span class="grad">at its own .test URL.</span>'}
+  lead="Larvyn works with Flock, the free local PHP environment. One click serves your Laravel app at https://&lt;folder&gt;.test, and each coding agent’s worktree gets an address of its own, so you can open every attempt in the browser."
+  shot={overview}
+  shotAlt="Larvyn's Overview with the HTTP server served by Flock and the Local site card showing https://acme-store.test"
+  faqs={faqs}
+  related={['/agents/', '/integrations/', '/any-project/']}
+  ctaTitle="Serve your app at a real domain."
+  ctaText="Install Flock and Larvyn, open a Laravel project and click Serve. Both are free."
+>
+  <section class="block">
+    <div class="wrap split">
+      <div class="copy reveal">
+        <span class="eyebrow"><Icon name="GitFork" size={14} /> One URL per agent</span>
+        <h2>Compare agents by clicking through their work.</h2>
+        <p>Give one task to Claude Code and Codex. Each works in its own git worktree, and Flock serves every worktree at its own subdomain, so each attempt is live as soon as the agent starts.</p>
+        <div class="compare-wrap" style="margin-top: 24px">
+          <table class="compare">
+            <thead><tr><th>Attempt</th><th>URL</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Your app</th><td><code>acme-store.test</code></td></tr>
+              <tr><th scope="row">Claude Code</th><td><code>larvyn-claude-coupon-codes.acme-store.test</code></td></tr>
+              <tr><th scope="row">Codex</th><td><code>larvyn-codex-coupon-codes.acme-store.test</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size: 15.5px">Flock also installs each worktree’s Composer and npm dependencies, adjusts its <code>.env</code> and gives Redis, the cache and Horizon their own prefixes, so attempts don’t take each other’s jobs.</p>
+      </div>
+      <div class="reveal"><Screen src={flockAgents} alt="Larvyn's Local site card with the app and each agent's worktree served by Flock" /></div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top: 20px">
+    <div class="wrap split rev">
+      <div class="copy reveal">
+        <span class="eyebrow"><Icon name="ShieldCheck" size={14} /> The Local site card</span>
+        <h2>HTTPS and PHP versions, from the Overview.</h2>
+        <ul class="points">
+          <li><span class="ico"><Icon name="Lock" size={16} /></span><div><b>HTTPS is a switch</b><span>Certificates from Flock’s local authority, already trusted by your browsers. <code>APP_URL</code> follows.</span></div></li>
+          <li><span class="ico"><Icon name="Layers" size={16} /></span><div><b>PHP per app</b><span>Pick a version for this app only. Larvyn downloads it through Flock if needed.</span></div></li>
+          <li><span class="ico"><Icon name="Zap" size={16} /></span><div><b>Vite over HTTPS</b><span>Hot reload keeps working on an HTTPS site.</span></div></li>
+          <li><span class="ico"><Icon name="Undo2" size={16} /></span><div><b>One click back</b><span><b>Stop serving</b> returns to <code>artisan serve</code> and restores <code>APP_URL</code>.</span></div></li>
+        </ul>
+      </div>
+      <div class="reveal"><Screen src={after} alt="The dev stack with the HTTP server served by Flock at acme-store.test, and the Local site card with HTTPS and the PHP version" /></div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top: 20px">
+    <div class="wrap">
+      <div class="head reveal">
+        <span class="eyebrow"><Icon name="ListChecks" size={14} /> Get started</span>
+        <h2>Three steps.</h2>
+      </div>
+      <div class="steps three">
+        <div class="step reveal"><h4>Install Flock</h4><p>From <a href="https://flockphp.com/download">flockphp.com/download</a>, and run its setup.</p></div>
+        <div class="step reveal"><h4>Open a Laravel project</h4><p>In Larvyn, go to the project’s <b>Overview</b>.</p></div>
+        <div class="step reveal"><h4>Click Serve</h4><p>In the <b>Local site</b> card. Your app is at <code>https://&lt;folder&gt;.test</code>.</p></div>
+      </div>
+      <p class="compare-note">Flock is a trademark of Guava s.r.o. Larvyn isn’t affiliated with it.</p>
+    </div>
+  </section>
+</FeaturePage>

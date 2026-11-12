@@ -1,0 +1,120 @@
+---
+// A page about one part of Larvyn: hero, screenshot, the sections in the slot, a FAQ, related pages and the install CTA.
+import type { ImageMetadata } from 'astro';
+import Base from './Base.astro';
+import Icon from '../components/Icon.astro';
+import Screen from '../components/Screen.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { ALL_PAGES } from '../lib/pages';
+import { breadcrumbs, graph, organization, softwareApplication } from '../lib/schema';
+
+interface Props {
+  /** The <title>, without the " · Larvyn" suffix. */
+  title: string;
+  description: string;
+  /** Breadcrumb name. */
+  crumb: string;
+  icon: string;
+  eyebrow: string;
+  /** The h1; may hold a <br /> or a <span class="grad">. */
+  heading: string;
+  lead: string;
+  shot?: ImageMetadata;
+  shotAlt?: string;
+  faqs?: { q: string; a: string }[];
+  /** Paths from lib/pages.ts to suggest at the end. */
+  related?: string[];
+  ctaTitle?: string;
+  ctaText?: string;
+  /** Extra JSON-LD nodes for the @graph. */
+  schema?: object[];
+}
+
+const {
+  title, description, crumb, icon, eyebrow, heading, lead, shot, shotAlt = '', faqs = [], related = [],
+  ctaTitle = 'Try it on your own project.', ctaText = 'Larvyn is free and open source, with no account. Install it with one command and add a folder.', schema = [],
+} = Astro.props;
+
+const path = Astro.url.pathname;
+const relatedPages = related.map((p) => ALL_PAGES.find((x) => x.path === p)).filter((p) => p !== undefined);
+const jsonLd = graph(organization, softwareApplication(), breadcrumbs([[crumb, path]]), ...schema);
+---
+
+<Base title={`${title} · Larvyn`} description={description} jsonLd={jsonLd}>
+  <SiteHeader />
+  <main class="fpage">
+    <section class="hero fpage-hero">
+      <div class="grid-bg"></div>
+      <div class="wrap">
+        <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Larvyn</a><Icon name="ChevronRight" size={13} /><span>{crumb}</span></nav>
+        <span class="eyebrow"><Icon name={icon as any} size={14} /> {eyebrow}</span>
+        <h1 set:html={heading} />
+        <p class="lead" set:html={lead} />
+        <div class="cta">
+          <a class="btn primary" href="/#install"><Icon name="Download" size={18} /> Install the free beta</a>
+          <a class="btn" href="/#tour"><Icon name="Play" size={16} /> Take the tour</a>
+        </div>
+        {shot && <div class="fpage-shot"><Screen src={shot} alt={shotAlt} eager /></div>}
+      </div>
+    </section>
+
+    <slot />
+
+    {faqs.length > 0 && (
+      <section class="block">
+        <div class="wrap">
+          <div class="head reveal"><h2>Questions</h2></div>
+          <div class="faq reveal">
+            {faqs.map((f, i) => (
+              <details open={i === 0}>
+                <summary>{f.q} <Icon name="Plus" size={20} /></summary>
+                <p set:html={f.a} />
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    {relatedPages.length > 0 && (
+      <section class="block" style="padding-top: 20px">
+        <div class="wrap">
+          <div class="head reveal"><h2>More of Larvyn</h2></div>
+          <div class="related reveal">
+            {relatedPages.map((p) => (
+              <a class="related-card" href={p.path}>
+                <Icon name={p.icon as any} size={20} />
+                <b>{p.label}</b>
+                <span>{p.blurb}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <section class="block" style="padding-top: 20px">
+      <div class="wrap">
+        <div class="final reveal">
+          <img class="logo-big" src="/favicon.svg" alt="" width="72" height="72" />
+          <h2>{ctaTitle}</h2>
+          <p>{ctaText}</p>
+          <div class="cta">
+            <a class="btn primary" href="/#install"><Icon name="Download" size={18} /> Install the free beta</a>
+            <a class="btn" href="/"><Icon name="House" size={16} /> See everything Larvyn does</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
+
+  <script>
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && (e.target.classList.add('in'), io.unobserve(e.target))),
+      { rootMargin: '0px 0px -10% 0px' },
+    );
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  </script>
+</Base>

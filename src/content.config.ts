@@ -22,4 +22,16 @@ const blog = defineCollection({
     }),
 });
 
-export const collections = { blog };
+// Docs: src/content/docs/<slug>.md, served at /docs/<slug>/ (index.md is /docs/). The sidebar follows `order`.
+const docs = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/docs' }),
+  schema: z.object({
+    title: z.string().max(70),
+    // The sidebar's name for the page, when shorter than the title.
+    label: z.string().optional(),
+    description: z.string().min(70).max(170),
+    order: z.number(),
+  }),
+});
+
+export const collections = { blog, docs };

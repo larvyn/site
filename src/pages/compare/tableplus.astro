@@ -1,0 +1,71 @@
+---
+import FeaturePage from '../../layouts/FeaturePage.astro';
+import Icon from '../../components/Icon.astro';
+import database from '../../assets/screens/database.png';
+
+// TablePlus facts from tableplus.com/pricing, checked on the date below. Keep them neutral and re-check before editing.
+const CHECKED = 'November 2026';
+const rows: [string, string, string][] = [
+  ['What it is', 'A desktop workbench for Laravel, with a database browser inside', 'A dedicated database client'],
+  ['Connecting', 'Through your Laravel app’s own connection, read from .env', 'Any connection you enter, local or remote'],
+  ['Databases', 'MySQL, PostgreSQL, SQLite, SQL Server', 'PostgreSQL, MySQL, SQL Server, SQLite, Redis, MongoDB, Oracle, ClickHouse and more'],
+  ['Rows and SQL', 'Browse, search and edit rows, structure, foreign keys, SQL console', 'Data editing, SQL queries and advanced filters'],
+  ['Laravel aware', 'Migrations status, model inspector, Tinker, logs and tests in the same app', 'No'],
+  ['Price', 'Free, no account', 'One-time license, from $99 per device; free trial with limits on tabs, windows and filters'],
+  ['Platforms', 'Windows, macOS, Linux', 'macOS, Windows, Linux and iOS'],
+];
+
+const faqs = [
+  { q: 'Can I use both?', a: 'Yes. Larvyn reads your app’s database without any setup, and TablePlus stays useful for remote and non-SQL databases.' },
+  { q: 'Can Larvyn connect to a production database?', a: 'Larvyn uses the connection in your local project’s <code>.env</code>. For connecting to other servers directly, a general client such as TablePlus is the right tool.' },
+];
+---
+
+<FeaturePage
+  title="Larvyn vs TablePlus for Laravel developers"
+  description="TablePlus is a general database client for many engines. Larvyn is a free Laravel desktop workbench whose database browser uses your app's own connection, next to Tinker, tests, logs and AI agents. A fair comparison."
+  crumb="Larvyn vs TablePlus"
+  icon="Scale"
+  eyebrow="Comparison"
+  heading={'Larvyn vs TablePlus'}
+  lead="TablePlus is a full database client for many engines and any server. Larvyn is a Laravel workbench with a database browser that already knows your app. Here is where each one fits."
+  shot={database}
+  shotAlt="Larvyn's database browser showing the orders table"
+  faqs={faqs}
+  related={['/database-client/', '/tinker/', '/compare/tinkerwell/']}
+>
+  <section class="block">
+    <div class="wrap">
+      <div class="compare-wrap reveal">
+        <table class="compare">
+          <thead><tr><th></th><th>Larvyn</th><th>TablePlus</th></tr></thead>
+          <tbody>{rows.map(([k, a, b]) => <tr><th scope="row">{k}</th><td>{a}</td><td>{b}</td></tr>)}</tbody>
+        </table>
+      </div>
+      <p class="compare-note">TablePlus details from <a href="https://tableplus.com/pricing">tableplus.com</a>, checked in {CHECKED}. TablePlus is a product of its own makers; we’re not affiliated.</p>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top: 20px">
+    <div class="wrap">
+      <div class="choose reveal">
+        <div>
+          <h3><Icon name="Check" size={18} /> Choose TablePlus if</h3>
+          <ul>
+            <li>You connect to remote or production databases directly.</li>
+            <li>You use Redis, MongoDB, Oracle or other engines.</li>
+            <li>Database work is a big part of your day on its own.</li>
+          </ul>
+        </div>
+        <div>
+          <h3><Icon name="Check" size={18} /> Choose Larvyn if</h3>
+          <ul>
+            <li>You mostly look at your local Laravel app’s data while building.</li>
+            <li>You want rows, migrations, models and Tinker in one place, with no connection setup.</li>
+            <li>You want a free tool, with terminals and AI agents in the same window.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</FeaturePage>
