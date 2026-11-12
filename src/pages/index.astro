@@ -19,6 +19,7 @@ import overviewRunning from '../assets/screens/overview-running.png';
 import agents from '../assets/screens/agents-boost.png';
 import flock from '../assets/screens/flock.png';
 import notLaravel from '../assets/screens/not-laravel.png';
+import themes from '../assets/blog/agents-api/theme.png';
 import setup from '../assets/screens/setup.png';
 import terminals from '../assets/screens/terminals.png';
 import tests from '../assets/screens/tests.png';
@@ -106,6 +107,10 @@ const features = [
   { icon: 'FolderPlus', title: 'New Laravel app', text: 'Starter kit, Pest or PHPUnit and database, ready to run.' },
   { icon: 'History', title: 'Workspace restore', any: true, text: 'Terminals, agents and services come back after a restart.' },
   { icon: 'Puzzle', title: 'Plugins', any: true, text: 'Add commands, services and views from the marketplace.' },
+  { icon: 'UserPlus', title: 'Bring your own agents', any: true, text: 'Add any agent CLI with its own command and environment, next to the built-in ones.' },
+  { icon: 'ImagePlus', title: 'Paste screenshots', any: true, text: 'Paste an image into an agent’s terminal and Claude Code or Codex receives it.' },
+  { icon: 'Lock', title: 'Shared locks', any: true, text: 'larvyn lock makes agents take turns on what they share, like the database.' },
+  { icon: 'SunMoon', title: 'Light and dark', any: true, text: 'Follow the system or pick a theme. Terminals and the editor switch with it.' },
   { icon: 'Users', title: 'Team project file', any: true, text: '.larvyn/project.json shares commands, stack items, plugins and worktree setup with the repo.' },
 ] as const;
 
@@ -129,7 +134,7 @@ const stack: [name: string, color: string, logo?: string][] = [
     <section class="hero">
       <div class="grid-bg"></div>
       <div class="wrap">
-        <a class="pill" href="#open-source"><b>NEW</b> Larvyn is now open source, under MIT <Icon name="ArrowRight" size={14} /></a>
+        <a class="pill" href="/blog/beta-15/"><b>NEW</b> Larvyn is open source · what’s new in beta.15 <Icon name="ArrowRight" size={14} /></a>
         <h1>Your whole Laravel workflow.<br /><span class="grad">One open source app.</span></h1>
         <p class="lead">
           Larvyn puts persistent terminals, parallel AI coding agents and every Laravel tool you reach for (Artisan, routes, models, database, Tinker, tests, queues and logs) into one fast, native desktop app.
@@ -489,7 +494,7 @@ const stack: [name: string, color: string, logo?: string][] = [
           <figure class="reveal"><Screen src={newApp} alt="New Laravel application dialog" /><figcaption><b>New Laravel app</b>Starter kit, tests and database, in one dialog.</figcaption></figure>
           <figure class="reveal"><Screen src={pluginCommands} alt="Plugin commands in the command palette" /><figcaption><b>Plugin commands</b>Horizon: restart workers, right from Ctrl K.</figcaption></figure>
           <figure class="reveal"><Screen src={flock} alt="Larvyn's Local site card, with the app and each agent's worktree served by Flock" /><figcaption><b><a href="/integrations/flock/">Served by Flock</a></b>Your app and every agent’s worktree at their own .test URL.</figcaption></figure>
-          <figure class="reveal"><Screen src={notLaravel} alt="A project that isn't Laravel open in Larvyn's Files view" /><figcaption><b>Not only Laravel</b>Terminals, agents, files and git work in any project.</figcaption></figure>
+          <figure class="reveal"><Screen src={themes} alt="Larvyn's Overview split diagonally between the light theme and the dark theme" /><figcaption><b>Light and dark</b>Follow the system, or pick the one you like.</figcaption></figure>
           <figure class="reveal"><Screen src={setup} alt="Larvyn's first-run setup checking PHP, Node, Git and Composer" /><figcaption><b>Two-minute setup</b>Larvyn checks PHP, Node, Git and Composer, and shows how to install what’s missing.</figcaption></figure>
         </div>
       </div>
@@ -546,6 +551,7 @@ const stack: [name: string, color: string, logo?: string][] = [
           <a class="btn primary" href={SOURCE}><Icon name="Star" size={18} /> Star on GitHub</a>
           <a class="btn" href={LICENSE}><Icon name="Scale" size={16} /> Read the license</a>
         </div>
+        <p class="reveal" style="text-align: center"><a class="more-link" href="/blog/beta-15/">Read the announcement <Icon name="ArrowRight" size={15} /></a></p>
       </div>
     </section>
 
