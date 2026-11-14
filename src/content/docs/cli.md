@@ -128,7 +128,8 @@ The [Spec first](/docs/spec-first/) workflow, from a terminal.
 
 | Command | What it does |
 | --- | --- |
-| `larvyn agents setup` | Installs the `larvyn` skill and session hook in Claude Code and Codex. `--dry-run` lists the changes. See [Agent setup](/docs/agent-setup/). |
+| `larvyn agents setup` | Installs the `larvyn` skill, session hook and MCP server in the agents you have (Claude Code, Codex, Cursor, Gemini CLI, Windsurf, OpenCode). `--dry-run` lists the changes. See [Agent setup](/docs/agent-setup/). |
+| `larvyn agents skill` | Prints the `larvyn` skill, for an agent that keeps skills somewhere else. |
 | `larvyn agents remove` | Takes out only what Larvyn added. |
 
 ## The API underneath

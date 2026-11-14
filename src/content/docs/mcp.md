@@ -1,7 +1,7 @@
 ---
 title: 'Larvyn MCP server'
 label: 'MCP server'
-description: 'larvyn mcp serves the larvyn commands as MCP tools for Claude Code, Codex, Cursor, OpenCode and any MCP client: dev stack, tests, logs, database and agents.'
+description: 'larvyn mcp serves the larvyn commands as MCP tools for Claude Code, Codex, Cursor, Gemini CLI, Windsurf, OpenCode and any client. Set up agents adds it.'
 order: 2
 ---
 
@@ -9,12 +9,22 @@ For agents that prefer MCP over a shell, `larvyn mcp` serves every [`larvyn` com
 
 ## Add it to your agent
 
-Run these in a Larvyn terminal, where `larvyn` is on the PATH.
+**Settings → Agents know Larvyn → Set up agents**, or `larvyn agents setup` in a Larvyn terminal, adds the server to every agent you have installed: Claude Code, Codex, Cursor, Gemini CLI, Windsurf and OpenCode. It writes the full path of the `larvyn` binary, so the server also works in agents started outside Larvyn. [Agent setup](/docs/agent-setup/) lists the files it changes, and `larvyn agents remove` takes the server out again.
+
+Restart the agents that were already running, so they load it.
+
+## By hand
+
+For another MCP client, or to add it yourself, the server is the `larvyn` binary run with `mcp`, over stdio. Inside a Larvyn terminal, `larvyn` is on the PATH. Anywhere else, use the full path of the binary, in the `bin` folder of Larvyn’s state folder:
+
+- Linux: `~/.config/larvyn/bin/larvyn`
+- macOS: `~/Library/Application Support/larvyn/bin/larvyn`
+- Windows: `%APPDATA%\larvyn\bin\larvyn.exe`
 
 **Claude Code**
 
 ```sh
-claude mcp add larvyn -- larvyn mcp
+claude mcp add --scope user larvyn -- larvyn mcp
 ```
 
 **Codex**
@@ -23,7 +33,7 @@ claude mcp add larvyn -- larvyn mcp
 codex mcp add larvyn -- larvyn mcp
 ```
 
-**Cursor, Windsurf and other clients with an `mcpServers` file** (`.cursor/mcp.json` in Cursor):
+**Cursor, Windsurf, Gemini CLI and other clients with an `mcpServers` file**:
 
 ```json
 {
@@ -33,17 +43,25 @@ codex mcp add larvyn -- larvyn mcp
 }
 ```
 
-**OpenCode** (`opencode.json`):
+**OpenCode**
+
+```sh
+opencode mcp add --global larvyn -- larvyn mcp
+```
+
+Or in `opencode.json` / `opencode.jsonc`. OpenCode 2 keeps servers under `mcp.servers`; OpenCode 1 keeps them right under `mcp`, without `servers`:
 
 ```json
 {
   "mcp": {
-    "larvyn": { "type": "local", "command": ["larvyn", "mcp"] }
+    "servers": {
+      "larvyn": { "type": "local", "command": ["larvyn", "mcp"] }
+    }
   }
 }
 ```
 
-An agent you start from Larvyn finds `larvyn` on its PATH. A client started anywhere else needs the full path to the binary, in the `bin` folder of Larvyn’s state folder: `~/.config/larvyn/bin/larvyn` on Linux, `~/Library/Application Support/larvyn/bin/larvyn` on macOS and `%APPDATA%\larvyn\bin\larvyn.exe` on Windows. There it works from a project’s folder or one of its worktrees, while the app runs.
+Outside Larvyn’s terminals the server works from a project’s folder or one of its worktrees, and its tools need the app running.
 
 ## Tools
 
@@ -76,7 +94,8 @@ Tools that only read are marked with `readOnlyHint`, so clients can run them wit
 | `lock_acquire`, `lock_release` | | Takes turns on what agents share, such as the database. |
 | `specs_list`, `specs_show` | yes | Specs and their reviews. |
 | `specs_draft`, `specs_review`, `specs_revise`, `specs_build`, `specs_drift`, `specs_fix` | | The [Spec first](/docs/spec-first/) workflow. |
-| `agents_setup`, `agents_remove` | | Installs or removes the `larvyn` skill and session hook. |
+| `agents_skill` | yes | The `larvyn` skill, to save where an agent reads skills. |
+| `agents_setup`, `agents_remove` | | Installs or removes the `larvyn` skill, session hook and MCP server. |
 
 Each tool’s parameters are the command’s options, with the same names and defaults. Your client shows them, or see the [command reference](/docs/cli/).
 
