@@ -13,7 +13,7 @@ Every terminal Larvyn opens has a `larvyn` command on its PATH. An agent running
 
 - **[The `larvyn` command](/docs/cli/)**: every command, its options and its exit codes.
 - **[MCP server](/docs/mcp/)**: the same commands as MCP tools, for Claude Code, Codex, Cursor and any other MCP client.
-- **[Agent setup](/docs/agent-setup/)**: a `larvyn` skill and a session-start hook, so agents use all this without being told.
+- **[Agent setup](/docs/agent-setup/)**: one click installs the `larvyn` skill, a session-start hook and the MCP server in the agents you have, so they use all this without being told.
 - **[Spec first](/docs/spec-first/)**: plan a feature with one agent, review it with a fresh one, then build.
 
 ## For your team
